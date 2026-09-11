@@ -3,7 +3,10 @@
 Native client for the eJahan game, talking to the Laravel JSON API (`/api/v1`, Sanctum tokens).
 One codebase for iOS, Android and web.
 
-The screens reproduce the original game interface: sky/city ambient, the dark-blue citizen bar
+The app shell and the home hub use the modern game skin from the gym (dark graphite, cyan/orange accents,
+glowing meters and pill buttons — `Gym` tokens in `lib/core/theme.dart`, `GymTitle`/`GymTabs`/`GlowButton` in
+`lib/widgets/ui.dart`); the player HUD shows the avatar with the XP ring, rank insignia, XP/wellness bars and money.
+The other screens (workplace, battles, mail, articles) keep the original game's content on white cards: sky/city ambient, the dark-blue citizen bar
 (avatar, level, XP, wellness + Drink, tala/local money, PM/note counters, logout), logo + day/clock,
 the light-blue menubar with its original six groups (Home · My places · Economy · Rankings ·
 Information · Extra) opening the icon dock — entries the app covers (Army, Workplace, Battles, Messages)

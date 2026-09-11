@@ -53,6 +53,7 @@ class _ArmyState extends ConsumerState<ArmyScreen> {
     final army = ref.watch(armyProvider);
     final c = ref.watch(sessionProvider);
     return LegacyFrame(
+      dark: true,
       padding: const EdgeInsets.all(4),
       onRefresh: () => ref.refresh(armyProvider.future),
       children: [

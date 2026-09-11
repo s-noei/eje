@@ -22,6 +22,30 @@ class EjColors {
   static const tabHover = Color(0xFF66BBFF);
 }
 
+/// The modern game skin (from the gym): dark graphite chrome, cyan / orange accents, glowing meters.
+class Gym {
+  static const bg = Color(0xFF0B1118);
+  static const dark = Color(0xFF0F1620);
+  static const panel = Color(0xFF1B2533);
+  static const panel2 = Color(0xFF223042);
+  static const line = Color(0xFF2A3A4F);
+  static const cyan = Color(0xFF22D3EE);
+  static const cyanSoft = Color(0xFF9FE7FF);
+  static const orange = Color(0xFFFF8A3D);
+  static const green = Color(0xFF7CFC9A);
+  static const gold = Color(0xFFFFC94D);
+  static const red = Color(0xFFFF6B6B);
+  static const text = Color(0xFFE8EEF7);
+  static const muted = Color(0xFF9FB3C8);
+
+  static BoxDecoration card({Color? border, bool glow = false, Color glowColor = cyan, double radius = 12}) => BoxDecoration(
+    gradient: const LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [panel, dark]),
+    border: Border.all(color: border ?? line, width: border == null ? 1 : 1.5),
+    borderRadius: BorderRadius.circular(radius),
+    boxShadow: glow ? [BoxShadow(color: glowColor.withValues(alpha: .45), blurRadius: 18)] : const [BoxShadow(color: Color(0x66000000), blurRadius: 12, offset: Offset(0, 4))],
+  );
+}
+
 /// Legacy body font: Arial/Tahoma 10pt.
 const ejFontFamily = 'Arial';
 
@@ -33,7 +57,7 @@ ThemeData ejTheme() {
   return ThemeData(
     useMaterial3: true,
     colorScheme: scheme,
-    scaffoldBackgroundColor: EjColors.skyTop,
+    scaffoldBackgroundColor: Gym.bg,
     fontFamily: ejFontFamily,
     textTheme: const TextTheme(
       bodyMedium: TextStyle(fontSize: 13, color: EjColors.text, height: 1.3),
@@ -60,8 +84,8 @@ ThemeData ejTheme() {
       ),
       hintStyle: const TextStyle(color: Color(0xFF9A9A9A), fontSize: 12),
     ),
-    appBarTheme: const AppBarTheme(backgroundColor: EjColors.infoBox, foregroundColor: Colors.white, elevation: 0, centerTitle: true),
     progressIndicatorTheme: const ProgressIndicatorThemeData(color: EjColors.link),
     snackBarTheme: const SnackBarThemeData(behavior: SnackBarBehavior.floating),
+    appBarTheme: const AppBarTheme(backgroundColor: Gym.dark, foregroundColor: Colors.white, elevation: 0, centerTitle: true),
   );
 }

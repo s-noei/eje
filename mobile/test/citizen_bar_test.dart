@@ -15,6 +15,6 @@ void main() {
     await tester.pumpWidget(MaterialApp(theme: ejTheme(), home: Scaffold(body: ListView(children: [CitizenBar(citizen: c), const LogoHeader(day: 4908), LegacyMenuBar(items: const ['Home', 'Army'], selected: 0, onSelect: (_) {}), const BoxTitle('Title'), const TaskBaloon(icon: 'train', title: 'Train'), ImgButton('Go', onPressed: () {}), const Notice('ok')]))));
     await tester.pump();
     expect(find.text('sekulla'), findsOneWidget);
-    expect(find.text('Logout'), findsOneWidget);
+    expect(find.text('⏻'), findsOneWidget);
   });
 }

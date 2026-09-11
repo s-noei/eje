@@ -14,8 +14,8 @@ import 'article.dart';
 import 'battle.dart';
 import 'shell.dart';
 
-/// The home page as a game hub (legacy skin): today's missions, the war room, the citizen sheet,
-/// the backpack, then the dispatches (military events / news / Around eJahan / chatbox) in tabs.
+/// The home hub in the gym skin: hero card (your citizen), today's missions, the war room,
+/// the backpack, then the dispatches (events / news / Around eJahan / chatbox).
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
   @override
@@ -30,7 +30,6 @@ class _HomeState extends ConsumerState<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    // battle countdowns
     _tick = Timer.periodic(const Duration(seconds: 1), (_) {
       final battles = ref.read(homeProvider).asData?.value.battles ?? const [];
       if (battles.isNotEmpty && mounted) setState(() {});
@@ -65,6 +64,8 @@ class _HomeState extends ConsumerState<HomeScreen> {
   Widget build(BuildContext context) {
     final home = ref.watch(homeProvider);
     return LegacyFrame(
+      dark: true,
+      padding: const EdgeInsets.all(6),
       onRefresh: () => ref.refresh(homeProvider.future),
       children: [
         home.when(
@@ -74,11 +75,11 @@ class _HomeState extends ConsumerState<HomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               if (d.quests['vote'] != null) _voteHandler(d.quests['vote'] as Map<String, dynamic>),
+              _hero(d.citizen),
+              const SizedBox(height: 10),
               _missions(d),
               const SizedBox(height: 10),
               _warRoom(d),
-              const SizedBox(height: 10),
-              _citizen(d.citizen),
               const SizedBox(height: 10),
               _backpack(d.citizen),
               const SizedBox(height: 10),
@@ -90,26 +91,94 @@ class _HomeState extends ConsumerState<HomeScreen> {
     );
   }
 
-  /// `.vote-handler` — the election-day banner.
   Widget _voteHandler(Map<String, dynamic> v) => InkWell(
     onTap: () => launchUrl(Uri.parse(v['url'] as String), mode: LaunchMode.externalApplication),
     child: Container(
       margin: const EdgeInsets.only(bottom: 8),
-      padding: const EdgeInsets.all(6),
-      decoration: BoxDecoration(color: Colors.white, border: Border.all(color: EjColors.red), borderRadius: BorderRadius.circular(4)),
+      padding: const EdgeInsets.all(8),
+      decoration: Gym.card(border: Gym.orange, glow: true, glowColor: Gym.orange),
       child: Row(
         children: [
           legacy('tasks/vote.png', width: 30, height: 30),
           const SizedBox(width: 8),
+          Expanded(child: Text('🗳️ Election day! Cast your vote in the ${(v['type'] as String).toUpperCase()} elections', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12))),
+        ],
+      ),
+    ),
+  );
+
+  // ---- Hero: your citizen --------------------------------------------------------------
+
+  Widget _hero(Citizen c) {
+    final stage = ((c.strength + c.stamina) ~/ 2).clamp(0, kShapeMax);
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: Gym.card(),
+      child: Row(
+        children: [
+          if (!c.isCA)
+            InkWell(
+              onTap: () => _tab(1),
+              child: Container(
+                width: 110,
+                height: 150,
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), gradient: RadialGradient(colors: [Gym.cyan.withValues(alpha: .25), Colors.transparent], radius: .8)),
+                child: Image.asset('assets/legacy/gym/shape-$stage.png', fit: BoxFit.contain),
+              ),
+            ),
+          const SizedBox(width: 10),
           Expanded(
-            child: Text(
-              'Election day! Cast your vote in the ${(v['type'] as String).toUpperCase()} elections',
-              style: const TextStyle(color: EjColors.link, fontWeight: FontWeight.bold, fontSize: 12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(c.isCA ? 'Co-account' : c.shapeName.toUpperCase(), style: const TextStyle(color: Gym.cyanSoft, fontSize: 11, fontWeight: FontWeight.w800, letterSpacing: 1.5)),
+                Text(c.rank, style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w800)),
+                Row(
+                  children: [
+                    netImg(c.countryFlag, width: 16, height: 11),
+                    const SizedBox(width: 4),
+                    Expanded(child: Text(c.regionName.isEmpty ? c.countryName : '${c.regionName}, ${c.countryName}', style: const TextStyle(color: Gym.muted, fontSize: 11), overflow: TextOverflow.ellipsis)),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                if (!c.isCA) ...[
+                  _stat('🏋️', 'Strength', ShapeMeter(value: c.strength, color: Gym.orange, height: 9), 'hit ${fmt(c.hit)}'),
+                  const SizedBox(height: 4),
+                  _stat('💓', 'Stamina', ShapeMeter(value: c.stamina, color: Gym.cyan, height: 9), '${fmt(c.fightCost)} / fight'),
+                  const SizedBox(height: 8),
+                  Wrap(
+                    spacing: 6,
+                    runSpacing: 4,
+                    children: [
+                      _pill(c.trainStreak > 0 ? '🔥 ${c.trainStreak} day streak' : '🌫️ no streak', c.trainStreak > 0 ? Gym.orange : Gym.muted),
+                      _pill('🔧 work skill ${fmt(c.wSkill)}', Gym.cyanSoft),
+                      if (c.worldRank != null) _pill('🌍 #${c.worldRank}', Gym.gold),
+                    ],
+                  ),
+                ],
+              ],
             ),
           ),
         ],
       ),
-    ),
+    );
+  }
+
+  Widget _stat(String emoji, String label, Widget meter, String effect) => Row(
+    children: [
+      Text(emoji, style: const TextStyle(fontSize: 12)),
+      const SizedBox(width: 4),
+      SizedBox(width: 54, child: Text(label, style: const TextStyle(color: Gym.text, fontSize: 11, fontWeight: FontWeight.bold))),
+      Expanded(child: meter),
+      const SizedBox(width: 6),
+      Text(effect, style: const TextStyle(color: Gym.muted, fontSize: 10)),
+    ],
+  );
+
+  Widget _pill(String text, Color color) => Container(
+    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+    decoration: BoxDecoration(color: color.withValues(alpha: .12), borderRadius: BorderRadius.circular(10), border: Border.all(color: color.withValues(alpha: .5))),
+    child: Text(text, style: TextStyle(color: color, fontSize: 10, fontWeight: FontWeight.bold)),
   );
 
   // ---- Today's missions -------------------------------------------------------------------
@@ -119,12 +188,14 @@ class _HomeState extends ConsumerState<HomeScreen> {
     final q = d.quests;
     final isCA = c.isCA;
     final missions = <_Mission>[
-      if (!isCA) _Mission('Gym', 'train', c.trainedToday ? 'day ${c.trainStreak} in a row' : 'weights or cardio · day ${c.trainStreak + 1}', done: c.trainedToday, onGo: () => _tab(1)),
-      if (!isCA) _Mission('Work', 'work', 'salary & products', done: c.workedToday, available: q['work'] == true || c.workedToday, onGo: () => _tab(2), hint: 'Find a job first', onHint: () => openWeb(ref, 'jobs-en.html')),
-      if (!isCA && (q['explore'] == true || c.exploredToday)) _Mission('Explore the mines', 'explore', 'find resources', done: c.exploredToday, onGo: () => openWeb(ref, 'mines-en.html')),
-      if (!isCA) _Mission('Eat', 'food', 'restore wellness', done: c.wellness >= 100, onGo: () => _tab(1)),
-      if (d.unitBattle != null) _Mission('Unit order: ${d.unitBattle!.region}', 'damge-booster', 'fight with your military unit', onGo: () => _openBattle(d.unitBattle!.id))
-      else if (d.battles.isNotEmpty) _Mission('Fight', 'damge-booster', d.battles.first.region, onGo: () => _openBattle(d.battles.first.id)),
+      if (!isCA) _Mission('Gym', '🏋️', c.trainedToday ? 'day ${c.trainStreak} in a row' : 'weights or cardio · day ${c.trainStreak + 1}', done: c.trainedToday, onGo: () => _tab(1)),
+      if (!isCA) _Mission('Work', '🔧', 'salary & products', done: c.workedToday, available: q['work'] == true || c.workedToday, onGo: () => _tab(2), hint: 'Find a job first', onHint: () => openWeb(ref, 'jobs-en.html')),
+      if (!isCA && (q['explore'] == true || c.exploredToday)) _Mission('Explore the mines', '⛏️', 'find resources', done: c.exploredToday, onGo: () => openWeb(ref, 'mines-en.html')),
+      if (!isCA) _Mission('Eat', '🍔', 'restore wellness', done: c.wellness >= 100, onGo: () => openWeb(ref, 'market-en.html')),
+      if (d.unitBattle != null)
+        _Mission('Unit order: ${d.unitBattle!.region}', '⚔️', 'fight with your military unit', onGo: () => _openBattle(d.unitBattle!.id))
+      else if (d.battles.isNotEmpty)
+        _Mission('Fight', '⚔️', d.battles.first.region, onGo: () => _openBattle(d.battles.first.id)),
     ];
     final total = missions.where((m) => m.available).length;
     final done = missions.where((m) => m.available && m.done).length;
@@ -132,67 +203,59 @@ class _HomeState extends ConsumerState<HomeScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        BoxTitle(
-          "Today's missions",
-          trailing: Text('Day ${fmt(d.day)}', style: const TextStyle(fontSize: 11, color: EjColors.black)),
-        ),
+        GymTitle("Today's missions", trailing: total > 0 ? '$done / $total' : null),
         if (total > 0)
           Padding(
-            padding: const EdgeInsets.only(bottom: 6),
-            child: Row(
-              children: [
-                Expanded(child: LegacyBar(value: total == 0 ? 0 : done / total, color: EjColors.lime, height: 12, label: '$done / $total completed')),
-              ],
+            padding: const EdgeInsets.only(bottom: 8),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(6),
+              child: Container(
+                height: 8,
+                color: Colors.white.withValues(alpha: .1),
+                alignment: Alignment.centerLeft,
+                child: FractionallySizedBox(widthFactor: total == 0 ? 0 : done / total, child: Container(decoration: BoxDecoration(color: Gym.green, boxShadow: [BoxShadow(color: Gym.green.withValues(alpha: .7), blurRadius: 6)]))),
+              ),
             ),
           ),
         LayoutBuilder(
           builder: (context, box) {
             final cols = box.maxWidth >= 560 ? 3 : 2;
-            final w = (box.maxWidth - 4 * (cols - 1)) / cols;
+            final w = (box.maxWidth - 6 * (cols - 1)) / cols;
             return Wrap(
-              spacing: 4,
-              runSpacing: 4,
-              children: [for (final m in missions) SizedBox(width: w, height: 64, child: _MissionTile(m))],
+              spacing: 6,
+              runSpacing: 6,
+              children: [for (final m in missions) SizedBox(width: w, height: 70, child: _MissionTile(m))],
             );
           },
         ),
-        const SizedBox(height: 6),
-        // daily reward chest
+        const SizedBox(height: 8),
         if (!isCA)
           Container(
-            padding: const EdgeInsets.all(6),
-            decoration: BoxDecoration(
-              color: chestOpen ? const Color(0xFFFFF7DD) : Colors.white,
-              border: Border.all(color: chestOpen ? const Color(0xFFE0B000) : EjColors.line, width: chestOpen ? 2 : 1),
-              borderRadius: BorderRadius.circular(4),
-            ),
+            padding: const EdgeInsets.all(10),
+            decoration: Gym.card(border: chestOpen ? Gym.gold : null, glow: chestOpen, glowColor: Gym.gold),
             child: Row(
               children: [
-                legacy(chestOpen ? 'tasks/welcome.png' : 'tasks/gold-pack.png', width: 44, height: 44),
-                const SizedBox(width: 8),
+                Text(c.dailyClaimed ? '✅' : (chestOpen ? '🎁' : '🔒'), style: const TextStyle(fontSize: 30)),
+                const SizedBox(width: 10),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        c.dailyClaimed ? 'Daily reward collected' : (chestOpen ? 'Daily reward unlocked!' : 'Daily reward'),
-                        style: const TextStyle(fontWeight: FontWeight.bold, color: EjColors.black, fontSize: 12),
-                      ),
+                      Text(c.dailyClaimed ? 'Daily reward collected' : (chestOpen ? 'Daily reward unlocked!' : 'Daily reward'), style: TextStyle(fontWeight: FontWeight.w800, color: chestOpen ? Gym.gold : Colors.white, fontSize: 13)),
                       Row(
                         children: [
                           legacy('xp_icon.png', width: 14, height: 14),
-                          const Text(' 5 EP  +  ', style: TextStyle(fontSize: 11)),
+                          const Text(' 5 EP  +  ', style: TextStyle(fontSize: 11, color: Gym.muted)),
                           legacy('food-icon.png', width: 14, height: 14),
-                          const Text(' 1 food ', style: TextStyle(fontSize: 11)),
+                          const Text(' 1 food ', style: TextStyle(fontSize: 11, color: Gym.muted)),
                           legacy('5_star.gif', height: 8),
                         ],
                       ),
-                      if (!chestOpen && !c.dailyClaimed) const Text('Train today to unlock it', style: TextStyle(fontSize: 10)),
+                      if (!chestOpen && !c.dailyClaimed) const Text('Train today to unlock it', style: TextStyle(fontSize: 10, color: Gym.muted)),
                     ],
                   ),
                 ),
-                if (chestOpen) ImgButton('Get reward', width: 110, busy: _claiming, onPressed: _claim),
-                if (c.dailyClaimed) legacy('icon_ok.png', width: 26, height: 26),
+                if (chestOpen) GlowButton('Claim', busy: _claiming, onPressed: _claim, color: Gym.gold, small: true),
               ],
             ),
           ),
@@ -205,90 +268,23 @@ class _HomeState extends ConsumerState<HomeScreen> {
   Widget _warRoom(HomeData d) => Column(
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
-      BoxTitle(
-        'War room',
-        trailing: LinkText('All wars »', onTap: () => openWeb(ref, 'wars-en.html')),
-      ),
+      GymTitle('War room', trailing: 'All wars »', onTrailing: () => openWeb(ref, 'wars-en.html')),
       if (d.unitBattle != null) _BattleCard(d.unitBattle!, label: 'MILITARY UNIT ORDER', onTap: () => _openBattle(d.unitBattle!.id)),
       if (d.battles.isEmpty)
-        Row(
-          children: [
-            legacy('danger.png', width: 22, height: 22),
-            const SizedBox(width: 6),
-            const Expanded(child: Text('Your country is at peace — there is no active battle.', style: TextStyle(fontSize: 12))),
-            ImgButton('Battles', width: 90, onPressed: () => _tab(3)),
-          ],
+        Container(
+          padding: const EdgeInsets.all(10),
+          decoration: Gym.card(),
+          child: Row(
+            children: [
+              const Text('🕊️', style: TextStyle(fontSize: 22)),
+              const SizedBox(width: 8),
+              const Expanded(child: Text('Your country is at peace — no active battle.', style: TextStyle(fontSize: 12, color: Gym.text))),
+              GlowButton('Battles', small: true, onPressed: () => _tab(3)),
+            ],
+          ),
         ),
       for (final b in d.battles) _BattleCard(b, onTap: () => _openBattle(b.id)),
     ],
-  );
-
-  // ---- Citizen sheet ----------------------------------------------------------------------
-
-  Widget _citizen(Citizen c) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        BoxTitle(
-          'Your citizen',
-          trailing: LinkText('Profile »', onTap: () => openWeb(ref, 'profile-${c.id}-en.html')),
-        ),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Column(
-              children: [
-                Avatar(c.avatar, size: 64),
-                if (!c.isCA) Image.asset('assets/legacy/gym/shape-${((c.strength + c.stamina) ~/ 2).clamp(0, kShapeMax)}.png', height: 64, fit: BoxFit.contain),
-              ],
-            ),
-            const SizedBox(width: 8),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(child: Text(c.name, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: EjColors.black))),
-                      netImg(c.countryFlag, width: 20, height: 13),
-                      const SizedBox(width: 4),
-                      Text(c.regionName.isEmpty ? c.countryName : '${c.regionName}, ${c.countryName}', style: const TextStyle(fontSize: 11)),
-                    ],
-                  ),
-                  Text(c.isCA ? 'Co-account' : c.rank, style: const TextStyle(fontSize: 11, color: EjColors.green, fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 4),
-                  _statRow('Level ${c.level}', LegacyBar(value: c.xpProgress, color: EjColors.lime, height: 11, label: '${fmt(c.ep)} / ${fmt(c.epNextLevel)} EP')),
-                  _statRow('Wellness', LegacyBar(value: c.wellness / 100, color: c.wellness < 40 ? EjColors.red : EjColors.lime, height: 11, label: '${fmt(c.wellness)} / 100')),
-                  if (!c.isCA) ...[
-                    _statRow('Strength', Row(children: [Expanded(child: ShapeMeter(value: c.strength, color: const Color(0xFFCC3333), height: 10)), Text(' ${c.strength}/$kShapeMax · hit ${fmt(c.hit)}', style: const TextStyle(fontSize: 10))])),
-                    _statRow('Stamina', Row(children: [Expanded(child: ShapeMeter(value: c.stamina, color: const Color(0xFF3366CC), height: 10)), Text(' ${c.stamina}/$kShapeMax · fight ${fmt(c.fightCost)}', style: const TextStyle(fontSize: 10))])),
-                  ],
-                  Wrap(
-                    spacing: 8,
-                    children: [
-                      if (!c.isCA) Text('${c.shapeName} · ${c.trainStreak} day${c.trainStreak == 1 ? '' : 's'} training streak', style: const TextStyle(fontSize: 11)),
-                      Text('Work skill ${fmt(c.wSkill)}', style: const TextStyle(fontSize: 11)),
-                      if (c.mRankIcon.isNotEmpty) Row(mainAxisSize: MainAxisSize.min, children: [netImg(c.mRankIcon, width: 36, height: 9, fit: BoxFit.contain), Text(' ${c.mRankName}', style: const TextStyle(fontSize: 11))]),
-                      if (c.worldRank != null) Text('World rank #${c.worldRank}', style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: EjColors.black)),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget _statRow(String label, Widget bar) => Padding(
-    padding: const EdgeInsets.symmetric(vertical: 2),
-    child: Row(
-      children: [
-        SizedBox(width: 62, child: Text(label, style: const TextStyle(fontSize: 11))),
-        Expanded(child: bar),
-      ],
-    ),
   );
 
   // ---- Backpack ---------------------------------------------------------------------------
@@ -296,19 +292,35 @@ class _HomeState extends ConsumerState<HomeScreen> {
   Widget _backpack(Citizen c) => Column(
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
-      BoxTitle(
-        'Backpack',
-        trailing: LinkText('Market »', onTap: () => openWeb(ref, 'market-en.html')),
+      GymTitle('Backpack', trailing: 'Market »', onTrailing: () => openWeb(ref, 'market-en.html')),
+      Container(
+        padding: const EdgeInsets.all(8),
+        decoration: Gym.card(),
+        child: c.inventory.isEmpty
+            ? const Text('Your backpack is empty — buy food and weapons on the market.', style: TextStyle(fontSize: 12, color: Gym.muted))
+            : SizedBox(
+                height: 78,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: [
+                    for (final i in c.inventory)
+                      Container(
+                        width: 56,
+                        margin: const EdgeInsets.only(right: 6),
+                        padding: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(color: Colors.white.withValues(alpha: .06), borderRadius: BorderRadius.circular(10), border: Border.all(color: Gym.line)),
+                        child: Column(
+                          children: [
+                            Expanded(child: netImg(i.icon, fit: BoxFit.contain)),
+                            legacy('${i.stars.clamp(0, 5)}_star.gif', width: 44, height: 8, fit: BoxFit.fill),
+                            Text('×${i.amount}', style: const TextStyle(color: Gym.text, fontSize: 10, fontWeight: FontWeight.bold)),
+                          ],
+                        ),
+                      ),
+                  ],
+                ),
+              ),
       ),
-      if (c.inventory.isEmpty) const EmptyNote('Your inventory is empty — buy food and weapons on the market.'),
-      if (c.inventory.isNotEmpty)
-        SizedBox(
-          height: 74,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            children: [for (final i in c.inventory) InventoryBox(icon: i.icon, stars: i.stars, amount: i.amount)],
-          ),
-        ),
     ],
   );
 
@@ -317,15 +329,19 @@ class _HomeState extends ConsumerState<HomeScreen> {
   Widget _dispatches(HomeData d) => Column(
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
-      const BoxTitle('Dispatches', hr: false),
-      LegacyTabs(items: const ['Military events', 'News', 'Around eJahan', 'Chatbox'], selected: _dispatch, onSelect: (i) => setState(() => _dispatch = i)),
-      const SizedBox(height: 4),
-      switch (_dispatch) {
-        0 => _events(d),
-        1 => _news(d),
-        2 => _around(d),
-        _ => const ChatBox(),
-      },
+      const GymTitle('Dispatches'),
+      GymTabs(items: const ['⚔️ Events', '📰 News', '🌍 Around', '💬 Chat'], selected: _dispatch, onSelect: (i) => setState(() => _dispatch = i)),
+      const SizedBox(height: 6),
+      Container(
+        padding: const EdgeInsets.all(8),
+        decoration: Gym.card(),
+        child: switch (_dispatch) {
+          0 => _events(d),
+          1 => _news(d),
+          2 => _around(d),
+          _ => const ChatBox(),
+        },
+      ),
     ],
   );
 
@@ -334,58 +350,75 @@ class _HomeState extends ConsumerState<HomeScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Row(
-          children: [
-            for (final (i, t) in [d.citizen.countryName, 'International'].indexed)
-              Padding(
-                padding: const EdgeInsets.only(right: 4),
-                child: PlainButton(t, onPressed: () => setState(() => _eventTab = i), active: _eventTab == i),
-              ),
-          ],
-        ),
-        const SizedBox(height: 4),
-        if (list.isEmpty) const EmptyNote('No military events yet.'),
+        GymTabs(items: [d.citizen.countryName, 'International'], selected: _eventTab, onSelect: (i) => setState(() => _eventTab = i), small: true),
+        const SizedBox(height: 6),
+        if (list.isEmpty) const Text('No military events yet.', style: TextStyle(fontSize: 12, color: Gym.muted)),
         for (var i = 0; i < list.length; i++) ...[
           InkWell(
             onTap: () => launchUrl(Uri.parse(list[i].link), mode: LaunchMode.externalApplication),
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 3),
+              padding: const EdgeInsets.symmetric(vertical: 5),
               child: Row(
                 children: [
                   netImg(list[i].icon, width: 20, height: 20, fit: BoxFit.contain),
-                  const SizedBox(width: 6),
-                  Expanded(child: Text(list[i].title, style: const TextStyle(fontSize: 11, color: EjColors.link))),
+                  const SizedBox(width: 8),
+                  Expanded(child: Text(list[i].title, style: const TextStyle(fontSize: 12, color: Gym.text))),
                 ],
               ),
             ),
           ),
-          if (i < list.length - 1) const Divider(height: 4),
+          if (i < list.length - 1) const Divider(height: 4, color: Gym.line),
         ],
-        Center(child: LinkText('Show all military events', onTap: () => openWeb(ref, 'media-0-eve-en.html'))),
+        Center(child: LinkText('Show all military events', onTap: () => openWeb(ref, 'media-0-eve-en.html'), color: Gym.cyanSoft)),
       ],
     );
   }
 
   Widget _news(HomeData d) {
     final keys = ['top', 'latest', 'international', if (d.news.containsKey('subscriptions') && !d.citizen.isCA) 'subscriptions'];
-    final labels = {'top': 'Top', 'latest': 'Latest', 'international': 'International', 'subscriptions': 'My subscriptions'};
+    final labels = {'top': 'Top', 'latest': 'Latest', 'international': 'International', 'subscriptions': 'My subs'};
     final key = keys[_newsTab.clamp(0, keys.length - 1)];
     final list = d.news[key] ?? [];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Wrap(
-          spacing: 4,
-          runSpacing: 4,
-          children: [for (final (i, k) in keys.indexed) PlainButton(labels[k]!, onPressed: () => setState(() => _newsTab = i), active: _newsTab == i)],
-        ),
-        const SizedBox(height: 4),
-        if (list.isEmpty) const EmptyNote('There is no article to show.'),
-        for (final a in list) ArticleRow(a, onTap: () => _openArticle(a.id)),
-        Center(child: LinkText('Go to Media center', onTap: () => openWeb(ref, 'media-${d.citizen.countryId}-en.html'))),
+        GymTabs(items: keys.map((k) => labels[k]!).toList(), selected: _newsTab, onSelect: (i) => setState(() => _newsTab = i), small: true),
+        const SizedBox(height: 6),
+        if (list.isEmpty) const Text('There is no article to show.', style: TextStyle(fontSize: 12, color: Gym.muted)),
+        for (final a in list) _articleRow(a),
+        Center(child: LinkText('Go to Media center', onTap: () => openWeb(ref, 'media-${d.citizen.countryId}-en.html'), color: Gym.cyanSoft)),
       ],
     );
   }
+
+  Widget _articleRow(Article a) => InkWell(
+    onTap: () => _openArticle(a.id),
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 36,
+            height: 36,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(color: Gym.green.withValues(alpha: .15), borderRadius: BorderRadius.circular(8), border: Border.all(color: Gym.green.withValues(alpha: .5))),
+            child: Text('${a.votes}', style: const TextStyle(color: Gym.green, fontSize: 13, fontWeight: FontWeight.w800)),
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(a.title, style: const TextStyle(color: Gym.text, fontSize: 12, fontWeight: FontWeight.bold), maxLines: 2, overflow: TextOverflow.ellipsis),
+                Text('${ago(a.time)} · ${a.npName}', style: const TextStyle(color: Gym.muted, fontSize: 10)),
+              ],
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
 
   Widget _around(HomeData d) => Column(
     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -394,13 +427,13 @@ class _HomeState extends ConsumerState<HomeScreen> {
         InkWell(
           onTap: () => _openArticle(a.id),
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 3),
+            padding: const EdgeInsets.symmetric(vertical: 5),
             child: Row(
               children: [
-                legacy('logo.gif', width: 40, height: 40),
-                const SizedBox(width: 6),
-                if (a.isNew) const _Blink(child: Text('NEW ', style: TextStyle(color: EjColors.red, fontSize: 12, fontWeight: FontWeight.bold))),
-                Expanded(child: Text(a.title, style: const TextStyle(color: EjColors.link, fontSize: 12))),
+                const Text('📣', style: TextStyle(fontSize: 18)),
+                const SizedBox(width: 8),
+                if (a.isNew) const _Blink(child: Text('NEW ', style: TextStyle(color: Gym.orange, fontSize: 12, fontWeight: FontWeight.w800))),
+                Expanded(child: Text(a.title, style: const TextStyle(color: Gym.text, fontSize: 12))),
               ],
             ),
           ),
@@ -410,14 +443,14 @@ class _HomeState extends ConsumerState<HomeScreen> {
 }
 
 class _Mission {
-  const _Mission(this.title, this.icon, this.reward, {this.done = false, this.available = true, this.onGo, this.hint, this.onHint});
-  final String title, icon, reward;
+  const _Mission(this.title, this.emoji, this.reward, {this.done = false, this.available = true, this.onGo, this.hint, this.onHint});
+  final String title, emoji, reward;
   final bool done, available;
   final VoidCallback? onGo, onHint;
   final String? hint;
 }
 
-/// A mission tile: task icon, title, reward line and a Go button (or the green check when done).
+/// A mission tile: emoji badge, title, reward line; lit green when done, dimmed when locked.
 class _MissionTile extends StatelessWidget {
   const _MissionTile(this.m);
   final _Mission m;
@@ -426,32 +459,34 @@ class _MissionTile extends StatelessWidget {
     final locked = !m.available;
     return InkWell(
       onTap: m.done ? null : (locked ? m.onHint : m.onGo),
+      borderRadius: BorderRadius.circular(12),
       child: Container(
-        padding: const EdgeInsets.all(5),
-        decoration: BoxDecoration(
-          color: m.done ? const Color(0xFFEFFAEF) : Colors.white,
-          border: Border.all(color: m.done ? EjColors.green : EjColors.line),
-          borderRadius: BorderRadius.circular(4),
-        ),
+        padding: const EdgeInsets.all(8),
+        decoration: Gym.card(border: m.done ? Gym.green : (locked ? Gym.line : null), glow: m.done, glowColor: Gym.green),
         child: Row(
           children: [
-            Opacity(opacity: m.done || locked ? .5 : 1, child: legacy('tasks/${m.icon}.png', width: 40, height: 40)),
-            const SizedBox(width: 5),
+            Container(
+              width: 40,
+              height: 40,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: (m.done ? Gym.green : (locked ? Gym.muted : Gym.cyan)).withValues(alpha: .15),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Text(m.done ? '✅' : m.emoji, style: const TextStyle(fontSize: 20)),
+            ),
+            const SizedBox(width: 8),
             Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(m.title, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: m.done ? EjColors.green : EjColors.black)),
-                  Text(locked ? (m.hint ?? 'Locked') : m.reward, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 9)),
-                  const SizedBox(height: 3),
-                  if (m.done)
-                    Row(children: [legacy('icon_ok.png', width: 14, height: 14), const Text(' Done', style: TextStyle(fontSize: 10, color: EjColors.green, fontWeight: FontWeight.bold))])
-                  else
-                    ImgButton(locked ? 'Locked' : 'Go', width: 64, gray: locked, onPressed: locked ? m.onHint : m.onGo),
+                  Text(m.title, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w800, color: m.done ? Gym.green : Colors.white)),
+                  Text(locked ? (m.hint ?? 'Locked') : m.reward, maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 10, color: Gym.muted)),
                 ],
               ),
             ),
+            if (!m.done) Text(locked ? '🔒' : '›', style: TextStyle(color: locked ? Gym.muted : Gym.cyan, fontSize: locked ? 14 : 22, fontWeight: FontWeight.bold)),
           ],
         ),
       ),
@@ -471,54 +506,49 @@ class _BattleCard extends StatelessWidget {
     final closing = b.timeLeft.inMinutes < 10;
     return InkWell(
       onTap: onTap,
+      borderRadius: BorderRadius.circular(12),
       child: Container(
-        margin: const EdgeInsets.only(bottom: 6),
-        padding: const EdgeInsets.all(6),
-        decoration: BoxDecoration(
-          color: label != null ? const Color(0xFFFFF3F3) : Colors.white,
-          border: Border.all(color: label != null ? EjColors.red : EjColors.line, width: label != null ? 2 : 1),
-          borderRadius: BorderRadius.circular(4),
-        ),
+        margin: const EdgeInsets.only(bottom: 8),
+        padding: const EdgeInsets.all(10),
+        decoration: Gym.card(border: label != null ? Gym.red : null, glow: label != null, glowColor: Gym.red),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            if (label != null) Text(label!, style: const TextStyle(fontSize: 9, fontWeight: FontWeight.bold, color: EjColors.red, letterSpacing: 1)),
+            if (label != null) Text(label!, style: const TextStyle(fontSize: 9, fontWeight: FontWeight.w800, color: Gym.red, letterSpacing: 1.5)),
             Row(
               children: [
-                netImg(b.attackerFlag, width: 30, height: 20),
-                const SizedBox(width: 6),
+                ClipRRect(borderRadius: BorderRadius.circular(4), child: netImg(b.attackerFlag, width: 32, height: 22)),
+                const SizedBox(width: 8),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(b.region, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: EjColors.black)),
-                      Text('${b.attacker} vs ${b.defender}', style: const TextStyle(fontSize: 10)),
+                      Text(b.region, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w800, color: Colors.white)),
+                      Text('${b.attacker} vs ${b.defender}', style: const TextStyle(fontSize: 10, color: Gym.muted)),
                     ],
                   ),
                 ),
-                netImg(b.defenderFlag, width: 30, height: 20),
-                const SizedBox(width: 8),
+                ClipRRect(borderRadius: BorderRadius.circular(4), child: netImg(b.defenderFlag, width: 32, height: 22)),
+                const SizedBox(width: 10),
                 Column(
                   children: [
-                    Text(hms(b.timeLeft), style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: closing ? EjColors.red : EjColors.black)),
-                    ImgButton('Fight', width: 64, onPressed: onTap),
+                    Text(hms(b.timeLeft), style: TextStyle(fontSize: 12, fontWeight: FontWeight.w800, color: closing ? Gym.red : Gym.cyanSoft)),
+                    GlowButton('Fight', small: true, onPressed: onTap),
                   ],
                 ),
               ],
             ),
-            const SizedBox(height: 4),
-            Container(
-              height: 10,
-              decoration: BoxDecoration(border: Border.all(color: EjColors.black, width: .8), borderRadius: BorderRadius.circular(2), image: const DecorationImage(image: AssetImage('assets/legacy/defenders-bg.jpg'), fit: BoxFit.fill)),
-              child: Align(
+            const SizedBox(height: 6),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(4),
+              child: Container(
+                height: 8,
+                color: Gym.cyan.withValues(alpha: .35),
                 alignment: Alignment.centerLeft,
-                child: FractionallySizedBox(
-                  widthFactor: wallPct,
-                  child: Container(decoration: const BoxDecoration(image: DecorationImage(image: AssetImage('assets/legacy/attackers-bg.jpg'), fit: BoxFit.fill))),
-                ),
+                child: FractionallySizedBox(widthFactor: wallPct, child: Container(color: Gym.orange)),
               ),
             ),
-            Text('Wall ${fmt(b.wall)} / ${fmt(b.securePoint)}', style: const TextStyle(fontSize: 9)),
+            Text('Wall ${fmt(b.wall)} / ${fmt(b.securePoint)}', style: const TextStyle(fontSize: 9, color: Gym.muted)),
           ],
         ),
       ),
@@ -607,11 +637,10 @@ class _ChatState extends ConsumerState<ChatBox> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const BoxTitle('Chatbox'),
         Container(
           decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(color: EjColors.black),
+            color: Gym.dark,
+            border: Border.all(color: Gym.line),
             borderRadius: BorderRadius.circular(5),
           ),
           padding: const EdgeInsets.all(4),
@@ -628,18 +657,18 @@ class _ChatState extends ConsumerState<ChatBox> {
               const SizedBox(height: 4),
               Row(
                 children: [
-                  ImgButton('Send', busy: _busy, onPressed: _send),
+                  GlowButton('Send', busy: _busy, onPressed: _send, small: true),
                   const SizedBox(width: 8),
                   if (_status != null)
                     Expanded(
-                      child: Text(_status!, style: TextStyle(fontSize: 11, color: _statusError ? EjColors.red : EjColors.green)),
+                      child: Text(_status!, style: TextStyle(fontSize: 11, color: _statusError ? Gym.red : Gym.green)),
                     ),
                 ],
               ),
-              const Divider(color: EjColors.black, height: 8),
+              const Divider(color: Gym.line, height: 8),
               chat.when(
                 loading: () => const Loading(),
-                error: (e, _) => Text('$e', style: const TextStyle(color: EjColors.red, fontSize: 11)),
+                error: (e, _) => Text('$e', style: const TextStyle(color: Gym.red, fontSize: 11)),
                 data: (d) {
                   final ann = d['announce'] as Map<String, dynamic>?;
                   final msgs = (d['messages'] as List).cast<Map<String, dynamic>>();
@@ -671,21 +700,21 @@ class _ChatState extends ConsumerState<ChatBox> {
                       children: [
                         TextSpan(
                           text: '${m['name']}: ',
-                          style: TextStyle(fontWeight: FontWeight.bold, color: announce ? EjColors.red : EjColors.link),
+                          style: TextStyle(fontWeight: FontWeight.bold, color: announce ? Gym.orange : Gym.cyanSoft),
                         ),
                         TextSpan(text: m['message'] as String),
                       ],
                     ),
-                    style: const TextStyle(fontSize: 11, color: EjColors.black),
+                    style: const TextStyle(fontSize: 11, color: Gym.text),
                   ),
-                  Text(ago(m['time'] as int), style: const TextStyle(fontSize: 9, color: EjColors.text)),
+                  Text(ago(m['time'] as int), style: const TextStyle(fontSize: 9, color: Gym.muted)),
                 ],
               ),
             ),
           ],
         ),
       ),
-      const Padding(padding: EdgeInsets.symmetric(horizontal: 14), child: Divider(height: 2)),
+      const Padding(padding: EdgeInsets.symmetric(horizontal: 14), child: Divider(height: 2, color: Gym.line)),
     ],
   );
 }

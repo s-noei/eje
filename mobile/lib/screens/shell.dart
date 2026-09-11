@@ -123,10 +123,10 @@ class _ShellState extends ConsumerState<Shell> {
 /// The legacy page frame: citizen bar, logo header, menubar, then the white page with [children].
 /// Everything scrolls together, as on the website.
 class LegacyFrame extends ConsumerWidget {
-  const LegacyFrame({super.key, required this.children, this.onRefresh, this.back = false, this.padding = const EdgeInsets.all(8)});
+  const LegacyFrame({super.key, required this.children, this.onRefresh, this.back = false, this.padding = const EdgeInsets.all(8), this.dark = false});
   final List<Widget> children;
   final Future<void> Function()? onRefresh;
-  final bool back;
+  final bool back, dark;
   final EdgeInsets padding;
 
   @override
@@ -163,6 +163,7 @@ class LegacyFrame extends ConsumerWidget {
           ),
         PagePanel(
           padding: padding,
+          dark: dark,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -206,16 +207,14 @@ class _Footer extends StatelessWidget {
           'Copyright © 2013 eJahan',
           style: TextStyle(
             fontSize: 10,
-            color: Colors.white,
-            shadows: [Shadow(color: Colors.black45, blurRadius: 2)],
+            color: Gym.muted,
           ),
         ),
         Text(
           'Laws | Blog | Wiki | Forum | Contact | About',
           style: TextStyle(
             fontSize: 10,
-            color: Colors.white,
-            shadows: [Shadow(color: Colors.black45, blurRadius: 2)],
+            color: Gym.muted,
           ),
         ),
       ],
