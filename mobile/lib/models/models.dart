@@ -40,6 +40,10 @@ class Citizen {
       stamina = j['stamina'] as int? ?? 0,
       trainStreak = j['trainStreak'] as int? ?? 0,
       shapeName = j['shapeName'] as String? ?? '',
+      craft = j['craft'] as int? ?? 0,
+      efficiency = j['efficiency'] as int? ?? 0,
+      workStreak = j['workStreak'] as int? ?? 0,
+      craftName = j['craftName'] as String? ?? '',
       hit = (j['hit'] as num?)?.toDouble() ?? 0,
       fightCost = (j['fightCost'] as num?)?.toDouble() ?? 10,
       worldRank = j['worldRank']?.toString(),
@@ -62,7 +66,8 @@ class Citizen {
   final double ep, epLevelStart, epNextLevel, wellness, wSkill, mSkill;
   final String? mRank, worldRank;
   final String mRankName, mRankIcon, shapeName;
-  final int strength, stamina, trainStreak;
+  final int strength, stamina, trainStreak, craft, efficiency, workStreak;
+  final String craftName;
   final double hit, fightCost;
   final int countryId;
   final String countryName, countryFlag, currency, regionName;

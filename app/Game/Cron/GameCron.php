@@ -76,6 +76,7 @@ class GameCron
         $log = [];
         $db->exec('UPDATE citizens SET LastDayWP = 0, LastDayClinic = 0, LastCBsOpened = 0');
         $log[] = 'Body shape decayed for '.$db->decayBodyShape($today).' citizens who skipped training';
+        $log[] = 'Craft decayed for '.$db->decayCraft($today).' citizens who skipped work';
         foreach ($db->rows('SELECT CitizenID FROM citizens WHERE regionID = 342') as $row) {
             $db->createProduct(1, 5, $row['CitizenID']);
         }

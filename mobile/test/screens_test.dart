@@ -51,7 +51,7 @@ void main() {
     expect(find.text('Login'), findsWidgets);
   });
 
-  for (final (tab, expected) in [(0, "TODAY'S MISSIONS"), (1, 'Strength 6 / 7'), (2, 'Your work stats'), (3, 'Active battles for your country'), (4, 'Inbox')]) {
+  for (final (tab, expected) in [(0, "TODAY'S MISSIONS"), (1, 'Strength 6 / 7'), (2, 'Efficiency 3 / 7'), (3, 'Active battles for your country'), (4, 'Inbox')]) {
     testWidgets('shell tab $tab', (tester) async {
       tester.view.physicalSize = const Size(430, 2200);
       tester.view.devicePixelRatio = 1;
@@ -76,9 +76,9 @@ void main() {
     }
     await tester.tap(find.text('My places'));
     await tester.pump();
-    await tester.tap(find.text('Workplace'));
+    await tester.tap(find.text('Workshop').first);
     await tester.pump(const Duration(milliseconds: 300));
-    expect(find.text('Your work stats'), findsOneWidget);
+    expect(find.text('Efficiency 3 / 7'), findsOneWidget);
   });
 
   testWidgets('battlefield', (tester) async {

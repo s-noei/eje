@@ -576,6 +576,13 @@ trait CitizenQueries
         return ['Type' => $ttype, 'Strength' => $strength, 'Stamina' => $stamina, 'Streak' => $streak, 'Well' => "$B2", 'EP' => "$EP2"];
     }
 
+    /** Daily cron: a missed work day costs one stage of craft and efficiency. */
+    public function decayCraft(int $today): int
+    {
+        return $this->exec("UPDATE citizens SET craft = GREATEST(0, craft - 1), efficiency = GREATEST(0, efficiency - 1)
+            WHERE LastWorked < ? AND accType = 'citizen' AND (craft > 0 OR efficiency > 0)", [$today - 1]);
+    }
+
     /** Daily cron: a missed training day costs one stage of strength and stamina and breaks the streak. */
     public function decayBodyShape(int $today): int
     {

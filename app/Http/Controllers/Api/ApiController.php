@@ -74,6 +74,8 @@ abstract class ApiController extends Controller
             'strength' => (int) ($c['strength'] ?? 0), 'stamina' => (int) ($c['stamina'] ?? 0), 'trainStreak' => (int) ($c['train_streak'] ?? 0),
             'shapeName' => Constants::SHAPE_NAMES[(int) floor(((int) ($c['strength'] ?? 0) + (int) ($c['stamina'] ?? 0)) / 2)] ?? '',
             'hit' => Constants::shapeDamage((int) ($c['strength'] ?? 0)), 'fightCost' => Constants::fightWellnessCost((int) ($c['stamina'] ?? 0)),
+            'craft' => (int) ($c['craft'] ?? 0), 'efficiency' => (int) ($c['efficiency'] ?? 0), 'workStreak' => (int) ($c['rowWorkedStart'] ?? 0),
+            'craftName' => Constants::CRAFT_NAMES[(int) floor(((int) ($c['craft'] ?? 0) + (int) ($c['efficiency'] ?? 0)) / 2)] ?? '',
             'worldRank' => $c['stat_rank_int'] ?? null,
             'country' => ['id' => (int) ($c['CountryID'] ?? 0), 'name' => $c['cName'] ?? '', 'flag' => url('/images/flags/s/'.($c['cName'] ?? '').'.gif'), 'currency' => $c['curName'] ?? ''],
             'region' => ['id' => (int) ($c['regionID'] ?? 0), 'name' => $c['RegionName'] ?? ''],

@@ -624,10 +624,15 @@ trait EconomyQueries
     }
 
     /** WORK — the daily work action. */
-    public function work(array $cit, array $comp, int $type, array $foods): array
+    /**
+     * One work session per day: a shift (+1 craft, full output and pay) or a study day
+     * (+1 efficiency, half output and pay). Legacy work skill keeps accumulating in the background.
+     */
+    public function work(array $cit, array $comp, int $type): array
     {
         $citID = $cit['CitizenID'];
         $compID = $comp['CompanyID'];
+        $type = $type === Constants::WORK_STUDY ? Constants::WORK_STUDY : Constants::WORK_SHIFT;
 
         $formula = $this->economy()->getProduct4Work($cit, $comp, $type, 1);
         $Prod = $formula['Prod'];
@@ -637,12 +642,16 @@ trait EconomyQueries
         $B2 = $formula['B2'];
         $C = $formula['C'];
 
-        $sum = $this->consumeFoods($citID, $foods);
+        $sum = 0; // no food in the workshop
         $wChange = round($cit['wellness'] - $B2, 2);
-        if ($wChange < $sum) {
-            $sum = $wChange;
+
+        $craft = (int) ($cit['craft'] ?? 0);
+        $efficiency = (int) ($cit['efficiency'] ?? 0);
+        if ($type === Constants::WORK_SHIFT) {
+            $craft = min(Constants::SHAPE_MAX, $craft + 1);
+        } else {
+            $efficiency = min(Constants::SHAPE_MAX, $efficiency + 1);
         }
-        $B2 += $sum;
 
         $this->addProduct($comp, $Prod);
 
@@ -691,21 +700,20 @@ trait EconomyQueries
         if ((Constants::SP_CPS[$wSkill + 1] ?? PHP_INT_MAX) < $wSP) {
             $newSkill++;
         }
-        $this->exec('UPDATE citizens SET wSP = ?, wSkill = ? WHERE CitizenID = ?', [$wSP, $newSkill, $citID]);
-        $this->updateUserFieldID($citID, 'wellness', round($B2));
+        $this->exec('UPDATE citizens SET wSP = ?, wSkill = ?, craft = ?, efficiency = ?, wellness = ? WHERE CitizenID = ?', [$wSP, $newSkill, $craft, $efficiency, round($B2), $citID]);
 
         $this->exec('INSERT INTO log_working (CitizenID, CompanyID, Day, timestamp, type, wellness, skill, ep, products, tooldec, salary, formula_base, formula_cfactor, formula_impind, tax, curID)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-            [$citID, $compID, $this->today, time(), (string) $type, "{$cit['wellness']}|{$wChange}|{$sum}", "{$wSkill}|{$wSP}|{$A2}", "{$cit['ep']}|{$EP2}",
+            [$citID, $compID, $this->today, time(), (string) $type, "{$cit['wellness']}|{$wChange}|{$sum}", "{$craft}|{$efficiency}|".($cit['rowWorkedStart'] + 1), "{$cit['ep']}|{$EP2}",
                 $Prod, $cDep, $amount1, $formula['Formula']['Base'], $formula['Formula']['CFactor'], $formula['Formula']['Goddess'], $amount2, $cur]);
 
         $ctx = $this->context();
         if ($ctx) {
-            $ctx->updateInfo(['LastWorked' => $this->today, 'rowWorkedStart' => $cit['rowWorkedStart'] + 1, 'wSP' => $wSP, 'wSkill' => $newSkill, 'wellness' => round($B2)]);
+            $ctx->updateInfo(['LastWorked' => $this->today, 'rowWorkedStart' => $cit['rowWorkedStart'] + 1, 'wSP' => $wSP, 'wSkill' => $newSkill, 'craft' => $craft, 'efficiency' => $efficiency, 'wellness' => round($B2)]);
         }
 
         return [
-            'Formula' => "Skill ({$A}) * Wellness(".round($B, 2).') * Company Stars('.round($C, 2).') = '.round($Prod, 2),
+            'Formula' => "Craft ({$A}) * ".round($B, 2).' * Company Stars('.round($C, 2).') = '.round($Prod, 2), 'Craft' => $craft, 'Efficiency' => $efficiency,
             'Product' => "$Prod",
             'Type' => (50 + $type * 50).'%',
             'Stars' => (string) $comp['Stars'],

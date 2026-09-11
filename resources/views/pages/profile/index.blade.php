@@ -213,10 +213,18 @@
 			</div>
 			<hr size="1">
 			<div class="holder-indicator">
-				<div class="title">{!! $p('profile_working') !!}</div>
-				<div class="desc">{{ $row['wSkill'] }}</div>
+				<div class="title">Craft</div>
+				<div class="desc">{{ $row['craft'] ?? 0 }}</div>
 				<div class="ind">
-					{!! $vars->viewIndicator(Constants::SP_CPS[$row['wSkill']] ?? 0, Constants::SP_CPS[$row['wSkill'] + 1] ?? 0, $row['wSP'], 400, "RoyalBlue", "Skill points", "%s<br>Total skill points: {$row['wSP']}") !!}
+					{!! $vars->viewIndicator(0, Constants::SHAPE_MAX, $row['craft'] ?? 0, 400, "#F39C12", "Workshop", "%s of ".Constants::SHAPE_MAX." — ".(Constants::CRAFT_NAMES[(int) floor((($row['craft'] ?? 0) + ($row['efficiency'] ?? 0)) / 2)] ?? '')) !!}
+					<div style="clear: both"></div>
+				</div>
+			</div>
+			<div class="holder-indicator">
+				<div class="title">Efficiency</div>
+				<div class="desc">{{ $row['efficiency'] ?? 0 }}</div>
+				<div class="ind">
+					{!! $vars->viewIndicator(0, Constants::SHAPE_MAX, $row['efficiency'] ?? 0, 400, "RoyalBlue", "Workshop", "%s of ".Constants::SHAPE_MAX) !!}
 					<div style="clear: both"></div>
 				</div>
 			</div>

@@ -22,6 +22,8 @@ class HomeScreen extends ConsumerStatefulWidget {
   ConsumerState<HomeScreen> createState() => _HomeState();
 }
 
+const _amberPill = Color(0xFFB9770E);
+
 class _HomeState extends ConsumerState<HomeScreen> {
   int _dispatch = 0, _eventTab = 0, _newsTab = 0;
   bool _claiming = false;
@@ -151,7 +153,7 @@ class _HomeState extends ConsumerState<HomeScreen> {
                     runSpacing: 4,
                     children: [
                       _pill(c.trainStreak > 0 ? '🔥 ${c.trainStreak} day streak' : '🌫️ no streak', c.trainStreak > 0 ? Er.orange : Er.muted),
-                      _pill('🔧 work skill ${fmt(c.wSkill)}', Er.blue),
+                      _pill('🛠️ ${c.craftName.toLowerCase()} · craft ${c.craft}/$kShapeMax', _amberPill),
                       if (c.worldRank != null) _pill('🌍 #${c.worldRank}', Er.gold),
                     ],
                   ),
@@ -189,7 +191,7 @@ class _HomeState extends ConsumerState<HomeScreen> {
     final isCA = c.isCA;
     final missions = <_Mission>[
       if (!isCA) _Mission('Gym', '🏋️', c.trainedToday ? 'day ${c.trainStreak} in a row' : 'weights or cardio · day ${c.trainStreak + 1}', done: c.trainedToday, onGo: () => _tab(1)),
-      if (!isCA) _Mission('Work', '🔧', 'salary & products', done: c.workedToday, available: q['work'] == true || c.workedToday, onGo: () => _tab(2), hint: 'Find a job first', onHint: () => openWeb(ref, 'jobs-en.html')),
+      if (!isCA) _Mission('Workshop', '🏭', c.workedToday ? 'day ${c.workStreak} in a row' : 'shift or study · day ${c.workStreak + 1}', done: c.workedToday, available: q['work'] == true || c.workedToday, onGo: () => _tab(2), hint: 'Find a job first', onHint: () => openWeb(ref, 'jobs-en.html')),
       if (!isCA && (q['explore'] == true || c.exploredToday)) _Mission('Explore the mines', '⛏️', 'find resources', done: c.exploredToday, onGo: () => openWeb(ref, 'mines-en.html')),
       if (!isCA) _Mission('Eat', '🍔', 'restore wellness', done: c.wellness >= 100, onGo: () => openWeb(ref, 'market-en.html')),
       if (d.unitBattle != null)

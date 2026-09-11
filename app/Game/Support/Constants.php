@@ -27,6 +27,31 @@ final class Constants
     public const FIGHT_WELLNESS_MAX = 10; // stamina 0
     public const FIGHT_WELLNESS_MIN = 4; // stamina SHAPE_MAX
 
+    /* ---- Workshop (craft / efficiency), the work counterpart of the gym ---------------------
+     * Craft sets the productivity of a shift; efficiency lowers its wellness cost. Both 0..SHAPE_MAX,
+     * +1 per session, -1 per missed day. A shift (+1 craft) pays in full; a study day (+1 efficiency)
+     * produces and pays half. */
+    public const WORK_SHIFT = 1;
+    public const WORK_STUDY = 2;
+    public const WORK_TYPES = [self::WORK_SHIFT => 'Shift', self::WORK_STUDY => 'Study'];
+    public const WORK_OUTPUT = [self::WORK_SHIFT => 1.0, self::WORK_STUDY => 0.5];
+    public const CRAFT_NAMES = ['Apprentice', 'Helper', 'Trainee', 'Worker', 'Skilled', 'Specialist', 'Expert', 'Master'];
+    public const CRAFT_BASE = 2.5; // productivity = CRAFT_BASE * (craft + 0.5) * company factors
+    public const EFFICIENCY_MIN_COST = 0.4; // share of the company-stars wellness cost at max efficiency
+
+    public static function craftFactor(int $craft): float
+    {
+        return self::CRAFT_BASE * (max(0, min(self::SHAPE_MAX, $craft)) + 0.5);
+    }
+
+    public static function workWellnessCost(int $stars, int $efficiency, int $type = self::WORK_SHIFT): float
+    {
+        $e = max(0, min(self::SHAPE_MAX, $efficiency));
+        $share = 1 - $e * (1 - self::EFFICIENCY_MIN_COST) / self::SHAPE_MAX;
+
+        return round($stars * $share * self::WORK_OUTPUT[$type], 1);
+    }
+
     /* ---- Military rank = prestige, leadership and access (never damage) ---- */
     public const RANK_MIN_CAPTAIN = 4; // Satapatish
     public const RANK_MIN_UNIT_OWNER = 7; // Hazarapatish

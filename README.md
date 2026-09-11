@@ -79,3 +79,10 @@ still accumulate in the background for rankings and the IS trophy. Constants: `A
 the repo) with strength/stamina meters and the two session cards (`include/css/gym.css`); it contains nothing military
 (rank and battles live on the profile / battle pages) so the gym can be reused elsewhere. Open question: what
 food does in the gym (currently nothing).
+
+**Work / the workshop (2026-09-11).** Same model as the gym: *craft* (0–7, +1 per **Shift**) sets productivity
+(`2.5 × (craft + 0.5)` × company factors) and *efficiency* (0–7, +1 per **Study** day, which produces and pays
+half) lowers the wellness cost of a shift (company stars → 40 % of that at max). One session per day, both stats
+−1 per missed day, Normal/Extra/Hard intensities and food-during-work removed. Legacy work skill points still
+accumulate in the background. Workshop art goes in `public/images/game/work/` (`work-bg.jpg`, `craft-{0..7}.png`,
+`session-shift.png`, `session-study.png`, `avatar-done/rest/tired.png`); the gym art is used until then.

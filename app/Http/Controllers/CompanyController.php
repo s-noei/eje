@@ -201,28 +201,17 @@ class CompanyController extends GameController
         if (! $this->loggedIn() || ! $this->database->isWorker($citID, $row['CompanyID'])) {
             return redirect('/index.html');
         }
-        $w = fn ($k) => $this->lang->getstr($k, 'workplace');
-        $gds = min((int) ($cit['gd_life'] ?? 0), 9);
-        $gdpercs = [0, 0.1, 0.14, 0.17, 0.2, 0.21, 0.22, 0.23, 0.24, 0.25];
-        $wMul = $gdpercs[$gds];
-        $wChange = function (int $type) use ($row, $wMul) {
-            $c = $row['Stars'] * pow(2, $type - 1);
-            $c -= abs(round($c * $wMul));
-
-            return -$c;
-        };
         $view_info = null;
         $nowWorked = 0;
         $report = null;
         $today = $this->database->getToday();
 
         if ($request->isMethod('post') && $request->has('work') && $cit['LastWorked'] < $today) {
-            $types = [$w('work_normal') => 1, $w('work_extra') => 2, $w('work_hard') => 3];
-            $wtype = $types[(string) $request->input('work')] ?? 0;
-            if (! $wtype) {
+            $wtype = (int) $request->input('work');
+            if (! in_array($wtype, [Constants::WORK_SHIFT, Constants::WORK_STUDY], true)) {
                 return redirect($request->getRequestUri());
             }
-            $nwell = pow(2, $wtype - 1) * $row['Stars'];
+            $nwell = Constants::workWellnessCost((int) $row['Stars'], (int) ($cit['efficiency'] ?? 0), $wtype);
             $acc = $this->database->getCompanyAccount($row['CompanyID'], $cit['SalaryCurID']);
             $compAcc = $acc['Amount'] ?? 0;
             $prod = $this->eco()->getProduct4Work($cit, $row, $wtype);
@@ -241,8 +230,7 @@ class CompanyController extends GameController
                 $view_info = $e('error_no_money');
                 $this->database->sendNote($row['ManagerID'], '', 'Your workers in <a href="'.$this->vars->getURL('company', $row['CompanyID']).'">'.$row['Name'].'</a> cannot work because there is no money in the company account. Please invest money in it as soon as possible.');
             } else {
-                $foods = array_map('intval', (array) $request->input('am', []));
-                $this->database->work($cit, $row, $wtype, $foods);
+                $this->database->work($cit, $row, $wtype);
                 $nowWorked = 1;
                 $this->session->fillInfo(null, true);
                 $cit = $this->citInfo = $this->session->userinfo;
@@ -251,23 +239,45 @@ class CompanyController extends GameController
         if ($cit['LastWorked'] == $today) {
             $report = $this->workReport($row, $cit, $nowWorked);
         }
-        $max = $this->havePro() ? 200 : ($this->havePlus() ? 100 : 40);
-        $foods = array_fill(1, 5, 0);
-        foreach ($this->database->rows("SELECT Stars, COUNT(pID) Amount FROM (SELECT * FROM inventory WHERE Usable = 1 AND Owner = ? LIMIT {$max}) inv WHERE Type = 1 GROUP BY Stars ORDER BY Stars DESC", [$citID]) as $f) {
-            $foods[(int) $f['Stars']] = (int) $f['Amount'];
-        }
-        $p = [1 => $this->eco()->getProduct4Work($cit, $row, 1), 2 => $this->eco()->getProduct4Work($cit, $row, 2), 3 => $this->eco()->getProduct4Work($cit, $row, 3)];
 
         return [
             'sub' => 'workplace', 'view_info' => $view_info, 'report' => $report, 'nowWorked' => $nowWorked,
-            'sCur' => $this->database->getCurrency($cit['SalaryCurID']), 'foods' => $foods,
-            'wStats' => [
-                [$p[1], round($cit['Salary'] * max(1, $p[1]), 2), $this->database->getChangedSkill($cit, 1), $wChange(1)],
-                [$p[2], round($cit['Salary'] * max(1, $p[2]), 2), $this->database->getChangedSkill($cit, 2), $wChange(2)],
-                [$p[3], round($cit['Salary'] * max(1, $p[3]), 2), $this->database->getChangedSkill($cit, 3), $wChange(3)],
-            ],
-            'wChange' => [1 => $wChange(1), 2 => $wChange(2), 3 => $wChange(3)],
+            'sCur' => $this->database->getCurrency($cit['SalaryCurID']),
+            'sessions' => self::workSessions($cit, $row, $this->eco()),
+            'craft' => self::craft($cit),
             'cit' => $cit,
+        ];
+    }
+
+    /** The two work sessions with what they would produce / pay / cost today. */
+    public static function workSessions(array $cit, array $comp, \App\Game\Services\Economy $eco): array
+    {
+        $out = [];
+        foreach (Constants::WORK_TYPES as $t => $label) {
+            $p = $eco->getProduct4Work($cit, $comp, $t);
+            $out[] = [
+                'type' => $t, 'label' => $label, 'stat' => $t === Constants::WORK_SHIFT ? 'craft' : 'efficiency',
+                'effect' => $t === Constants::WORK_SHIFT ? '+1 Craft' : '+1 Efficiency',
+                'desc' => $t === Constants::WORK_SHIFT ? 'Full shift: full output and pay' : 'Study day: half output and pay, cheaper shifts later',
+                'production' => round((float) $p, 2), 'salary' => round($cit['Salary'] * max(1, $p), 2),
+                'wellness' => -Constants::workWellnessCost((int) $comp['Stars'], (int) ($cit['efficiency'] ?? 0), $t),
+            ];
+        }
+
+        return $out;
+    }
+
+    /** Workshop summary (craft / efficiency / streak). */
+    public static function craft(array $cit): array
+    {
+        $craft = (int) ($cit['craft'] ?? 0);
+        $eff = (int) ($cit['efficiency'] ?? 0);
+        $stage = (int) floor(($craft + $eff) / 2);
+
+        return [
+            'craft' => $craft, 'efficiency' => $eff, 'streak' => (int) ($cit['rowWorkedStart'] ?? 0), 'max' => Constants::SHAPE_MAX,
+            'stage' => $stage, 'name' => Constants::CRAFT_NAMES[$stage] ?? '', 'names' => Constants::CRAFT_NAMES,
+            'factor' => Constants::craftFactor($craft),
         ];
     }
 
@@ -287,7 +297,11 @@ class CompanyController extends GameController
         $ex = explode('|', (string) $rep['wellness']) + [0, 0, 0];
         [$rep['wellness'], $rep['wellness2'], $rep['wellness3']] = $ex;
         $ex = explode('|', (string) $rep['skill']) + [0, 0, 0];
-        [$rep['skill'], $rep['sp'], $rep['sp2']] = $ex;
+        [$rep['craft'], $rep['efficiency'], $rep['streak']] = array_map('intval', $ex);
+        if ($rep['efficiency'] > Constants::SHAPE_MAX) { // row written by the old skill-point work
+            [$rep['craft'], $rep['efficiency'], $rep['streak']] = [(int) $cit['craft'], (int) $cit['efficiency'], (int) $cit['rowWorkedStart']];
+        }
+        $rep['type'] = min((int) $rep['type'], Constants::WORK_STUDY);
         $rep['products'] = round($rep['products'], 2);
         $rep['stock'] = $rep['Unit'] ? round($rep['products'] / $rep['Unit'], 4) : 0;
         $rep['rowWorked'] = $cit['rowWorkedStart'] + ($nowWorked ? 0 : 0);

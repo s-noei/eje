@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Game\Support\Constants;
 use App\Game\Services\Economy;
+use App\Http\Controllers\CompanyController;
 use Illuminate\Http\Request;
 
 /** Workplace (company-{id}-workplace). */
@@ -26,34 +27,29 @@ class WorkController extends ApiController
         }
         $eco = app(Economy::class);
         $today = $this->database->today;
-        $gds = min((int) ($c['gd_life'] ?? 0), 9);
-        $gdpercs = [0, 0.1, 0.14, 0.17, 0.2, 0.21, 0.22, 0.23, 0.24, 0.25];
-        $options = [];
-        foreach ([1 => 'Normal', 2 => 'Extra', 3 => 'Hard'] as $t => $label) {
-            $x = $comp['Stars'] * pow(2, $t - 1);
-            $p = $eco->getProduct4Work($c, $comp, $t);
-            $options[] = ['type' => $t, 'label' => $label, 'production' => round((float) $p, 2), 'salary' => round($c['Salary'] * max(1, $p), 2),
-                'skillGain' => (float) $this->database->getChangedSkill($c, $t), 'wellness' => -($x - abs(round($x * $gdpercs[$gds])))];
-        }
+        $options = CompanyController::workSessions($c, $comp, $eco);
         if ($c['LastWorked'] == $today && !$report) {
-            $rep = $this->database->row('SELECT * FROM log_working WHERE CitizenID = ? AND Day = ?', [$this->citID(), $today]);
+            $rep = $this->database->row('SELECT log_working.*, industry.iName, industry.Unit FROM log_working JOIN company ON company.companyID = log_working.CompanyID
+                JOIN industry ON industry.IndustryID = company.IndustryID WHERE CitizenID = ? AND Day = ?', [$this->citID(), $today]);
             if ($rep) {
                 $w = explode('|', (string) $rep['wellness']) + [0, 0, 0];
-                $s = explode('|', (string) $rep['skill']) + [0, 0, 0];
+                $s = array_map('intval', explode('|', (string) $rep['skill']) + [0, 0, 0]);
+                if ($s[1] > Constants::SHAPE_MAX) { // row written by the old skill-point work
+                    $s = [(int) $c['craft'], (int) $c['efficiency'], (int) $c['rowWorkedStart']];
+                }
                 $e = explode('|', (string) $rep['ep']) + [0, 0];
-                $report = ['produced' => (float) ($rep['products'] ?? 0), 'salary' => (float) ($rep['salary'] ?? 0), 'tax' => (float) ($rep['tax'] ?? 0), 'type' => (int) $rep['type'],
-                    'wellnessBefore' => (float) $w[0], 'wellnessLoss' => (float) $w[1], 'wellnessRecovered' => (float) $w[2], 'skill' => (float) $s[0], 'sp' => (float) $s[1], 'spGained' => (float) $s[2], 'epGained' => (float) $e[1]];
+                $report = ['produced' => (float) ($rep['products'] ?? 0), 'units' => $rep['Unit'] ? round($rep['products'] / $rep['Unit'], 2) : 0, 'item' => $rep['iName'],
+                    'salary' => (float) ($rep['salary'] ?? 0), 'tax' => (float) ($rep['tax'] ?? 0), 'type' => min((int) $rep['type'], Constants::WORK_STUDY),
+                    'wellnessBefore' => (float) $w[0], 'wellnessLoss' => (float) $w[1], 'craft' => $s[0], 'efficiency' => $s[1], 'streak' => $s[2], 'epGained' => (float) $e[1]];
             }
         }
 
-        $wSkill = (int) $c['wSkill'];
-
         return [
             'employed' => true,
-            'stats' => ['skill' => $wSkill, 'sp' => (float) $c['wSP'], 'spFrom' => Constants::SP_CPS[$wSkill] ?? 0, 'spTo' => Constants::SP_CPS[$wSkill + 1] ?? 0, 'workInRow' => (int) ($c['rowWorkedStart'] ?? 0)],
+            'craft' => CompanyController::craft($c),
             'company' => ['id' => (int) $comp['CompanyID'], 'name' => $comp['Name'], 'avatar' => url('/uploads/avatars/company/'.$comp['Avatar']), 'stars' => (int) $comp['Stars'], 'industry' => $this->database->getIndustry($comp['IndustryID'])],
             'salary' => (float) $c['Salary'], 'salaryCurrency' => $this->database->getCurrency($c['SalaryCurID']),
-            'workedToday' => $c['LastWorked'] >= $today, 'occupiedUntil' => (int) $c['occDue'], 'options' => $options, 'foods' => $this->foods($this->citID()), 'report' => $report,
+            'workedToday' => $c['LastWorked'] >= $today, 'occupiedUntil' => (int) $c['occDue'], 'options' => $options, 'report' => $report,
         ];
     }
 
@@ -65,7 +61,7 @@ class WorkController extends ApiController
         return $this->ok($this->state($c, $this->company($c)));
     }
 
-    /** POST /api/v1/work {type: 1|2|3, foods: {stars: amount}} */
+    /** POST /api/v1/work {type: 1 shift | 2 study} */
     public function work(Request $request)
     {
         $c = $this->cit(true);
@@ -75,13 +71,13 @@ class WorkController extends ApiController
         }
         $today = $this->database->today;
         $wtype = (int) $request->input('type');
-        if (!in_array($wtype, [1, 2, 3], true)) {
+        if (!in_array($wtype, [Constants::WORK_SHIFT, Constants::WORK_STUDY], true)) {
             return $this->fail('Invalid work type.');
         }
         if ($c['LastWorked'] >= $today) {
             return $this->fail($this->msg('error_worked_today2'));
         }
-        if ($c['wellness'] <= pow(2, $wtype - 1) * $comp['Stars']) {
+        if ($c['wellness'] <= Constants::workWellnessCost((int) $comp['Stars'], (int) ($c['efficiency'] ?? 0), $wtype)) {
             return $this->fail($this->msg('error_low_wellness'));
         }
         if ($c['occDue'] >= time()) {
@@ -95,7 +91,7 @@ class WorkController extends ApiController
 
             return $this->fail($this->msg('error_no_money'));
         }
-        $this->database->work($c, $comp, $wtype, array_map('intval', (array) $request->input('foods', [])));
+        $this->database->work($c, $comp, $wtype);
         $c = $this->cit(true);
 
         return $this->ok($this->state($c, $comp) + ['citizen' => $this->citizenPayload($c, true)]);

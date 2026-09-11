@@ -2,6 +2,7 @@
 
 namespace App\Game\Services;
 
+use App\Game\Support\Constants;
 /**
  * Port of include/economy.php ($eco).
  */
@@ -62,19 +63,18 @@ class Economy
     /** Productivity formula for working. Returns the product or the full breakdown when $arr. */
     public function getProduct4Work(array $cit, array $comp, int $type, $arr = 0): float|array
     {
-        $S = (float) $cit['wSkill'];
-        $S2 = $this->database->getChangedSkill($cit, $type);
-        if ($S == 0) {
-            $S = 0.1;
-        }
-        $W = 2.5;
-        $wChange = $comp['Stars'] * pow(2, $type - 1);
+        // craft (0..7) replaces the hidden work-skill number; a study day produces half
+        $type = $type === Constants::WORK_STUDY ? Constants::WORK_STUDY : Constants::WORK_SHIFT;
+        $S = (int) ($cit['craft'] ?? 0);
+        $S2 = $this->database->getChangedSkill($cit, 1);
+        $W = Constants::CRAFT_BASE;
+        $wChange = Constants::workWellnessCost((int) $comp['Stars'], (int) ($cit['efficiency'] ?? 0), $type);
         $gds = min((int) ($cit['gd_life'] ?? 0), 9);
         $gdpercs = [0, 0.1, 0.14, 0.17, 0.2, 0.21, 0.22, 0.23, 0.24, 0.25];
         $wChange -= abs(round($wChange * $gdpercs[$gds], 2));
         $W2 = max(0, $cit['wellness'] - $wChange);
-        $WT = 0.5 + ($type * 0.5);
-        $A = $S * $W * $WT;
+        $WT = Constants::WORK_OUTPUT[$type];
+        $A = Constants::craftFactor($S) * $WT;
 
         $maxworkers = $comp['xFactor'] * ($comp['Stars'] + 4);
         $CQ = 2 / ($comp['Stars'] + 1);
