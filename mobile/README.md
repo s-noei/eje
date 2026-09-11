@@ -32,7 +32,7 @@ Log in with a normal citizen account (e.g. `sekulla` / `test1234` on the dev dat
 | Screen | API |
 | --- | --- |
 | Login / auto-restore | `POST auth/login`, `GET me`, `POST auth/logout` |
-| Home (daily reward, active battles, military events, news tabs, Around eJahan, chatbox) | `GET home`, `POST daily-reward`, `GET/POST chat` |
+| Home hub (today's missions + daily reward chest, war room, citizen sheet, backpack, dispatches: events / news / Around eJahan / chatbox) | `GET home`, `POST daily-reward`, `GET/POST chat` |
 | Army (train, received-skill report, military stats) | `GET army`, `POST army/train` |
 | Workplace (work, productivity report, work stats) | `GET work`, `POST work` |
 | Battles + battlefield (fight, heroes, log) | `GET battles`, `GET battles/{id}`, `POST battles/{id}/fight` |

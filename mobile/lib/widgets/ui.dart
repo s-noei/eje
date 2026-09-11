@@ -550,20 +550,17 @@ class ImgButton extends StatelessWidget {
 
 /// Grey legacy `<input type=submit>` (e.g. "Show active wars").
 class PlainButton extends StatelessWidget {
-  const PlainButton(this.label, {super.key, this.onPressed});
+  const PlainButton(this.label, {super.key, this.onPressed, this.active = false});
   final String label;
   final VoidCallback? onPressed;
+  final bool active;
   @override
   Widget build(BuildContext context) => InkWell(
     onTap: onPressed,
     child: Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 3),
-      decoration: BoxDecoration(
-        color: const Color(0xFFDDEEFF),
-        border: Border.all(color: const Color(0xFF7FA8C9)),
-        borderRadius: BorderRadius.circular(2),
-      ),
-      child: Text(label, style: const TextStyle(color: EjColors.black, fontSize: 12)),
+      decoration: BoxDecoration(color: active ? const Color(0xFF7FA8C9) : const Color(0xFFDDEEFF), border: Border.all(color: const Color(0xFF7FA8C9)), borderRadius: BorderRadius.circular(2)),
+          child: Text(label, style: TextStyle(color: active ? Colors.white : EjColors.black, fontSize: 12, fontWeight: active ? FontWeight.bold : FontWeight.normal)),
     ),
   );
 }
