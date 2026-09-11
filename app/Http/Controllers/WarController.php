@@ -47,7 +47,7 @@ class WarController extends GameController
             } elseif ($cit['wellness'] <= Constants::TRAIN_WELLNESS[$ttype]) {
                 $msg = '<h3 class=errHandle>'.$this->lang->getstr('error_low_wellness', 'msgs').'</h3>';
             } else {
-                $this->database->doTrain($cit, $ttype, array_map('intval', (array) $request->input('am', [])));
+                $this->database->doTrain($cit, $ttype);
                 $trainednow = 1;
                 $this->session->fillInfo(null, true);
                 $cit = $this->citInfo = $this->session->userinfo;
@@ -55,11 +55,6 @@ class WarController extends GameController
         }
         $trained = $cit['LastTrained'] == $today;
         $report = $trained ? $this->trainReport($citID) : null;
-        $max = $this->havePro() ? 200 : ($this->havePlus() ? 100 : 40);
-        $foods = array_fill(1, 5, 0);
-        foreach ($this->database->rows("SELECT Stars, COUNT(pID) Amount FROM (SELECT * FROM inventory WHERE Usable = 1 AND Owner = ? LIMIT {$max}) inv WHERE Type = 1 GROUP BY Stars ORDER BY Stars DESC", [$citID]) as $f) {
-            $foods[(int) $f['Stars']] = (int) $f['Amount'];
-        }
         $battles = $this->database->rows("SELECT battles.*, region.rName AS regionName, attacker.cName AS attName, defender.cName AS defName FROM battles
             JOIN region ON region.RegionID = battles.regionID LEFT JOIN country AS attacker ON attacker.CountryID = battles.Attacker
             JOIN country AS defender ON defender.CountryID = battles.Defender
@@ -67,7 +62,7 @@ class WarController extends GameController
             [$cit['CountryID'], $cit['CountryID'], "% {$cit['CountryID']} %", "% {$cit['CountryID']} %"]);
 
         return $this->page('pages.war.army', [
-            'msg' => $msg, 'trained' => $trained, 'trainednow' => $trainednow, 'report' => $report, 'foods' => $foods, 'battles' => $battles,
+            'msg' => $msg, 'trained' => $trained, 'trainednow' => $trainednow, 'report' => $report, 'battles' => $battles,
             'wChange' => [Constants::TRAIN_WEIGHTS => $wChange(Constants::TRAIN_WEIGHTS), Constants::TRAIN_CARDIO => $wChange(Constants::TRAIN_CARDIO)],
             'shape' => $this->shape($cit),
             'cit' => $cit,

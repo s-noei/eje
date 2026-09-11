@@ -59,86 +59,23 @@
 				<div class="gym-card-sub">Cheaper fights · {{ $wChange[$C] }} wellness</div>
 			</label>
 		</div>
-		<div id="supFood" class="gym-food" style="display: none;">
-			<b>🍔 Eat during the session</b> — recover up to <span id="maxWN"></span> wellness (you will recover <span id="wn_count">0</span>)
-			<div class="gym-foods">
-@for ($i = 1; $i <= 5; $i++)
-				<div class="gym-foodbox">
-					<img src="/images/icons/food.png" width="36"><br>
-					<img src="/images/game/{{ $i }}_star.gif" width="50"><br>
-					<input type="text" id="am_{{ $i }}" name="am[{{ $i }}]" size="2" maxlength="2" onkeyup="getChange({{ $i }})" value="{{ $foods[$i] ? '0' : '--' }}" {{ $foods[$i] ? '' : 'disabled' }}>
-					<div class="gym-foodcount">×{{ $foods[$i] }}</div>
-				</div>
-@endfor
-			</div>
-		</div>
 		<div class="gym-go">
 			<button type="submit" name="subwork" class="gym-train" onclick="return checkTask();" {{ $lowWellness ? 'disabled' : '' }}>⚡ Train</button>
 		</div>
 	</form>
 <script type="text/javascript">
-var actOpt = ''; var wnRed = 0; var totFoods = 0;
-var wStats = {Weights: {{ $wChange[$W] }}, Cardio: {{ $wChange[$C] }}};
-var maxF = new Array(6); var foods = new Array(6);
-function checkTask() {
-	if (!actOpt) { alert('Choose a session'); return false; }
-	else if (totFoods > wnRed) { return confirm('You will waste your foods with this selection. Are you sure you want to do so?'); }
-}
-@for ($i = 1; $i <= 5; $i++)
-maxF[{{ $i }}] = {{ $foods[$i] }};
-@endfor
-function getChange(id) {
-	totFoods = 0;
-	for (i=1;i<6;i++) {
-		flag = document.forms["trainform"].elements["am["+i+"]"];
-		if (flag.disabled) continue;
-		if (flag.value > maxF[i]){ flag.value = maxF[i]; flag.focus(); flag.select(); }
-		if (flag.value != parseInt(flag.value)){ flag.value = 0; flag.focus(); flag.select(); }
-		foods[i] = flag.value; totFoods += foods[i] * i;
-	}
-	if (totFoods > wnRed) $("#wn_count").html("<font color='red'>"+totFoods+"</font>"); else $("#wn_count").html(totFoods);
-}
+var actOpt = '';
+function checkTask() { if (!actOpt) { alert('Choose a session'); return false; } }
 $(document).ready(function(){
 	$(".gym-card").click(function(){
 		var cID = $(this).attr("id");
 		document.getElementById('t'+cID).checked = true;
 		$(".gym-card").removeClass("sel"); $(this).addClass("sel");
-		actOpt = cID; $("#maxWN").html(-wStats[cID]); wnRed = -wStats[cID]; $("#supFood").slideDown(300);
-		for (i=1;i<6;i++) { flag = document.forms["trainform"].elements["am["+i+"]"]; if (!flag.disabled) flag.value = 0; foods[i] = 0; }
-		totFoods = 0; $("#wn_count").html("0");
+		actOpt = cID;
 	});
 });
 </script>
 @endif
 
-	<div class="gym-rank">
-		<div class="gym-rank-head">
-			<img src="/images/game/war/mrank/{{ $cit['mRank'] }}.gif" width="60" align="absmiddle" title="{{ Constants::MILI_RANKS[$cit['mRank']] ?? '' }}">
-			<b>{{ Constants::MILI_RANKS[$cit['mRank']] ?? '' }}</b> &nbsp;·&nbsp; total advance {{ $cit['total_damage'] }} / {{ Constants::RANK_DAMAGES[$cit['mRank'] + 1] ?? '—' }}
-			<a href="{{ $vars->getURL('wars') }}" class="button-blue-1" style="float: right">{!! $a('army_active_wars') !!}</a>
-		</div>
-@php $rFrom = Constants::RANK_DAMAGES[$cit['mRank']] ?? 0; $rTo = Constants::RANK_DAMAGES[$cit['mRank'] + 1] ?? $rFrom; $rPct = $rTo > $rFrom ? max(0, min(100, ($cit['total_damage'] - $rFrom) / ($rTo - $rFrom) * 100)) : 100; @endphp
-		<div class="gym-rank-bar"><div class="gym-rank-fill" style="width: {{ round($rPct) }}%"></div></div>
-		<div class="gym-rank-note">🏆 Rank is prestige: it lets you lead a military unit and sets your unit's battle bonus. Next rank rewards {{ Constants::RANK_UP_TALA * ($cit['mRank'] + 1) }} Tala + a 5-star food.</div>
-	</div>
 </div>
-<hr>
-<center>
-	<b>{!! $a('army_active_battles') !!}</b>
-	<blockquote style="text-align: justify">
-@if (count($battles) < 1)
-		<hr size="1">
-		There is no active battle for your country.
-@endif
-@foreach ($battles as $bat)
-		<hr size="1">
-		<a href="{{ $vars->getURL('battle', $bat['battleID']) }}">
-			<img src="/images/media/att-s.jpg" border="0" align="absmiddle">
-			{{ $bat['battle_type'] == 'battle' ? $bat['attName'] : 'Revolt force' }}
-			attacked {{ $bat['regionName'] }}, {{ $bat['defName'] }}
-		</a>
-		<sup>started {!! $session->getDiff($bat['Start']) !!}</sup>
-@endforeach
-	</blockquote>
-</center>
 @endsection

@@ -525,7 +525,7 @@ trait CitizenQueries
      * Missed days are decayed by the daily cron. Legacy skill points keep accumulating in the
      * background (rankings, IS trophy) but no longer affect damage.
      */
-    public function doTrain(array $cit, int $ttype, array $foods): array
+    public function doTrain(array $cit, int $ttype): array
     {
         $citID = $cit['CitizenID'];
         $ttype = $ttype === Constants::TRAIN_CARDIO ? Constants::TRAIN_CARDIO : Constants::TRAIN_WEIGHTS;
@@ -536,11 +536,8 @@ trait CitizenQueries
         $gdpercs = [0, 0.1, 0.14, 0.17, 0.2, 0.21, 0.22, 0.23, 0.24, 0.25];
         $wChange -= abs(round($wChange * $gdpercs[$gl]));
 
-        $sum = $this->consumeFoods($citID, $foods);
-        if ($wChange < $sum) {
-            $sum = $wChange;
-        }
-        $B2 = max(0, $cit['wellness'] - $wChange + $sum);
+        $sum = 0; // food is no longer consumed in the gym
+        $B2 = max(0, $cit['wellness'] - $wChange);
         $EP2 = $cit['ep'] + 1;
 
         $streak = ((int) $cit['LastTrained'] === $this->today - 1) ? (int) $cit['train_streak'] + 1 : 1;

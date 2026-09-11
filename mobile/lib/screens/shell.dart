@@ -17,7 +17,7 @@ import 'work.dart';
 /// Test builds (--dart-define=ALLOW_URL_TOKEN=true) on the web also accept ?tab=N&battle=ID&article=ID.
 final _devQuery = kIsWeb && const bool.fromEnvironment('ALLOW_URL_TOKEN') ? Uri.base.queryParameters : const <String, String>{};
 
-/// Current app screen: 0 Home · 1 Army · 2 Workplace · 3 Battles · 4 Mail.
+/// Current app screen: 0 Home · 1 Gym · 2 Workplace · 3 Battles · 4 Mail.
 final tabProvider = StateProvider<int>((_) => int.tryParse(_devQuery['tab'] ?? '') ?? 0);
 
 /// Which menubar group has its dock open (null = closed).
@@ -40,7 +40,7 @@ List<DockEntry> dockEntries(int group, Citizen? c) {
     1 => [
       DockEntry('Profile', 'menu/myplaces/profile.png', path: 'profile-${c?.id ?? 0}-en.html'),
       const DockEntry('Company', 'menu/myplaces/company.png', path: 'company-en.html'),
-      if (!ca) const DockEntry('Army', 'menu/myplaces/army.png', tab: 1),
+      if (!ca) const DockEntry('Gym', 'tasks/train.png', tab: 1),
       if (!ca) const DockEntry('Workplace', 'tasks/work.png', tab: 2),
       if (!ca) const DockEntry('Explore Mines', 'menu/myplaces/madan.png', path: 'mines-en.html'),
       if (!ca) const DockEntry('Military Unit', 'tasks/damge-booster.png', path: 'military-unit-en.html'),
@@ -314,7 +314,7 @@ class SidebarLayout extends ConsumerWidget {
           onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => BattleScreen(id: home!.unitBattle!.id))),
         ),
       if (q['dailyReward'] == true) TaskBaloon(icon: 'welcome', title: 'Get daily reward', onTap: () => tab(0)),
-      if (q['train'] == true) TaskBaloon(icon: 'train', title: 'Train in the army', onTap: () => tab(1)),
+      if (q['train'] == true) TaskBaloon(icon: 'train', title: 'Go to the gym', onTap: () => tab(1)),
       if (q['work'] == true) TaskBaloon(icon: 'work', title: 'Go to your workplace', onTap: () => tab(2)),
       if (ref.watch(workProvider).asData?.value['employed'] == false) TaskBaloon(icon: 'job', title: 'Find a job', onTap: () => openWeb(ref, 'market-en.html')),
       TaskBaloon(icon: 'gold-pack', title: 'Buy Gold Pack', onTap: () => openWeb(ref, 'store-en.html')),

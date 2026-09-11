@@ -6,11 +6,10 @@ import '../core/theme.dart';
 import '../models/models.dart';
 import '../state/session.dart';
 import '../widgets/ui.dart';
-import 'battle.dart';
 import 'shell.dart';
 
 /// The gym: your body-shape avatar in the gym scene, strength/stamina meters, and one
-/// session a day — weights (+1 strength) or cardio (+1 stamina). Rank is shown as prestige.
+/// session a day — weights (+1 strength) or cardio (+1 stamina).
 class ArmyScreen extends ConsumerStatefulWidget {
   const ArmyScreen({super.key});
   @override
@@ -27,7 +26,6 @@ const _gymMuted = Color(0xFF9FB3C8);
 
 class _ArmyState extends ConsumerState<ArmyScreen> {
   int? _type;
-  Map<int, int> _foods = {};
   bool _busy = false;
   bool _justTrained = false;
 
@@ -38,7 +36,7 @@ class _ArmyState extends ConsumerState<ArmyScreen> {
     }
     setState(() => _busy = true);
     try {
-      final r = await ref.read(apiProvider).post('army/train', {'type': _type, 'foods': _foods.map((k, v) => MapEntry('$k', v))});
+      final r = await ref.read(apiProvider).post('army/train', {'type': _type});
       ref.read(sessionProvider.notifier).update(r);
       _justTrained = true;
       ref.invalidate(armyProvider);
@@ -53,7 +51,6 @@ class _ArmyState extends ConsumerState<ArmyScreen> {
   @override
   Widget build(BuildContext context) {
     final army = ref.watch(armyProvider);
-    final home = ref.watch(homeProvider).asData?.value;
     final c = ref.watch(sessionProvider);
     return LegacyFrame(
       padding: const EdgeInsets.all(4),
@@ -67,7 +64,6 @@ class _ArmyState extends ConsumerState<ArmyScreen> {
             final trained = d['trainedToday'] == true;
             final report = d['report'] as Map<String, dynamic>?;
             final shape = d['shape'] as Map<String, dynamic>;
-            final stats = d['stats'] as Map<String, dynamic>?;
             final lowWellness = (c?.wellness ?? 100) <= 2;
             final avatar = _justTrained ? 'avatar-victory' : (trained ? 'avatar-rest' : (lowWellness ? 'avatar-tired' : 'shape-${shape['stage']}'));
             final banner = _justTrained
@@ -77,7 +73,6 @@ class _ArmyState extends ConsumerState<ArmyScreen> {
                 : lowWellness
                 ? '🥵 Too tired to train — eat or drink something first.'
                 : 'Pick today\'s session. Every day adds a stage, every missed day takes one away.';
-            final sel = _type == null ? null : options.firstWhere((o) => o['type'] == _type);
             return Container(
               decoration: BoxDecoration(color: _gymDark, borderRadius: BorderRadius.circular(8)),
               padding: const EdgeInsets.all(6),
@@ -91,42 +86,15 @@ class _ArmyState extends ConsumerState<ArmyScreen> {
                     Row(
                       children: [for (final o in options) Expanded(child: _SessionCard(o, shape: shape, selected: _type == o['type'], onTap: () => setState(() => _type = o['type'] as int)))],
                     ),
-                    if (sel != null) ...[
-                      const SizedBox(height: 8),
-                      Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(color: _gymDark, border: Border.all(color: _gymLine), borderRadius: BorderRadius.circular(8)),
-                        child: FoodPicker(foods: (d['foods'] as Map).cast<String, dynamic>(), selected: _foods, onChanged: (f) => setState(() => _foods = f), maxRecover: -(sel['wellness'] as num).toInt(), dark: true),
-                      ),
-                    ],
                     const SizedBox(height: 10),
                     Center(child: _TrainButton(busy: _busy, enabled: !lowWellness && _type != null, onPressed: _train)),
                     const SizedBox(height: 8),
                   ],
-                  if (stats != null) _RankPanel(stats, onWars: () => openWeb(ref, 'wars-en.html')),
                 ],
               ),
             );
           },
         ),
-        const SizedBox(height: 8),
-        const SubHead('Active battles for your country', center: true),
-        if ((home?.battles ?? []).isEmpty) const EmptyNote('There is no active battle for your country.'),
-        for (final b in home?.battles ?? [])
-          InkWell(
-            onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => BattleScreen(id: b.id))),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 4),
-              child: Row(
-                children: [
-                  legacy('att-s.jpg', width: 20, height: 20),
-                  const SizedBox(width: 6),
-                  Expanded(child: Text('${b.attacker} attacked ${b.region}, ${b.defender}', style: const TextStyle(color: EjColors.link, fontSize: 12))),
-                  Text('started ${ago(b.start)}', style: const TextStyle(fontSize: 9)),
-                ],
-              ),
-            ),
-          ),
       ],
     );
   }
@@ -329,58 +297,6 @@ class _SessionReport extends StatelessWidget {
               Expanded(child: Column(children: [kv('Wellness', fmt(before - (loss - rec))), kv('Fight cost', '${fmt(shape['fightCost'] as num)} wellness'), kv('EP', '+${fmt(r['ep'] as num)}', color: const Color(0xFF7CFC9A))])),
             ],
           ),
-        ],
-      ),
-    );
-  }
-}
-
-/// Military rank = prestige: insignia, progress to the next rank, the reward and what rank unlocks.
-class _RankPanel extends StatelessWidget {
-  const _RankPanel(this.s, {required this.onWars});
-  final Map<String, dynamic> s;
-  final VoidCallback onWars;
-  @override
-  Widget build(BuildContext context) {
-    double frac(num v, num from, num to) => to > from ? ((v - from) / (to - from)).clamp(0, 1).toDouble() : 1;
-    final next = s['nextRankName'] as String?;
-    return Container(
-      margin: const EdgeInsets.only(top: 4),
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(color: _gymDark, border: Border.all(color: _gymLine), borderRadius: BorderRadius.circular(8)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(
-            children: [
-              netImg(s['rankIcon'] as String, width: 56, height: 14, fit: BoxFit.contain),
-              const SizedBox(width: 6),
-              Expanded(child: Text('${s['rankName']}', style: const TextStyle(color: _gymText, fontSize: 13, fontWeight: FontWeight.bold))),
-              Text('${fmt(s['damage'] as num)} / ${fmt(s['damageTo'] as num)}', style: const TextStyle(color: _gymMuted, fontSize: 10)),
-            ],
-          ),
-          const SizedBox(height: 6),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(4),
-            child: Container(
-              height: 8,
-              color: Colors.white.withValues(alpha: .12),
-              alignment: Alignment.centerLeft,
-              child: FractionallySizedBox(
-                widthFactor: frac(s['damage'] as num, s['damageFrom'] as num, s['damageTo'] as num),
-                child: Container(decoration: const BoxDecoration(gradient: LinearGradient(colors: [Color(0xFFA52A2A), Color(0xFFFF6B6B)]), boxShadow: [BoxShadow(color: Color(0xFFFF6B6B), blurRadius: 6)])),
-              ),
-            ),
-          ),
-          const SizedBox(height: 6),
-          Text(
-            next == null
-                ? '🏆 Highest rank. Rank is prestige: it lets you lead a military unit and sets your unit\'s battle bonus.'
-                : '🏆 Next: $next — ${s['nextRankReward']} Tala + a 5-star food. Rank is prestige: it lets you lead a military unit and sets your unit\'s battle bonus.',
-            style: const TextStyle(color: _gymMuted, fontSize: 10),
-          ),
-          const SizedBox(height: 6),
-          Align(alignment: Alignment.centerLeft, child: ImgButton('Show active wars', onPressed: onWars)),
         ],
       ),
     );

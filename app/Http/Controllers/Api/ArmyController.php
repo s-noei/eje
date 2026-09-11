@@ -38,7 +38,7 @@ class ArmyController extends ApiController
             'nextRankName' => Constants::MILI_RANKS[$mRank + 1] ?? null, 'nextRankReward' => Constants::RANK_UP_TALA * ($mRank + 1),
         ];
 
-        return ['trainedToday' => $c['LastTrained'] == $today, 'occupiedUntil' => (int) $c['occDue'], 'options' => $options, 'foods' => $this->foods($citID),
+        return ['trainedToday' => $c['LastTrained'] == $today, 'occupiedUntil' => (int) $c['occDue'], 'options' => $options,
             'report' => $report, 'shape' => WarController::shape($c), 'stats' => $stats];
     }
 
@@ -48,7 +48,7 @@ class ArmyController extends ApiController
         return $this->ok($this->trainState($this->cit(true)));
     }
 
-    /** POST /api/v1/army/train {type: 1 weights | 2 cardio, foods: {stars: amount}} */
+    /** POST /api/v1/army/train {type: 1 weights | 2 cardio} */
     public function train(Request $request)
     {
         $c = $this->cit(true);
@@ -69,7 +69,7 @@ class ArmyController extends ApiController
         if ($c['occDue'] >= time()) {
             return $this->fail($this->msg('error_occupied', 'msgs', $this->session->getDiffF($c['occDue'])));
         }
-        $this->database->doTrain($c, $ttype, array_map('intval', (array) $request->input('foods', [])));
+        $this->database->doTrain($c, $ttype);
         $c = $this->cit(true);
 
         return $this->ok($this->trainState($c) + ['citizen' => $this->citizenPayload($c, true)]);

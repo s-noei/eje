@@ -119,7 +119,7 @@ class _HomeState extends ConsumerState<HomeScreen> {
     final q = d.quests;
     final isCA = c.isCA;
     final missions = <_Mission>[
-      if (!isCA) _Mission('Train', 'train', c.trainedToday ? 'day ${c.trainStreak} in a row' : 'weights or cardio · day ${c.trainStreak + 1}', done: c.trainedToday, onGo: () => _tab(1)),
+      if (!isCA) _Mission('Gym', 'train', c.trainedToday ? 'day ${c.trainStreak} in a row' : 'weights or cardio · day ${c.trainStreak + 1}', done: c.trainedToday, onGo: () => _tab(1)),
       if (!isCA) _Mission('Work', 'work', 'salary & products', done: c.workedToday, available: q['work'] == true || c.workedToday, onGo: () => _tab(2), hint: 'Find a job first', onHint: () => openWeb(ref, 'jobs-en.html')),
       if (!isCA && (q['explore'] == true || c.exploredToday)) _Mission('Explore the mines', 'explore', 'find resources', done: c.exploredToday, onGo: () => openWeb(ref, 'mines-en.html')),
       if (!isCA) _Mission('Eat', 'food', 'restore wellness', done: c.wellness >= 100, onGo: () => _tab(1)),
