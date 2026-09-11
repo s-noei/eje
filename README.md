@@ -74,4 +74,6 @@ costs `10 → 4` wellness depending on stamina. Military rank no longer multipli
 (insignia everywhere), leadership (Hazarapatish+ to found a unit, Satapatish+ to be captain, the unit's
 ordered-battle bonus = 5% + 1% × commander rank, max 15%) and a one-off reward per rank (Tala + 5★ food).
 Existing citizens were migrated with strength = stamina = min(7, old military skill); legacy skill points
-still accumulate in the background for rankings and the IS trophy. Constants: `App\Game\Support\Constants`.
+still accumulate in the background for rankings and the IS trophy. Constants: `App\Game\Support\Constants`. The army page is now "the gym": the citizen's body-shape avatar
+(`public/images/game/gym/shape-{0..7}.png`, session cards, gym background — generated art, originals kept outside
+the repo) with strength/stamina meters and the two session cards (`include/css/gym.css`).

@@ -51,7 +51,7 @@ void main() {
     expect(find.text('Login'), findsWidgets);
   });
 
-  for (final (tab, expected) in [(0, "Today's missions"), (1, 'Train in the army'), (2, 'Your work stats'), (3, 'Active battles for your country'), (4, 'Inbox')]) {
+  for (final (tab, expected) in [(0, "Today's missions"), (1, '⚡ Train'), (2, 'Your work stats'), (3, 'Active battles for your country'), (4, 'Inbox')]) {
     testWidgets('shell tab $tab', (tester) async {
       tester.view.physicalSize = const Size(430, 2200);
       tester.view.devicePixelRatio = 1;

@@ -236,7 +236,12 @@ class _HomeState extends ConsumerState<HomeScreen> {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Avatar(c.avatar, size: 64),
+            Column(
+              children: [
+                Avatar(c.avatar, size: 64),
+                if (!c.isCA) Image.asset('assets/legacy/gym/shape-${((c.strength + c.stamina) ~/ 2).clamp(0, kShapeMax)}.png', height: 64, fit: BoxFit.contain),
+              ],
+            ),
             const SizedBox(width: 8),
             Expanded(
               child: Column(

@@ -841,12 +841,14 @@ void toast(BuildContext context, String msg, {bool error = false}) {
 
 /// Food picker used by train/work — inventory boxes; tap to add one, long-press to remove.
 class FoodPicker extends StatelessWidget {
-  const FoodPicker({super.key, required this.foods, required this.selected, required this.onChanged, required this.maxRecover, this.foodIcon});
+  const FoodPicker({super.key, required this.foods, required this.selected, required this.onChanged, required this.maxRecover, this.foodIcon, this.dark = false});
   final Map<String, dynamic> foods;
   final Map<int, int> selected;
   final ValueChanged<Map<int, int>> onChanged;
   final int maxRecover;
   final String? foodIcon;
+  /// Light text for the dark gym panel.
+  final bool dark;
   @override
   Widget build(BuildContext context) {
     final recover = selected.entries.fold<int>(0, (a, e) => a + e.key * e.value);
@@ -857,9 +859,11 @@ class FoodPicker extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SubHead('Consume food'),
+        dark
+            ? const Padding(padding: EdgeInsets.only(bottom: 6), child: Text('🍔 Eat during the session', style: TextStyle(color: Color(0xFFE8EEF7), fontSize: 12, fontWeight: FontWeight.bold)))
+            : const SubHead('Consume food'),
         if (!any)
-          const EmptyNote('You have no food in your inventory.')
+          Text('You have no food in your inventory.', style: TextStyle(fontSize: 12, color: dark ? const Color(0xFF9FB3C8) : EjColors.text))
         else ...[
           Wrap(
             children: [
@@ -881,7 +885,7 @@ class FoodPicker extends StatelessWidget {
                           _mini('−', (selected[s] ?? 0) > 0 ? () => onChanged({...selected, s: selected[s]! - 1}) : null),
                           Text(
                             '${selected[s] ?? 0}',
-                            style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: EjColors.black),
+                            style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: dark ? Colors.white : EjColors.black),
                           ),
                           _mini('+', (selected[s] ?? 0) < (foods['$s'] as num).toInt() ? () => onChanged({...selected, s: (selected[s] ?? 0) + 1}) : null),
                         ],
@@ -890,7 +894,7 @@ class FoodPicker extends StatelessWidget {
                   ),
             ],
           ),
-          Text('Wellness to recover: $recover / $maxRecover', style: TextStyle(fontSize: 11, color: recover > maxRecover ? EjColors.red : EjColors.text)),
+          Text('Wellness to recover: $recover / $maxRecover', style: TextStyle(fontSize: 11, color: recover > maxRecover ? EjColors.red : (dark ? const Color(0xFF9FB3C8) : EjColors.text))),
         ],
       ],
     );

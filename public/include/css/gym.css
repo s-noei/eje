@@ -1,0 +1,61 @@
+/* The gym (army page): dark scene with the citizen's body-shape avatar, meters and session cards. */
+#gym { color: #e8eef7; font-family: Arial, Tahoma, sans-serif; }
+#gym .gym-scene {
+	position: relative; height: 380px; border-radius: 8px; overflow: hidden;
+	background: #0f1620 url('../../images/game/gym/gym-bg.jpg') center/cover no-repeat;
+	box-shadow: 0 6px 24px rgba(0, 0, 0, .35);
+}
+#gym .gym-scene:after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(8, 14, 22, .55) 0%, rgba(8, 14, 22, 0) 35%, rgba(8, 14, 22, .75) 100%); pointer-events: none; }
+#gym .gym-scene > * { position: relative; z-index: 2; }
+#gym .gym-avatar { position: absolute; left: 50%; bottom: 58px; height: 290px; transform: translateX(-50%); filter: drop-shadow(0 12px 14px rgba(0, 0, 0, .55)); }
+#gym .gym-hud { position: absolute; left: 14px; top: 12px; }
+#gym .gym-name { font-size: 22px; font-weight: bold; color: #fff; text-shadow: 0 2px 6px #000; letter-spacing: .5px; }
+#gym .gym-streak { font-size: 13px; color: #9fe7ff; text-shadow: 0 1px 4px #000; margin-top: 2px; }
+#gym .gym-stats { position: absolute; right: 14px; top: 12px; text-align: right; }
+#gym .gym-stat { font-size: 12px; margin-bottom: 8px; text-shadow: 0 1px 4px #000; white-space: nowrap; }
+#gym .gym-stat b { margin: 0 6px 0 3px; }
+#gym .gym-ico { font-size: 15px; }
+#gym .gym-val { margin-left: 6px; font-weight: bold; }
+#gym .gym-eff { margin-left: 6px; color: #9fe7ff; font-size: 11px; }
+#gym .gym-meter { display: inline-block; vertical-align: middle; }
+#gym .gym-meter span { display: inline-block; width: 18px; height: 10px; margin-left: 2px; border-radius: 2px; background: rgba(255, 255, 255, .15); border: 1px solid rgba(255, 255, 255, .25); }
+#gym .gym-meter span.str { background: #ff8a3d; box-shadow: 0 0 6px #ff8a3d; border-color: #ffb27d; }
+#gym .gym-meter span.sta { background: #22d3ee; box-shadow: 0 0 6px #22d3ee; border-color: #8ff0ff; }
+#gym .gym-banner { position: absolute; left: 0; right: 0; bottom: 0; padding: 10px 14px; text-align: center; font-size: 13px; font-weight: bold; color: #fff; background: rgba(8, 14, 22, .7); text-shadow: 0 1px 3px #000; }
+
+#gym .gym-sessions { display: flex; gap: 12px; justify-content: center; margin: 12px 0; }
+#gym .gym-card {
+	width: 190px; padding: 10px 8px 12px; text-align: center; cursor: pointer; border-radius: 8px;
+	background: linear-gradient(180deg, #1b2533, #0f1620); border: 2px solid #2a3a4f; color: #e8eef7;
+	transition: transform .15s, border-color .15s, box-shadow .15s;
+}
+#gym .gym-card:hover { transform: translateY(-3px); border-color: #22d3ee; }
+#gym .gym-card.sel { border-color: #22d3ee; box-shadow: 0 0 18px rgba(34, 211, 238, .55); }
+#gym .gym-card input { display: none; }
+#gym .gym-card img { height: 170px; filter: drop-shadow(0 8px 10px rgba(0, 0, 0, .6)); }
+#gym .gym-card-title { font-size: 16px; font-weight: bold; margin-top: 6px; }
+#gym .gym-card-eff { font-size: 13px; color: #7CFC9A; font-weight: bold; }
+#gym .gym-card-sub { font-size: 11px; color: #9fb3c8; }
+
+#gym .gym-food { background: #0f1620; border: 1px solid #2a3a4f; border-radius: 8px; padding: 10px; margin: 0 auto 10px; width: 640px; text-align: center; font-size: 12px; }
+#gym .gym-foods { display: flex; gap: 8px; justify-content: center; margin-top: 8px; }
+#gym .gym-foodbox { background: #1b2533; border: 1px solid #2a3a4f; border-radius: 6px; padding: 6px; width: 80px; }
+#gym .gym-foodbox input { width: 34px; text-align: center; border: 1px solid #2a3a4f; background: #0f1620; color: #fff; border-radius: 3px; }
+#gym .gym-foodbox input:disabled { color: #566; }
+#gym .gym-foodcount { font-size: 10px; color: #9fb3c8; margin-top: 3px; }
+
+#gym .gym-go { text-align: center; margin: 6px 0 14px; }
+#gym .gym-train { font-size: 18px; font-weight: bold; color: #061018; padding: 10px 46px; border: 0; border-radius: 24px; cursor: pointer; background: linear-gradient(180deg, #7ff3ff, #22d3ee); box-shadow: 0 0 18px rgba(34, 211, 238, .6); }
+#gym .gym-train:hover { background: linear-gradient(180deg, #a5f7ff, #4be0f5); }
+#gym .gym-train:disabled { background: #3a4657; color: #8a97a8; box-shadow: none; cursor: default; }
+
+#gym .gym-rank { background: #0f1620; border: 1px solid #2a3a4f; border-radius: 8px; padding: 10px 14px; margin: 6px 0; font-size: 12px; color: #e8eef7; }
+#gym .gym-rank-head { margin-bottom: 6px; }
+#gym .gym-rank-bar { margin: 4px 0 8px; height: 8px; border-radius: 4px; background: rgba(255, 255, 255, .12); overflow: hidden; }
+#gym .gym-rank-fill { height: 100%; background: linear-gradient(90deg, #a52a2a, #ff6b6b); box-shadow: 0 0 8px #ff6b6b; }
+#gym .gym-rank-note { font-size: 11px; color: #9fb3c8; }
+
+/* the train report inherits the gym look */
+#gym #train-report { background: linear-gradient(180deg, #1b2533, #0f1620); color: #e8eef7; border-color: #2a3a4f; margin: 12px auto; }
+#gym #train-report .product { border-color: #22d3ee; }
+#gym #train-report .hummy { background: none; }

@@ -75,6 +75,7 @@ flutter:
     - assets/legacy/menu/rankings/
     - assets/legacy/menu/information/
     - assets/legacy/menu/extra/
+    - assets/legacy/gym/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

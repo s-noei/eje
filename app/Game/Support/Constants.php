@@ -17,7 +17,7 @@ final class Constants
      * Strength sets the damage per hit (SHAPE_BASE_DAMAGE + SHAPE_DAMAGE_PER_STAGE * strength);
      * stamina lowers the wellness cost of a fight. Military rank no longer changes damage. */
     public const SHAPE_MAX = 7;
-    public const SHAPE_NAMES = ['Out of shape', 'Warming up', 'Getting fit', 'Fit', 'Athletic', 'Strong', 'Powerful', 'Full shape'];
+    public const SHAPE_NAMES = ['Powered down', 'Warming up', 'Loose', 'Ready', 'In rhythm', 'Charged', 'On fire', 'Full shape'];
     public const TRAIN_WEIGHTS = 1;
     public const TRAIN_CARDIO = 2;
     public const TRAIN_TYPES = [self::TRAIN_WEIGHTS => 'Weights', self::TRAIN_CARDIO => 'Cardio'];
