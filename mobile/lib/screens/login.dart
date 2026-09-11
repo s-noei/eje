@@ -6,6 +6,7 @@ import '../core/theme.dart';
 import '../state/session.dart';
 import '../widgets/ui.dart';
 
+/// The guest home: logo header, menubar, and the legacy "mini-login" box + welcome text.
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
   @override
@@ -20,7 +21,10 @@ class _LoginState extends ConsumerState<LoginScreen> {
   String? _error;
 
   Future<void> _login() async {
-    setState(() { _busy = true; _error = null; });
+    setState(() {
+      _busy = true;
+      _error = null;
+    });
     try {
       await ref.read(sessionProvider.notifier).login(_user.text, _pass.text, baseUrl: _server.text);
     } on ApiException catch (e) {
@@ -30,41 +34,99 @@ class _LoginState extends ConsumerState<LoginScreen> {
     }
   }
 
+  Widget _row(String label, Widget field) => Padding(
+    padding: const EdgeInsets.symmetric(vertical: 3),
+    child: Row(
+      children: [
+        SizedBox(width: 100, child: Text(label, style: const TextStyle(fontSize: 12))),
+        Expanded(child: field),
+      ],
+    ),
+  );
+
   @override
   Widget build(BuildContext context) => Scaffold(
-        body: Container(
-          decoration: const BoxDecoration(gradient: RadialGradient(center: Alignment(-.8, -1), radius: 1.4, colors: [Color(0xFF2A1F6B), EjColors.bg])),
-          child: Center(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(24),
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 420),
-                child: Column(mainAxisSize: MainAxisSize.min, children: [
-                  Text('eJahan', style: display(size: 44, color: Colors.white)),
-                  Text('THE REALITY OF YOUR DREAMS', style: TextStyle(letterSpacing: 3, fontSize: 11, color: EjColors.muted)),
-                  const SizedBox(height: 28),
-                  GlassCard(
-                    padding: const EdgeInsets.all(20),
-                    child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-                      Text('Sign in', style: display(size: 20)),
-                      const SizedBox(height: 14),
-                      TextField(controller: _user, decoration: const InputDecoration(hintText: 'Citizen name', prefixIcon: Icon(Icons.person_outline)), textInputAction: TextInputAction.next),
-                      const SizedBox(height: 10),
-                      TextField(controller: _pass, obscureText: true, decoration: const InputDecoration(hintText: 'Password', prefixIcon: Icon(Icons.lock_outline)), onSubmitted: (_) => _login()),
-                      if (_showServer) ...[
-                        const SizedBox(height: 10),
-                        TextField(controller: _server, decoration: const InputDecoration(hintText: 'Server, e.g. http://192.168.1.10:8088', prefixIcon: Icon(Icons.dns_outlined))),
+    body: Ambient(
+      child: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.only(top: 10, bottom: 24),
+          children: [
+            const LogoHeader(),
+            const SizedBox(height: 4),
+            LegacyMenuBar(items: const ['Home', 'Rankings', 'Information', 'Extra'], selected: 0, onSelect: (_) {}),
+            PagePanel(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  // .mini-login
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: EjColors.line),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        const Text(
+                          'Login',
+                          style: TextStyle(fontWeight: FontWeight.bold, color: EjColors.black, fontSize: 13),
+                        ),
+                        const Divider(height: 8),
+                        _row('Citizen Name:', TextField(controller: _user, style: const TextStyle(fontSize: 12), textInputAction: TextInputAction.next)),
+                        _row('Password:', TextField(controller: _pass, obscureText: true, style: const TextStyle(fontSize: 12), onSubmitted: (_) => _login())),
+                        if (_showServer)
+                          _row(
+                            'Server:',
+                            TextField(
+                              controller: _server,
+                              style: const TextStyle(fontSize: 12),
+                              decoration: const InputDecoration(hintText: 'http://192.168.1.10:8088'),
+                            ),
+                          ),
+                        if (_error != null) Notice(_error!, error: true),
+                        const SizedBox(height: 6),
+                        Row(
+                          children: [
+                            ImgButton('Login', width: 100, busy: _busy, onPressed: _login),
+                            const SizedBox(width: 6),
+                            ImgButton(_showServer ? 'Hide server' : 'Server settings', width: 120, gray: true, onPressed: () => setState(() => _showServer = !_showServer)),
+                          ],
+                        ),
                       ],
-                      if (_error != null) Padding(padding: const EdgeInsets.only(top: 10), child: Text(_error!, style: const TextStyle(color: EjColors.red))),
-                      const SizedBox(height: 16),
-                      EjButton('Enter the world', onPressed: _login, busy: _busy, icon: Icons.login),
-                      TextButton(onPressed: () => setState(() => _showServer = !_showServer), child: Text(_showServer ? 'Hide server settings' : 'Server settings', style: const TextStyle(color: EjColors.muted))),
-                    ]),
+                    ),
                   ),
-                ]),
+                  const SizedBox(height: 8),
+                  // .mini-welcome
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: EjColors.line),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: const Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'eJahan - the reality of your dreams',
+                          style: TextStyle(fontWeight: FontWeight.bold, color: EjColors.link, fontSize: 13),
+                        ),
+                        Divider(height: 8),
+                        Text(
+                          'You are viewing the game as a guest. If you have a citizen account, you can login with the form above.\nIf you have no citizen account yet, we recommend you to register and become a citizen of this world.',
+                          style: TextStyle(fontSize: 12),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
-          ),
+          ],
         ),
-      );
+      ),
+    ),
+  );
 }

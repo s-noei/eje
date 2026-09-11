@@ -67,8 +67,15 @@ final inboxProvider = FutureProvider<List<Message>>((ref) async {
   final r = await ref.watch(apiProvider).get('mail/inbox');
   return (r['messages'] as List).map((m) => Message.fromJson(m as Map<String, dynamic>)).toList();
 });
+final sentProvider = FutureProvider<List<Message>>((ref) async {
+  final r = await ref.watch(apiProvider).get('mail/sent');
+  return (r['messages'] as List).map((m) => Message.fromJson(m as Map<String, dynamic>)).toList();
+});
 final notesProvider = FutureProvider<List<Map<String, dynamic>>>((ref) async {
   final r = await ref.watch(apiProvider).get('mail/notes');
   return (r['notes'] as List).cast<Map<String, dynamic>>();
 });
 final articleProvider = FutureProvider.family<Map<String, dynamic>, int>((ref, id) => ref.watch(apiProvider).get('articles/$id'));
+
+/// Home-page chatbox (GET chat); invalidate to poll.
+final chatProvider = FutureProvider<Map<String, dynamic>>((ref) => ref.watch(apiProvider).get('chat'));

@@ -1,16 +1,29 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../core/theme.dart';
+import '../models/models.dart';
 import '../state/session.dart';
 import '../widgets/ui.dart';
 import 'army.dart';
+import 'article.dart';
 import 'battle.dart';
 import 'home.dart';
 import 'mail.dart';
 import 'work.dart';
 
-/// Bottom-navigation shell: Home · Train · Work · Battles · Mail.
+/// Test builds (--dart-define=ALLOW_URL_TOKEN=true) on the web also accept ?tab=N&battle=ID&article=ID.
+final _devQuery = kIsWeb && const bool.fromEnvironment('ALLOW_URL_TOKEN') ? Uri.base.queryParameters : const <String, String>{};
+
+/// Selected menubar tab: Home · Army · Work · Battles · Mail.
+final tabProvider = StateProvider<int>((_) => int.tryParse(_devQuery['tab'] ?? '') ?? 0);
+const kTabs = ['Home', 'Army', 'Work', 'Battles', 'Mail'];
+
+/// Opens a page of the website (for parts of the game the app does not cover yet).
+Future<void> openWeb(WidgetRef ref, String path) => launchUrl(Uri.parse('${ref.read(apiProvider).baseUrl}/$path'), mode: LaunchMode.externalApplication);
+
 class Shell extends ConsumerStatefulWidget {
   const Shell({super.key});
   @override
@@ -18,53 +31,215 @@ class Shell extends ConsumerStatefulWidget {
 }
 
 class _ShellState extends ConsumerState<Shell> {
-  int _tab = 0;
+  @override
+  void initState() {
+    super.initState();
+    final battle = int.tryParse(_devQuery['battle'] ?? ''), article = int.tryParse(_devQuery['article'] ?? '');
+    if (battle != null || article != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.of(context).push(MaterialPageRoute(builder: (_) => battle != null ? BattleScreen(id: battle) : ArticleScreen(id: article!)));
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final c = ref.watch(sessionProvider);
-    final home = ref.watch(homeProvider).asData?.value;
-    final pages = [HomeScreen(goTo: (i) => setState(() => _tab = i)), const ArmyScreen(), const WorkScreen(), const BattlesScreen(), const MailScreen()];
+    final tab = ref.watch(tabProvider);
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(gradient: RadialGradient(center: Alignment(-.9, -1.1), radius: 1.3, colors: [Color(0xFF2A1F6B), EjColors.bg])),
+      body: Ambient(
         child: SafeArea(
-          bottom: false,
-          child: Column(children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 10, 8, 4),
-              child: Row(children: [
-                Text('eJahan', style: display(size: 22, color: Colors.white)),
-                const Spacer(),
-                if (c != null) ...[
-                  Chip2(value: fmt(c.tala), label: 'Tala', image: c.money.where((m) => m.curID == 1).map((m) => m.icon).firstOrNull),
-                  const SizedBox(width: 6),
-                  Chip2(value: '${fmt(c.wellness)}', label: '', icon: Icons.favorite),
-                ],
-                IconButton(
-                  tooltip: 'Log out',
-                  icon: const Icon(Icons.logout, color: EjColors.muted),
-                  onPressed: () => ref.read(sessionProvider.notifier).logout(),
-                ),
-              ]),
-            ),
-            Expanded(child: IndexedStack(index: _tab, children: pages)),
-          ]),
+          child: IndexedStack(index: tab, children: const [HomeScreen(), ArmyScreen(), WorkScreen(), BattlesScreen(), MailScreen()]),
         ),
-      ),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: _tab,
-        onDestinationSelected: (i) => setState(() => _tab = i),
-        destinations: [
-          const NavigationDestination(icon: Icon(Icons.dashboard_outlined), selectedIcon: Icon(Icons.dashboard), label: 'Home'),
-          NavigationDestination(icon: _dot(Icons.fitness_center, home?.quests['train'] == true), label: 'Train'),
-          NavigationDestination(icon: _dot(Icons.work_outline, home?.quests['work'] == true), label: 'Work'),
-          NavigationDestination(icon: _dot(Icons.shield_outlined, (home?.battles.isNotEmpty) ?? false), label: 'Battles'),
-          NavigationDestination(icon: _dot(Icons.mail_outline, (home?.newPM ?? 0) > 0), label: 'Mail'),
-        ],
       ),
     );
   }
+}
 
-  Widget _dot(IconData icon, bool on) => Badge(isLabelVisible: on, backgroundColor: EjColors.gold, smallSize: 8, child: Icon(icon));
+/// The legacy page frame: citizen bar, logo header, menubar, then the white page with [children].
+/// Everything scrolls together, as on the website.
+class LegacyFrame extends ConsumerWidget {
+  const LegacyFrame({super.key, required this.children, this.onRefresh, this.back = false, this.padding = const EdgeInsets.all(8)});
+  final List<Widget> children;
+  final Future<void> Function()? onRefresh;
+  final bool back;
+  final EdgeInsets padding;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final c = ref.watch(sessionProvider);
+    final home = ref.watch(homeProvider).asData?.value;
+    final tab = ref.watch(tabProvider);
+    final list = ListView(
+      padding: const EdgeInsets.only(bottom: 24),
+      children: [
+        if (c != null) CitizenBar(citizen: c, newPM: home?.newPM ?? 0, newNotes: home?.newNotes ?? 0, onLogout: () => ref.read(sessionProvider.notifier).logout(), onMail: () => _go(context, ref, 4)),
+        LogoHeader(day: home?.day),
+        LegacyMenuBar(
+          items: kTabs,
+          selected: back ? -1 : tab,
+          onSelect: (i) => _go(context, ref, i),
+          badges: {1: home?.quests['train'] == true, 2: home?.quests['work'] == true, 3: (home?.battles.isNotEmpty) ?? false, 4: (home?.newPM ?? 0) > 0},
+        ),
+        PagePanel(
+          padding: padding,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (back)
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 6),
+                    child: PlainButton('« Back', onPressed: () => Navigator.of(context).maybePop()),
+                  ),
+                ),
+              ...children,
+            ],
+          ),
+        ),
+        const _Footer(),
+      ],
+    );
+    final body = onRefresh == null ? list : RefreshIndicator(onRefresh: onRefresh!, child: list);
+    return back
+        ? Scaffold(
+            body: Ambient(child: SafeArea(child: body)),
+          )
+        : body;
+  }
+
+  void _go(BuildContext context, WidgetRef ref, int i) {
+    ref.read(tabProvider.notifier).state = i;
+    Navigator.of(context).popUntil((r) => r.isFirst);
+  }
+}
+
+class _Footer extends StatelessWidget {
+  const _Footer();
+  @override
+  Widget build(BuildContext context) => const Padding(
+    padding: EdgeInsets.only(top: 10),
+    child: Column(
+      children: [
+        Text(
+          'Copyright © 2013 eJahan',
+          style: TextStyle(
+            fontSize: 10,
+            color: Colors.white,
+            shadows: [Shadow(color: Colors.black45, blurRadius: 2)],
+          ),
+        ),
+        Text(
+          'Laws | Blog | Wiki | Forum | Contact | About',
+          style: TextStyle(
+            fontSize: 10,
+            color: Colors.white,
+            shadows: [Shadow(color: Colors.black45, blurRadius: 2)],
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+/// Left column of the legacy layout ("YOUR TASKS" baloons + hummy + "Your Inventory").
+/// Wide screens get the real 120px column next to [content]; phones get horizontal strips above it.
+class SidebarLayout extends ConsumerWidget {
+  const SidebarLayout({super.key, required this.content});
+  final Widget content;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final home = ref.watch(homeProvider).asData?.value;
+    final c = ref.watch(sessionProvider);
+    return LayoutBuilder(
+      builder: (context, box) {
+        final wide = box.maxWidth >= 640;
+        final tasks = _tasks(context, ref, home, c);
+        final inventory = c?.inventory ?? const <InventoryItem>[];
+        if (wide) {
+          return Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: 124,
+                child: Column(
+                  children: [
+                    const Text('YOUR TASKS', style: TextStyle(color: EjColors.black, fontSize: 12)),
+                    ...tasks,
+                    legacy('hummy-hole.png', width: 100, height: 110),
+                    const SizedBox(height: 4),
+                    const SubHead('Your Inventory', center: true),
+                    Wrap(
+                      alignment: WrapAlignment.center,
+                      children: [for (final i in inventory) InventoryBox(icon: i.icon, stars: i.stars, amount: i.amount)],
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(child: content),
+            ],
+          );
+        }
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              children: [
+                const Text('YOUR TASKS', style: TextStyle(color: EjColors.black, fontSize: 12)),
+                const Spacer(),
+                legacy('hummy-hole.png', height: 34),
+              ],
+            ),
+            SizedBox(
+              height: 54,
+              child: ListView(scrollDirection: Axis.horizontal, children: tasks),
+            ),
+            const SizedBox(height: 4),
+            if (inventory.isNotEmpty) ...[
+              const SubHead('Your Inventory'),
+              SizedBox(
+                height: 74,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: [for (final i in inventory) InventoryBox(icon: i.icon, stars: i.stars, amount: i.amount)],
+                ),
+              ),
+            ],
+            const SizedBox(height: 6),
+            content,
+          ],
+        );
+      },
+    );
+  }
+
+  List<Widget> _tasks(BuildContext context, WidgetRef ref, HomeData? home, Citizen? c) {
+    void tab(int i) => ref.read(tabProvider.notifier).state = i;
+    final q = home?.quests ?? const {};
+    final vote = q['vote'] as Map<String, dynamic>?;
+    return [
+      if (vote != null)
+        TaskBaloon(
+          icon: 'vote',
+          title: 'Vote in ${(vote['type'] as String).toUpperCase()} elections',
+          onTap: () => launchUrl(Uri.parse(vote['url'] as String), mode: LaunchMode.externalApplication),
+        ),
+      if (home?.unitBattle != null)
+        TaskBaloon(
+          icon: 'damge-booster',
+          title: 'Military unit order',
+          onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => BattleScreen(id: home!.unitBattle!.id))),
+        ),
+      if (q['dailyReward'] == true) TaskBaloon(icon: 'welcome', title: 'Get daily reward', onTap: () => tab(0)),
+      if (q['train'] == true) TaskBaloon(icon: 'train', title: 'Train in the army', onTap: () => tab(1)),
+      if (q['work'] == true) TaskBaloon(icon: 'work', title: 'Go to your workplace', onTap: () => tab(2)),
+      if (ref.watch(workProvider).asData?.value['employed'] == false) TaskBaloon(icon: 'job', title: 'Find a job', onTap: () => openWeb(ref, 'market-en.html')),
+      TaskBaloon(icon: 'gold-pack', title: 'Buy Gold Pack', onTap: () => openWeb(ref, 'store-en.html')),
+      TaskBaloon(icon: 'food', title: 'Consume food', onTap: () => tab(1)),
+      if (q['explore'] == true) TaskBaloon(icon: 'explore', title: 'Explore the Mines', onTap: () => openWeb(ref, 'mines-en.html')),
+      TaskBaloon(icon: 'market', title: 'Visit the market', onTap: () => openWeb(ref, 'market-en.html')),
+    ];
+  }
 }

@@ -35,6 +35,8 @@ Route::prefix('v1')->group(function () {
         Route::delete('mail/{id}', [Api\MailController::class, 'destroy']);
 
         Route::get('news', [Api\NewsController::class, 'index']);
+        Route::get('chat', [Api\ChatController::class, 'index']);
+        Route::post('chat', [Api\ChatController::class, 'store']);
         Route::get('articles/{id}', [Api\NewsController::class, 'show']);
         Route::post('articles/{id}/vote', [Api\NewsController::class, 'vote']);
         Route::post('articles/{id}/comments', [Api\NewsController::class, 'comment']);

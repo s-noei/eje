@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Game\Support\Constants;
 use App\Game\Services\Economy;
 use Illuminate\Http\Request;
 
@@ -45,8 +46,11 @@ class WorkController extends ApiController
             }
         }
 
+        $wSkill = (int) $c['wSkill'];
+
         return [
             'employed' => true,
+            'stats' => ['skill' => $wSkill, 'sp' => (float) $c['wSP'], 'spFrom' => Constants::SP_CPS[$wSkill] ?? 0, 'spTo' => Constants::SP_CPS[$wSkill + 1] ?? 0, 'workInRow' => (int) ($c['rowWorkedStart'] ?? 0)],
             'company' => ['id' => (int) $comp['CompanyID'], 'name' => $comp['Name'], 'avatar' => url('/uploads/avatars/company/'.$comp['Avatar']), 'stars' => (int) $comp['Stars'], 'industry' => $this->database->getIndustry($comp['IndustryID'])],
             'salary' => (float) $c['Salary'], 'salaryCurrency' => $this->database->getCurrency($c['SalaryCurID']),
             'workedToday' => $c['LastWorked'] >= $today, 'occupiedUntil' => (int) $c['occDue'], 'options' => $options, 'foods' => $this->foods($this->citID()), 'report' => $report,

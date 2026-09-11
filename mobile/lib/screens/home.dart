@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -9,10 +11,12 @@ import '../state/session.dart';
 import '../widgets/ui.dart';
 import 'article.dart';
 import 'battle.dart';
+import 'shell.dart';
 
+/// The legacy home page: daily reward, active battles, military events, news tabs,
+/// "Around eJahan" and the chatbox — with the hummy tasks / inventory sidebar.
 class HomeScreen extends ConsumerStatefulWidget {
-  const HomeScreen({super.key, required this.goTo});
-  final void Function(int tab) goTo;
+  const HomeScreen({super.key});
   @override
   ConsumerState<HomeScreen> createState() => _HomeState();
 }
@@ -27,7 +31,7 @@ class _HomeState extends ConsumerState<HomeScreen> {
       final r = await ref.read(apiProvider).post('daily-reward');
       ref.read(sessionProvider.notifier).update(r);
       ref.invalidate(homeProvider);
-      if (mounted) toast(context, 'Reward claimed: +5 EP and a 5★ food!');
+      if (mounted) toast(context, 'You received 5 EP and one 5-star food!');
     } on ApiException catch (e) {
       if (mounted) toast(context, e.message, error: true);
     } finally {
@@ -38,211 +42,381 @@ class _HomeState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final home = ref.watch(homeProvider);
-    return RefreshIndicator(
+    return LegacyFrame(
       onRefresh: () => ref.refresh(homeProvider.future),
-      child: home.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => ErrorNote(e, onRetry: () => ref.invalidate(homeProvider)),
-        data: (d) => ListView(padding: const EdgeInsets.fromLTRB(14, 8, 14, 24), children: [
-          _hero(d.citizen),
-          const SizedBox(height: 12),
-          _quests(d),
-          const SizedBox(height: 12),
-          _battles(d),
-          const SizedBox(height: 12),
-          _events(d),
-          const SizedBox(height: 12),
-          _news(d),
-          const SizedBox(height: 12),
-          _around(d),
-        ]),
-      ),
-    );
-  }
-
-  Widget _hero(Citizen c) => GlassCard(
-        accent: EjColors.gold,
-        child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-          Row(children: [
-            Avatar(c.avatar, size: 68, progress: c.xpProgress, badge: c.isCA ? null : '${c.level}'),
-            const SizedBox(width: 14),
-            Expanded(
-              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Text(c.name, style: display(size: 24)),
-                Wrap(crossAxisAlignment: WrapCrossAlignment.center, spacing: 6, children: [
-                  Text(c.isCA ? 'Co-Account' : c.rank, style: const TextStyle(color: EjColors.muted, fontSize: 12)),
-                  const Text('·', style: TextStyle(color: EjColors.muted)),
-                  Image.network(c.countryFlag, height: 12, errorBuilder: (_, __, ___) => const SizedBox()),
-                  Text('${c.countryName} · ${c.regionName}', style: const TextStyle(color: EjColors.muted, fontSize: 12)),
-                ]),
-              ]),
-            ),
-          ]),
-          if (!c.isCA) ...[
-            const SizedBox(height: 14),
-            StatBar(label: 'XP', value: c.xpProgress, text: '${fmt(c.ep)} / ${fmt(c.epNextLevel)}'),
-            const SizedBox(height: 8),
-            StatBar(label: 'Wellness', value: c.wellness / 100, text: '${fmt(c.wellness)} / 100', colors: const [Color(0xFFF97316), EjColors.green]),
-          ],
-          const SizedBox(height: 12),
-          Wrap(spacing: 8, runSpacing: 8, children: [
-            Chip2(value: fmt(c.tala), label: 'Tala', image: c.money.where((m) => m.curID == 1).map((m) => m.icon).firstOrNull),
-            if (c.local != null) Chip2(value: fmt(c.local!.amount), label: c.local!.name, image: c.local!.icon),
-            if (c.worldRank != null) Chip2(value: '#${c.worldRank}', label: 'world rank', icon: Icons.star),
-          ]),
-        ]),
-      );
-
-  Widget _quests(HomeData d) {
-    final q = d.quests;
-    final items = <Widget>[];
-    Widget quest(IconData icon, String title, String desc, Widget action, {bool gold = false}) => Container(
-          margin: const EdgeInsets.only(bottom: 8),
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: gold ? EjColors.gold.withValues(alpha: .4) : EjColors.line),
-            gradient: gold ? LinearGradient(colors: [EjColors.gold.withValues(alpha: .16), EjColors.accent.withValues(alpha: .14)]) : null,
-            color: gold ? null : Colors.white.withValues(alpha: .05),
+      children: [
+        home.when(
+          loading: () => const Loading(),
+          error: (e, _) => ErrorNote(e, onRetry: () => ref.invalidate(homeProvider)),
+          data: (d) => Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (d.quests['vote'] != null) _voteHandler(d.quests['vote'] as Map<String, dynamic>),
+              SidebarLayout(
+                content: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    if (d.quests['dailyReward'] == true) _daily(),
+                    if (d.unitBattle != null) ...[const BoxTitle('Military Unit'), BattleRow(d.unitBattle!, onTap: () => _openBattle(d.unitBattle!.id)), const SizedBox(height: 8)],
+                    const BoxTitle('Active battles for your country'),
+                    if (d.battles.isEmpty) const EmptyNote('There is no active battle for your country.'),
+                    for (final b in d.battles) BattleRow(b, onTap: () => _openBattle(b.id)),
+                    const SizedBox(height: 8),
+                    _events(d),
+                    const SizedBox(height: 8),
+                    _news(d),
+                    const SizedBox(height: 8),
+                    _around(d),
+                    const SizedBox(height: 8),
+                    const ChatBox(),
+                  ],
+                ),
+              ),
+            ],
           ),
-          child: Row(children: [
-            Container(width: 42, height: 42, decoration: BoxDecoration(borderRadius: BorderRadius.circular(12), gradient: LinearGradient(colors: [EjColors.accent.withValues(alpha: .35), EjColors.accent2.withValues(alpha: .25)])), child: Icon(icon, color: Colors.white)),
-            const SizedBox(width: 12),
-            Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(title, style: const TextStyle(fontWeight: FontWeight.w700)), Text(desc, style: const TextStyle(color: EjColors.muted, fontSize: 12))])),
-            action,
-          ]),
-        );
-    if (q['vote'] != null) {
-      final v = q['vote'] as Map<String, dynamic>;
-      items.add(quest(Icons.how_to_vote, 'Election day!', 'Cast your ${(v['type'] as String).toUpperCase()} vote', EjButton('Vote', gold: true, icon: Icons.how_to_vote, onPressed: () => launchUrl(Uri.parse(v['url'] as String), mode: LaunchMode.externalApplication)), gold: true));
-    }
-    if (q['train'] == true) items.add(quest(Icons.fitness_center, 'Train', 'Daily training is available', EjButton('Go', ghost: true, icon: Icons.arrow_forward, onPressed: () => widget.goTo(1))));
-    if (q['work'] == true) items.add(quest(Icons.work, 'Work', 'Your company is waiting', EjButton('Go', ghost: true, icon: Icons.arrow_forward, onPressed: () => widget.goTo(2))));
-    if (q['dailyReward'] == true) items.add(quest(Icons.card_giftcard, 'Daily tasks completed', 'Claim +5 EP and a 5★ food', EjButton('Claim', busy: _claiming, icon: Icons.redeem, onPressed: _claim)));
-    final ub = d.unitBattle;
-    if (ub != null) items.add(quest(Icons.military_tech, 'Military unit order', 'Fight in ${ub.region}', EjButton('Battle', ghost: true, icon: Icons.arrow_forward, onPressed: () => _openBattle(ub.id))));
-    if (items.isEmpty) items.add(const EmptyNote('All quests done for today. Come back tomorrow!'));
-    return GlassCard(child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-      SectionTitle('Quests', icon: Icons.bolt, trailing: Text('Day ${fmt(d.day)}', style: const TextStyle(color: EjColors.muted, fontSize: 12))),
-      ...items,
-    ]));
+        ),
+      ],
+    );
   }
 
   void _openBattle(int id) => Navigator.of(context).push(MaterialPageRoute(builder: (_) => BattleScreen(id: id)));
 
-  Widget _battles(HomeData d) => GlassCard(
-        child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-          SectionTitle('Active battles', icon: Icons.shield, trailing: d.battles.isEmpty ? null : _live(d.battles.length)),
-          if (d.battles.isEmpty) const EmptyNote('There is no active battle for your country.'),
-          for (final b in d.battles) BattleTile(b, onTap: () => _openBattle(b.id)),
-        ]),
-      );
+  /// `.vote-handler` — the election-day banner.
+  Widget _voteHandler(Map<String, dynamic> v) => InkWell(
+    onTap: () => launchUrl(Uri.parse(v['url'] as String), mode: LaunchMode.externalApplication),
+    child: Container(
+      margin: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.all(6),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: EjColors.line),
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: Row(
+        children: [
+          legacy('tasks/vote.png', width: 30, height: 30),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              'Election day! - Cast your vote in the ${(v['type'] as String).toUpperCase()} elections',
+              style: const TextStyle(color: EjColors.link, fontWeight: FontWeight.bold, fontSize: 12),
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
 
-  Widget _live(int n) => Row(mainAxisSize: MainAxisSize.min, children: [
-        Container(width: 7, height: 7, decoration: const BoxDecoration(shape: BoxShape.circle, color: EjColors.red)),
-        const SizedBox(width: 6),
-        Text('LIVE · $n', style: const TextStyle(color: EjColors.red, fontSize: 10, fontWeight: FontWeight.w800, letterSpacing: 1)),
-      ]);
+  Widget _daily() => Column(
+    children: [
+      const BoxTitle('Daily tasks completed'),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const InventoryBox(icon: 'assets/legacy/food-icon.png', stars: 5, amount: 1),
+          Container(
+            width: 44,
+            margin: const EdgeInsets.all(1),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(color: EjColors.black),
+              borderRadius: BorderRadius.circular(3),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                legacy('xp_icon.png', width: 40, height: 40),
+                Container(
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      top: BorderSide(color: EjColors.black),
+                      bottom: BorderSide(color: EjColors.black),
+                    ),
+                  ),
+                  child: legacy('0_star.gif', width: 42, height: 9, fit: BoxFit.fill),
+                ),
+                const Text('5 EP', style: TextStyle(fontSize: 11, color: EjColors.black)),
+              ],
+            ),
+          ),
+        ],
+      ),
+      const SizedBox(height: 8),
+      ImgButton('Get reward', busy: _claiming, onPressed: _claim),
+      const SizedBox(height: 10),
+    ],
+  );
 
   Widget _events(HomeData d) {
     final list = _eventTab == 0 ? d.localEvents : d.worldEvents;
-    return GlassCard(
-      child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-        const SectionTitle('Military events', icon: Icons.radar),
-        Pills(items: [d.citizen.countryName, 'International'], selected: _eventTab, onSelect: (i) => setState(() => _eventTab = i)),
-        const SizedBox(height: 8),
-        if (list.isEmpty) const EmptyNote('No military events yet.'),
-        for (final e in list)
-          ListTile(
-            dense: true, contentPadding: const EdgeInsets.symmetric(horizontal: 4),
-            leading: Image.network(e.icon, width: 22, height: 22, errorBuilder: (_, __, ___) => const Icon(Icons.flag, size: 20)),
-            title: Text(e.title, style: const TextStyle(fontSize: 13)),
-            onTap: () => launchUrl(Uri.parse(e.link), mode: LaunchMode.externalApplication),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const BoxTitle('Military events', hr: false),
+        LegacyTabs(items: [d.citizen.countryName, 'International'], selected: _eventTab, onSelect: (i) => setState(() => _eventTab = i)),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 2),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (list.isEmpty) const Text('No military events yet.', style: TextStyle(fontSize: 11)),
+              for (var i = 0; i < list.length; i++) ...[
+                InkWell(
+                  onTap: () => launchUrl(Uri.parse(list[i].link), mode: LaunchMode.externalApplication),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 3),
+                    child: Row(
+                      children: [
+                        netImg(list[i].icon, width: 20, height: 20, fit: BoxFit.contain),
+                        const SizedBox(width: 6),
+                        Expanded(
+                          child: Text(list[i].title, style: const TextStyle(fontSize: 11, color: EjColors.link)),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                if (i < list.length - 1) const Divider(height: 4),
+              ],
+            ],
           ),
-      ]),
+        ),
+        Wrap(
+          alignment: WrapAlignment.center,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: [
+            LinkText('Show all military events', onTap: () => openWeb(ref, 'media-0-eve-en.html')),
+            const Text('|', style: TextStyle(fontSize: 12)),
+            LinkText('Show active wars', onTap: () => openWeb(ref, 'wars-en.html')),
+          ],
+        ),
+      ],
     );
   }
 
   Widget _news(HomeData d) {
     final keys = ['top', 'latest', 'international', if (d.news.containsKey('subscriptions') && !d.citizen.isCA) 'subscriptions'];
-    final labels = {'top': 'Top', 'latest': 'Latest', 'international': 'International', 'subscriptions': 'My subs'};
-    final list = d.news[keys[_newsTab.clamp(0, keys.length - 1)]] ?? [];
-    return GlassCard(
-      child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-        const SectionTitle("What's going on?!", icon: Icons.newspaper),
-        Pills(items: keys.map((k) => labels[k]!).toList(), selected: _newsTab, onSelect: (i) => setState(() => _newsTab = i)),
-        const SizedBox(height: 8),
-        if (list.isEmpty) const EmptyNote('Nothing here yet.'),
-        for (final a in list) ArticleTile(a),
-      ]),
+    final labels = {'top': 'Top news', 'latest': 'Latest news', 'international': 'International', 'subscriptions': 'My subscriptions'};
+    final key = keys[_newsTab.clamp(0, keys.length - 1)];
+    final list = d.news[key] ?? [];
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const BoxTitle("What's going on?!", hr: false),
+        LegacyTabs(items: keys.map((k) => labels[k]!).toList(), selected: _newsTab, onSelect: (i) => setState(() => _newsTab = i)),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                labels[key]!,
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 18, color: EjColors.black),
+              ),
+              if (list.isEmpty) const EmptyNote('There is no article to show.'),
+              for (final a in list) ArticleRow(a, onTap: () => _openArticle(a.id)),
+            ],
+          ),
+        ),
+        Center(child: LinkText('Go to Media center', onTap: () => openWeb(ref, 'media-${d.citizen.countryId}-en.html'))),
+      ],
     );
   }
 
-  Widget _around(HomeData d) => GlassCard(
-        child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-          const SectionTitle('Around eJahan', icon: Icons.public),
-          for (final a in d.around)
-            ListTile(
-              dense: true, contentPadding: EdgeInsets.zero,
-              leading: const CircleAvatar(backgroundColor: Colors.white, child: Icon(Icons.campaign, color: EjColors.accent)),
-              title: Row(children: [
-                if (a.isNew) Container(margin: const EdgeInsets.only(right: 6), padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1), decoration: BoxDecoration(color: EjColors.red, borderRadius: BorderRadius.circular(6)), child: const Text('NEW', style: TextStyle(fontSize: 9, fontWeight: FontWeight.w800))),
-                Expanded(child: Text(a.title, style: const TextStyle(fontSize: 13))),
-              ]),
-              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => ArticleScreen(id: a.id))),
+  void _openArticle(int id) => Navigator.of(context).push(MaterialPageRoute(builder: (_) => ArticleScreen(id: id)));
+
+  Widget _around(HomeData d) => Column(
+    crossAxisAlignment: CrossAxisAlignment.stretch,
+    children: [
+      const BoxTitle('Around eJahan'),
+      for (final a in d.around)
+        InkWell(
+          onTap: () => _openArticle(a.id),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 3),
+            child: Row(
+              children: [
+                legacy('logo.gif', width: 50, height: 50),
+                const SizedBox(width: 6),
+                if (a.isNew)
+                  const _Blink(
+                    child: Text(
+                      'NEW ',
+                      style: TextStyle(color: EjColors.red, fontSize: 12, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                Expanded(
+                  child: Text(a.title, style: const TextStyle(color: EjColors.link, fontSize: 12)),
+                ),
+              ],
             ),
-        ]),
-      );
+          ),
+        ),
+    ],
+  );
 }
 
-class BattleTile extends StatelessWidget {
-  const BattleTile(this.b, {super.key, this.onTap});
-  final Battle b;
-  final VoidCallback? onTap;
+/// The `<blink>` tag, faithfully.
+class _Blink extends StatefulWidget {
+  const _Blink({required this.child});
+  final Widget child;
   @override
-  Widget build(BuildContext context) => InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
-        child: Container(
-          margin: const EdgeInsets.only(bottom: 8),
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(12), color: Colors.white.withValues(alpha: .05), border: Border.all(color: b.mine ? EjColors.accent2.withValues(alpha: .5) : EjColors.line)),
-          child: Row(children: [
-            _flag(b.attackerFlag),
-            const SizedBox(width: 10),
-            Expanded(child: Column(children: [
-              Text(b.region, style: const TextStyle(fontWeight: FontWeight.w700), textAlign: TextAlign.center),
-              Text('${b.attacker} vs ${b.defender}', style: const TextStyle(color: EjColors.muted, fontSize: 11), textAlign: TextAlign.center),
-              Text('ends in ${hms(b.timeLeft)}', style: const TextStyle(color: EjColors.accent2, fontSize: 10)),
-            ])),
-            const SizedBox(width: 10),
-            _flag(b.defenderFlag),
-          ]),
-        ),
-      );
-  Widget _flag(String url) => ClipRRect(borderRadius: BorderRadius.circular(4), child: Image.network(url, width: 34, height: 24, fit: BoxFit.cover, errorBuilder: (_, __, ___) => const SizedBox(width: 34, height: 24)));
+  State<_Blink> createState() => _BlinkState();
 }
 
-class ArticleTile extends StatelessWidget {
-  const ArticleTile(this.a, {super.key});
-  final Article a;
+class _BlinkState extends State<_Blink> {
+  bool _on = true;
+  Timer? _t;
   @override
-  Widget build(BuildContext context) => InkWell(
-        onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => ArticleScreen(id: a.id))),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 6),
-          child: Row(children: [
-            Container(
-              width: 44, height: 44, alignment: Alignment.center,
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(12), border: Border.all(color: EjColors.line), gradient: LinearGradient(colors: [EjColors.accent.withValues(alpha: .5), EjColors.accent2.withValues(alpha: .35)])),
-              child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [Text('${a.votes}', style: display(size: 15)), const Text('VOTES', style: TextStyle(fontSize: 7, color: EjColors.muted, fontWeight: FontWeight.w700))]),
-            ),
-            const SizedBox(width: 10),
-            Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(a.title, style: const TextStyle(fontWeight: FontWeight.w600), maxLines: 2, overflow: TextOverflow.ellipsis),
-              Text('${ago(a.time)} · in ${a.npName}', style: const TextStyle(color: EjColors.muted, fontSize: 11)),
-            ])),
-          ]),
+  void initState() {
+    super.initState();
+    _t = Timer.periodic(const Duration(milliseconds: 700), (_) => setState(() => _on = !_on));
+  }
+
+  @override
+  void dispose() {
+    _t?.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => Opacity(opacity: _on ? 1 : 0, child: widget.child);
+}
+
+/// The legacy home chatbox (column-right): textarea + Send, then the message list.
+class ChatBox extends ConsumerStatefulWidget {
+  const ChatBox({super.key});
+  @override
+  ConsumerState<ChatBox> createState() => _ChatState();
+}
+
+class _ChatState extends ConsumerState<ChatBox> {
+  final _msg = TextEditingController();
+  bool _busy = false;
+  String? _status;
+  bool _statusError = false;
+  Timer? _poll;
+
+  @override
+  void initState() {
+    super.initState();
+    _poll = Timer.periodic(const Duration(seconds: 30), (_) => ref.invalidate(chatProvider));
+  }
+
+  @override
+  void dispose() {
+    _poll?.cancel();
+    _msg.dispose();
+    super.dispose();
+  }
+
+  Future<void> _send() async {
+    if (_msg.text.trim().isEmpty) return;
+    setState(() => _busy = true);
+    try {
+      final r = await ref.read(apiProvider).post('chat', {'message': _msg.text});
+      _msg.clear();
+      setState(() {
+        _status = r['message'] as String?;
+        _statusError = false;
+      });
+      ref.invalidate(chatProvider);
+    } on ApiException catch (e) {
+      setState(() {
+        _status = e.message;
+        _statusError = true;
+      });
+    } finally {
+      if (mounted) setState(() => _busy = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final chat = ref.watch(chatProvider);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const BoxTitle('Chatbox'),
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border.all(color: EjColors.black),
+            borderRadius: BorderRadius.circular(5),
+          ),
+          padding: const EdgeInsets.all(4),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              TextField(
+                controller: _msg,
+                minLines: 2,
+                maxLines: 3,
+                style: const TextStyle(fontSize: 12),
+                decoration: const InputDecoration(hintText: 'Your message…'),
+              ),
+              const SizedBox(height: 4),
+              Row(
+                children: [
+                  ImgButton('Send', busy: _busy, onPressed: _send),
+                  const SizedBox(width: 8),
+                  if (_status != null)
+                    Expanded(
+                      child: Text(_status!, style: TextStyle(fontSize: 11, color: _statusError ? EjColors.red : EjColors.green)),
+                    ),
+                ],
+              ),
+              const Divider(color: EjColors.black, height: 8),
+              chat.when(
+                loading: () => const Loading(),
+                error: (e, _) => Text('$e', style: const TextStyle(color: EjColors.red, fontSize: 11)),
+                data: (d) {
+                  final ann = d['announce'] as Map<String, dynamic>?;
+                  final msgs = (d['messages'] as List).cast<Map<String, dynamic>>();
+                  return Column(children: [if (ann != null) _row(ann, announce: true), if (msgs.isEmpty) const EmptyNote('No messages yet.'), for (final m in msgs) _row(m)]);
+                },
+              ),
+            ],
+          ),
         ),
-      );
+      ],
+    );
+  }
+
+  Widget _row(Map<String, dynamic> m, {bool announce = false}) => Column(
+    children: [
+      Padding(
+        padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 2),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Avatar(m['avatar'] as String, size: 30),
+            const SizedBox(width: 6),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                          text: '${m['name']}: ',
+                          style: TextStyle(fontWeight: FontWeight.bold, color: announce ? EjColors.red : EjColors.link),
+                        ),
+                        TextSpan(text: m['message'] as String),
+                      ],
+                    ),
+                    style: const TextStyle(fontSize: 11, color: EjColors.black),
+                  ),
+                  Text(ago(m['time'] as int), style: const TextStyle(fontSize: 9, color: EjColors.text)),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+      const Padding(padding: EdgeInsets.symmetric(horizontal: 14), child: Divider(height: 2)),
+    ],
+  );
 }

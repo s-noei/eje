@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../core/theme.dart';
+import '../models/models.dart';
 
 final _num = NumberFormat.decimalPattern();
 String fmt(num n) => n == n.roundToDouble() ? _num.format(n) : n.toStringAsFixed(2);
@@ -12,195 +13,801 @@ String ago(int ts) {
   if (d.inDays < 1) return '${d.inHours} h ago';
   return '${d.inDays} d ago';
 }
-String hms(Duration d) => '${d.inHours.toString().padLeft(2, '0')}:${(d.inMinutes % 60).toString().padLeft(2, '0')}:${(d.inSeconds % 60).toString().padLeft(2, '0')}';
 
-/// Glass card with the accent hairline on top.
-class GlassCard extends StatelessWidget {
-  const GlassCard({super.key, required this.child, this.padding = const EdgeInsets.all(14), this.accent, this.onTap});
+String hms(Duration d) => '${d.inHours.toString().padLeft(2, '0')}:${(d.inMinutes % 60).toString().padLeft(2, '0')}:${(d.inSeconds % 60).toString().padLeft(2, '0')}';
+String stripHtml(String html) => html
+    .replaceAll(RegExp(r'<br\s*/?>', caseSensitive: false), '\n')
+    .replaceAll(RegExp(r'</p>', caseSensitive: false), '\n\n')
+    .replaceAll(RegExp(r'<[^>]+>'), '')
+    .replaceAll('&nbsp;', ' ')
+    .replaceAll('&amp;', '&')
+    .replaceAll('&lt;', '<')
+    .replaceAll('&gt;', '>')
+    .replaceAll('&quot;', '"')
+    .replaceAll('&#039;', "'")
+    .replaceAll(RegExp(r'\n{3,}'), '\n\n')
+    .trim();
+
+/// Bundled legacy image (mobile/assets/legacy/*).
+Image legacy(String name, {double? width, double? height, BoxFit? fit}) => Image.asset('assets/legacy/$name', width: width, height: height, fit: fit, filterQuality: FilterQuality.medium);
+
+Widget netImg(String url, {double? width, double? height, BoxFit fit = BoxFit.cover}) => Image.network(
+  url,
+  width: width,
+  height: height,
+  fit: fit,
+  errorBuilder: (_, __, ___) => SizedBox(width: width, height: height),
+);
+
+/// Sky/city ambient (images/theme/ambients/default.jpg) with the translucent white page on top.
+class Ambient extends StatelessWidget {
+  const Ambient({super.key, required this.child});
+  final Widget child;
+  @override
+  Widget build(BuildContext context) => Container(
+    decoration: const BoxDecoration(
+      image: DecorationImage(image: AssetImage('assets/legacy/default.jpg'), fit: BoxFit.cover, alignment: Alignment.topCenter),
+    ),
+    child: child,
+  );
+}
+
+/// The white translucent page block that holds the content in the legacy layout.
+class PagePanel extends StatelessWidget {
+  const PagePanel({super.key, required this.child, this.padding = const EdgeInsets.all(8)});
   final Widget child;
   final EdgeInsets padding;
-  final Color? accent;
+  @override
+  Widget build(BuildContext context) => Container(
+    margin: const EdgeInsets.symmetric(horizontal: 6),
+    padding: padding,
+    decoration: BoxDecoration(
+      color: EjColors.page,
+      borderRadius: BorderRadius.circular(4),
+      border: Border.all(color: Colors.white.withValues(alpha: .7)),
+    ),
+    child: child,
+  );
+}
+
+/// Square legacy avatar with a thin border.
+class Avatar extends StatelessWidget {
+  const Avatar(this.url, {super.key, this.size = 40});
+  final String url;
+  final double size;
+  @override
+  Widget build(BuildContext context) => Container(
+    width: size,
+    height: size,
+    decoration: BoxDecoration(
+      color: Colors.white,
+      border: Border.all(color: EjColors.line),
+    ),
+    padding: const EdgeInsets.all(1),
+    child: netImg(url, width: size, height: size),
+  );
+}
+
+/// One dark-blue rounded box from the citizen info bar (#citInfo).
+class InfoBox extends StatelessWidget {
+  const InfoBox({super.key, required this.child, this.padding = const EdgeInsets.symmetric(horizontal: 6, vertical: 4), this.onTap});
+  final Widget child;
+  final EdgeInsets padding;
   final VoidCallback? onTap;
   @override
   Widget build(BuildContext context) {
-    final card = Container(
+    final box = Container(
+      padding: padding,
       decoration: BoxDecoration(
-        color: EjColors.card,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: EjColors.line),
-        boxShadow: const [BoxShadow(color: Color(0x47000000), blurRadius: 24, offset: Offset(0, 8))],
+        color: EjColors.infoBox,
+        borderRadius: BorderRadius.circular(5),
+        border: Border.all(color: EjColors.infoBorder),
+        boxShadow: const [BoxShadow(color: Color(0x33000000), blurRadius: 3, offset: Offset(0, 1))],
       ),
-      clipBehavior: Clip.antiAlias,
-      child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, mainAxisSize: MainAxisSize.min, children: [
-        Container(height: 2, decoration: BoxDecoration(gradient: LinearGradient(colors: [accent ?? EjColors.accent, EjColors.accent2]))),
-        Padding(padding: padding, child: child),
-      ]),
+      child: DefaultTextStyle(
+        style: const TextStyle(color: EjColors.infoText, fontSize: 11, fontFamily: ejFontFamily),
+        child: child,
+      ),
     );
-    return onTap == null ? card : InkWell(onTap: onTap, borderRadius: BorderRadius.circular(16), child: card);
+    return onTap == null ? box : InkWell(onTap: onTap, borderRadius: BorderRadius.circular(5), child: box);
   }
 }
 
-class SectionTitle extends StatelessWidget {
-  const SectionTitle(this.title, {super.key, this.icon, this.trailing});
+/// The topbar: avatar · name/level/XP · wellness+Drink · money · PM/notes/requests · logout.
+class CitizenBar extends StatelessWidget {
+  const CitizenBar({super.key, required this.citizen, this.newPM = 0, this.newNotes = 0, this.onLogout, this.onMail});
+  final Citizen citizen;
+  final int newPM, newNotes;
+  final VoidCallback? onLogout, onMail;
+  @override
+  Widget build(BuildContext context) {
+    final c = citizen;
+    final tala = c.money.where((m) => m.curID == 1).firstOrNull;
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(6, 6, 6, 4),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              InfoBox(padding: const EdgeInsets.all(3), child: Avatar(c.avatar, size: 52)),
+              const SizedBox(width: 4),
+              Expanded(
+                child: InfoBox(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        c.name,
+                        style: const TextStyle(fontSize: 13, color: Colors.white),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: 3),
+                      Row(
+                        children: [
+                          if (!c.isCA) _levelBadge(c.level),
+                          const SizedBox(width: 4),
+                          Expanded(
+                            child: LegacyBar(value: c.isCA ? 0 : c.xpProgress, color: EjColors.lime, height: 7, dark: true),
+                          ),
+                          const SizedBox(width: 6),
+                          netImg(c.countryFlag, width: 18, height: 12),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(width: 4),
+              InfoBox(
+                onTap: onLogout,
+                padding: const EdgeInsets.fromLTRB(4, 3, 4, 2),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    legacy('logout.png', width: 24, height: 24),
+                    const Text('Logout', style: TextStyle(fontSize: 9)),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 4),
+          IntrinsicHeight(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Expanded(
+                  flex: 5,
+                  child: InfoBox(
+                    child: Row(
+                      children: [
+                        legacy(c.isCA ? 'welind-m.png' : 'welind-m.png', width: 10, height: 30),
+                        const SizedBox(width: 4),
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              LegacyBar(value: c.wellness / 100, color: EjColors.lime, height: 10, label: fmt(c.wellness), dark: true),
+                              const SizedBox(height: 3),
+                              legacy('juice-drink.png', height: 16),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 4),
+                Expanded(
+                  flex: 5,
+                  child: InfoBox(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(
+                          children: [
+                            legacy('tala.gif', width: 16, height: 16),
+                            const SizedBox(width: 6),
+                            Text(fmt(tala?.amount ?? c.tala), style: const TextStyle(fontWeight: FontWeight.bold)),
+                          ],
+                        ),
+                        const SizedBox(height: 2),
+                        Row(
+                          children: [
+                            netImg(c.countryFlag, width: 16, height: 11),
+                            const SizedBox(width: 6),
+                            Text(c.local == null ? '0' : fmt(c.local!.amount), style: const TextStyle(fontWeight: FontWeight.bold)),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 4),
+                Expanded(
+                  flex: 4,
+                  child: InfoBox(
+                    onTap: onMail,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [_counter(newPM > 0 ? 'new_pm.png' : 'no_new_pm.png', newPM), _counter(newNotes > 0 ? 'new_note.png' : 'no_new_note.png', newNotes), _counter('no_new_req.png', 0)],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _levelBadge(int level) => Container(
+    padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+    decoration: BoxDecoration(
+      color: EjColors.lime,
+      borderRadius: BorderRadius.circular(3),
+      border: Border.all(color: Colors.white54),
+    ),
+    child: Text(
+      '$level',
+      style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
+    ),
+  );
+
+  Widget _counter(String icon, int n) => Column(
+    mainAxisSize: MainAxisSize.min,
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      legacy(icon, height: 18),
+      Text(
+        '$n',
+        style: TextStyle(fontSize: 10, color: n > 0 ? Colors.white : const Color(0xFFB8C4D8), fontWeight: FontWeight.bold),
+      ),
+    ],
+  );
+}
+
+/// Logo + "Day N of eJahan" + clock (the #header block).
+class LogoHeader extends StatelessWidget {
+  const LogoHeader({super.key, this.day});
+  final int? day;
+  @override
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.fromLTRB(10, 0, 14, 0),
+    child: Row(
+      children: [
+        legacy('logo.png', height: 64),
+        const Spacer(),
+        if (day != null)
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                'Day ${fmt(day!)} of',
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 11,
+                  shadows: [Shadow(color: Colors.black45, blurRadius: 3)],
+                ),
+              ),
+              const Text(
+                'eJahan',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 11,
+                  shadows: [Shadow(color: Colors.black45, blurRadius: 3)],
+                ),
+              ),
+              const SizedBox(height: 4),
+              _Clock(),
+            ],
+          ),
+      ],
+    ),
+  );
+}
+
+class _Clock extends StatefulWidget {
+  @override
+  State<_Clock> createState() => _ClockState();
+}
+
+class _ClockState extends State<_Clock> {
+  @override
+  Widget build(BuildContext context) => StreamBuilder<DateTime>(
+    stream: Stream.periodic(const Duration(seconds: 1), (_) => DateTime.now()),
+    initialData: DateTime.now(),
+    builder: (_, s) => Text(
+      DateFormat('HH:mm:ss').format(s.data!),
+      style: const TextStyle(
+        color: Colors.white,
+        fontWeight: FontWeight.bold,
+        fontSize: 12,
+        shadows: [Shadow(color: Colors.black45, blurRadius: 3)],
+      ),
+    ),
+  );
+}
+
+/// The light-blue #menubar strip; tabs separated by a white hairline.
+class LegacyMenuBar extends StatelessWidget {
+  const LegacyMenuBar({super.key, required this.items, required this.selected, required this.onSelect, this.badges = const {}});
+  final List<String> items;
+  final int selected;
+  final ValueChanged<int> onSelect;
+  final Map<int, bool> badges;
+  @override
+  Widget build(BuildContext context) => Container(
+    margin: const EdgeInsets.fromLTRB(6, 6, 6, 6),
+    height: 40,
+    decoration: BoxDecoration(
+      image: const DecorationImage(image: AssetImage('assets/legacy/menu-back.png'), repeat: ImageRepeat.repeatX, fit: BoxFit.fitHeight),
+      color: EjColors.menu,
+      borderRadius: BorderRadius.circular(3),
+      border: Border.all(color: const Color(0xFF3E8FCB), style: BorderStyle.solid),
+    ),
+    child: Row(
+      children: [
+        for (var i = 0; i < items.length; i++)
+          Expanded(
+            child: InkWell(
+              onTap: () => onSelect(i),
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border(left: BorderSide(color: i == 0 ? Colors.transparent : Colors.white)),
+                  image: i == selected ? const DecorationImage(image: AssetImage('assets/legacy/menu-back-h.png'), repeat: ImageRepeat.repeatX, fit: BoxFit.fitHeight) : null,
+                ),
+                alignment: Alignment.center,
+                child: Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    Text(
+                      items[i],
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 13,
+                        shadows: [Shadow(color: Colors.black26, blurRadius: 2)],
+                      ),
+                    ),
+                    if (badges[i] == true)
+                      Positioned(
+                        right: -9,
+                        top: -2,
+                        child: Container(
+                          width: 7,
+                          height: 7,
+                          decoration: const BoxDecoration(color: EjColors.red, shape: BoxShape.circle),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+      ],
+    ),
+  );
+}
+
+/// One "YOUR TASKS" baloon: task icon + green bold title.
+class TaskBaloon extends StatelessWidget {
+  const TaskBaloon({super.key, required this.icon, required this.title, this.onTap, this.width = 118});
+  final String icon, title;
+  final VoidCallback? onTap;
+  final double width;
+  @override
+  Widget build(BuildContext context) => InkWell(
+    onTap: onTap,
+    child: Container(
+      width: width,
+      height: 50,
+      margin: const EdgeInsets.symmetric(vertical: 1, horizontal: 1),
+      padding: const EdgeInsets.all(1),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: EjColors.line),
+        borderRadius: BorderRadius.circular(3),
+      ),
+      child: Row(
+        children: [
+          legacy('tasks/$icon.png', width: 44, height: 44),
+          Expanded(
+            child: Text(
+              title,
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: EjColors.green, fontWeight: FontWeight.bold, fontSize: 11, height: 1.1),
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+/// Inventory box (icon + N_star + amount), as in the left sidebar.
+class InventoryBox extends StatelessWidget {
+  const InventoryBox({super.key, required this.icon, required this.stars, required this.amount, this.selectable = false, this.selected = false, this.onTap});
+  final String icon;
+  final int stars, amount;
+  final bool selectable, selected;
+  final VoidCallback? onTap;
+  @override
+  Widget build(BuildContext context) => InkWell(
+    onTap: onTap,
+    child: Container(
+      width: 44,
+      margin: const EdgeInsets.all(1),
+      decoration: BoxDecoration(
+        color: selected ? const Color(0xFFE6F3FF) : Colors.white,
+        border: Border.all(color: selected ? EjColors.link : EjColors.black, width: selected ? 2 : 1),
+        borderRadius: BorderRadius.circular(3),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          icon.startsWith('http') ? netImg(icon, width: 40, height: 40, fit: BoxFit.contain) : Image.asset(icon, width: 40, height: 40, fit: BoxFit.contain),
+          Container(
+            decoration: const BoxDecoration(
+              border: Border(
+                top: BorderSide(color: EjColors.black),
+                bottom: BorderSide(color: EjColors.black),
+              ),
+            ),
+            child: legacy('${stars.clamp(0, 5)}_star.gif', width: 42, height: 9, fit: BoxFit.fill),
+          ),
+          Text('$amount', style: const TextStyle(fontSize: 11, color: EjColors.black)),
+        ],
+      ),
+    ),
+  );
+}
+
+/// `.home-box-title`: script heading followed by the hairline.
+class BoxTitle extends StatelessWidget {
+  const BoxTitle(this.title, {super.key, this.hr = true, this.trailing});
   final String title;
-  final IconData? icon;
+  final bool hr;
   final Widget? trailing;
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.only(bottom: 10),
-        child: Row(children: [
-          if (icon != null)
-            Container(
-              width: 26, height: 26, margin: const EdgeInsets.only(right: 8),
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), gradient: const LinearGradient(colors: [EjColors.accent, EjColors.accent2])),
-              child: Icon(icon, size: 15, color: Colors.white),
-            ),
-          Expanded(child: Text(title.toUpperCase(), style: display(size: 16))),
-          if (trailing != null) trailing!,
-        ]),
-      );
-}
-
-class StatBar extends StatelessWidget {
-  const StatBar({super.key, required this.label, required this.value, required this.text, this.colors = const [EjColors.accent, EjColors.accent2]});
-  final String label;
-  final double value;
-  final String text;
-  final List<Color> colors;
-  @override
-  Widget build(BuildContext context) => Row(children: [
-        SizedBox(width: 64, child: Text(label.toUpperCase(), style: const TextStyle(fontSize: 9, fontWeight: FontWeight.w700, color: EjColors.muted, letterSpacing: 1))),
-        Expanded(
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(99),
-            child: Stack(children: [
-              Container(height: 9, color: Colors.white.withValues(alpha: .08)),
-              AnimatedFractionallySizedBox(
-                duration: const Duration(milliseconds: 700), curve: Curves.easeOutCubic, widthFactor: value.clamp(0, 1),
-                child: Container(height: 9, decoration: BoxDecoration(gradient: LinearGradient(colors: colors), boxShadow: [BoxShadow(color: colors.last.withValues(alpha: .5), blurRadius: 10)])),
-              ),
-            ]),
-          ),
+    padding: const EdgeInsets.only(top: 6, bottom: 4),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Row(
+          children: [
+            Expanded(child: Text(title, style: boxTitle())),
+            if (trailing != null) trailing!,
+          ],
         ),
-        const SizedBox(width: 8),
-        SizedBox(width: 90, child: Text(text, textAlign: TextAlign.right, style: display(size: 12))),
-      ]);
+        if (hr) const Divider(height: 6, color: EjColors.black, thickness: .5),
+      ],
+    ),
+  );
 }
 
-class EjButton extends StatelessWidget {
-  const EjButton(this.label, {super.key, this.onPressed, this.gold = false, this.ghost = false, this.icon, this.busy = false});
+/// Bold 10pt sub-heading with the hairline (e.g. "Your military stats").
+class SubHead extends StatelessWidget {
+  const SubHead(this.title, {super.key, this.center = false});
+  final String title;
+  final bool center;
+  @override
+  Widget build(BuildContext context) => Column(
+    crossAxisAlignment: CrossAxisAlignment.stretch,
+    children: [
+      Text(
+        title,
+        textAlign: center ? TextAlign.center : TextAlign.start,
+        style: const TextStyle(fontWeight: FontWeight.bold, color: EjColors.black, fontSize: 13),
+      ),
+      const Divider(height: 8, color: EjColors.line),
+    ],
+  );
+}
+
+/// Blue/red/gray 150×20 image buttons (`.submit-blue-1`, `.submit-red-1`).
+class ImgButton extends StatelessWidget {
+  const ImgButton(this.label, {super.key, this.onPressed, this.red = false, this.gray = false, this.busy = false, this.width = 150});
   final String label;
   final VoidCallback? onPressed;
-  final bool gold, ghost, busy;
-  final IconData? icon;
+  final bool red, gray, busy;
+  final double width;
   @override
   Widget build(BuildContext context) {
-    final fg = gold ? const Color(0xFF1B1400) : Colors.white;
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(99),
-        gradient: ghost ? null : LinearGradient(colors: gold ? const [Color(0xFFFFE08A), Color(0xFFF59E0B)] : const [EjColors.accent, Color(0xFF4F46E5)]),
-        color: ghost ? Colors.white.withValues(alpha: .08) : null,
-        border: ghost ? Border.all(color: EjColors.line) : null,
-        boxShadow: ghost || onPressed == null ? null : [BoxShadow(color: (gold ? EjColors.gold : EjColors.accent).withValues(alpha: .45), blurRadius: 18, offset: const Offset(0, 6))],
-      ),
-      child: TextButton.icon(
-        onPressed: busy ? null : onPressed,
-        style: TextButton.styleFrom(foregroundColor: fg, padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12), shape: const StadiumBorder()),
-        icon: busy ? SizedBox(width: 14, height: 14, child: CircularProgressIndicator(strokeWidth: 2, color: fg)) : Icon(icon ?? Icons.bolt, size: 16, color: onPressed == null ? EjColors.muted : fg),
-        label: Text(label.toUpperCase(), style: display(size: 14, color: onPressed == null ? EjColors.muted : fg)),
+    final disabled = onPressed == null || busy;
+    final img = gray || disabled ? 'button-gray-1.png' : (red ? 'button-red-1.png' : 'button-blue-1.png');
+    return InkWell(
+      onTap: disabled ? null : onPressed,
+      child: Container(
+        width: width,
+        height: 20,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          image: DecorationImage(image: AssetImage('assets/legacy/$img'), fit: BoxFit.fill),
+          borderRadius: BorderRadius.circular(3),
+        ),
+        child: busy
+            ? const SizedBox(width: 12, height: 12, child: CircularProgressIndicator(strokeWidth: 2, color: EjColors.black))
+            : Text(
+                label,
+                style: const TextStyle(color: EjColors.black, fontSize: 11, fontWeight: FontWeight.bold),
+              ),
       ),
     );
   }
 }
 
-class Chip2 extends StatelessWidget {
-  const Chip2({super.key, required this.value, required this.label, this.image, this.icon});
-  final String value, label;
-  final String? image;
-  final IconData? icon;
+/// Grey legacy `<input type=submit>` (e.g. "Show active wars").
+class PlainButton extends StatelessWidget {
+  const PlainButton(this.label, {super.key, this.onPressed});
+  final String label;
+  final VoidCallback? onPressed;
   @override
-  Widget build(BuildContext context) => Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-        decoration: BoxDecoration(color: Colors.white.withValues(alpha: .06), borderRadius: BorderRadius.circular(12), border: Border.all(color: EjColors.line)),
-        child: Row(mainAxisSize: MainAxisSize.min, children: [
-          if (image != null) Image.network(image!, height: 16, errorBuilder: (_, __, ___) => const SizedBox()),
-          if (icon != null) Icon(icon, size: 16, color: EjColors.gold),
-          const SizedBox(width: 6),
-          Text(value, style: display(size: 14)),
-          const SizedBox(width: 4),
-          Text(label, style: const TextStyle(color: EjColors.muted, fontSize: 11)),
-        ]),
-      );
+  Widget build(BuildContext context) => InkWell(
+    onTap: onPressed,
+    child: Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 3),
+      decoration: BoxDecoration(
+        color: const Color(0xFFDDEEFF),
+        border: Border.all(color: const Color(0xFF7FA8C9)),
+        borderRadius: BorderRadius.circular(2),
+      ),
+      child: Text(label, style: const TextStyle(color: EjColors.black, fontSize: 12)),
+    ),
+  );
 }
 
-class Pills extends StatelessWidget {
-  const Pills({super.key, required this.items, required this.selected, required this.onSelect});
+/// Green (info) / red (error) notice with the check / danger icon (`.infHandle` / `.errHandle`).
+class Notice extends StatelessWidget {
+  const Notice(this.text, {super.key, this.error = false, this.sub});
+  final String text;
+  final String? sub;
+  final bool error;
+  @override
+  Widget build(BuildContext context) {
+    final color = error ? EjColors.red : EjColors.green;
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: color),
+        borderRadius: BorderRadius.circular(5),
+      ),
+      child: Row(
+        children: [
+          legacy(error ? 'danger.png' : 'icon_ok.png', width: 26, height: 26),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  text,
+                  style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 12),
+                ),
+                if (sub != null)
+                  Text(
+                    sub!,
+                    style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 12),
+                  ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// `.nButtons` — the rounded-top tab buttons used for events / news.
+class LegacyTabs extends StatelessWidget {
+  const LegacyTabs({super.key, required this.items, required this.selected, required this.onSelect});
   final List<String> items;
   final int selected;
   final ValueChanged<int> onSelect;
   @override
-  Widget build(BuildContext context) => SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Container(
-          padding: const EdgeInsets.all(3),
-          decoration: BoxDecoration(color: Colors.black.withValues(alpha: .3), borderRadius: BorderRadius.circular(99), border: Border.all(color: EjColors.line)),
-          child: Row(mainAxisSize: MainAxisSize.min, children: [
-            for (var i = 0; i < items.length; i++)
-              GestureDetector(
-                onTap: () => onSelect(i),
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 200),
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(99),
-                    gradient: i == selected ? const LinearGradient(colors: [EjColors.accent, Color(0xFF4F46E5)]) : null,
-                  ),
-                  child: Text(items[i], style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: i == selected ? Colors.white : EjColors.muted)),
+  Widget build(BuildContext context) => Container(
+    decoration: const BoxDecoration(
+      border: Border(bottom: BorderSide(color: EjColors.line)),
+    ),
+    padding: const EdgeInsets.symmetric(horizontal: 6),
+    child: SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          for (var i = 0; i < items.length; i++)
+            InkWell(
+              onTap: () => onSelect(i),
+              child: Container(
+                margin: const EdgeInsets.only(right: 3, top: 3),
+                padding: const EdgeInsets.fromLTRB(9, 4, 9, 4),
+                decoration: BoxDecoration(
+                  color: i == selected ? Colors.white : null,
+                  gradient: i == selected ? null : const LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [Color(0xFFCDE7F9), Color(0xFFEFF7FD)]),
+                  borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
+                  border: Border.all(color: i == selected ? EjColors.line : const Color(0xFFCCDDEE)),
+                  boxShadow: i == selected ? const [BoxShadow(color: Color(0xFFCCCCCC), blurRadius: 3)] : null,
                 ),
+                child: Text(items[i], style: TextStyle(fontSize: 12, color: i == selected ? EjColors.black : EjColors.link)),
               ),
-          ]),
-        ),
-      );
+            ),
+        ],
+      ),
+    ),
+  );
 }
 
-class Avatar extends StatelessWidget {
-  const Avatar(this.url, {super.key, this.size = 40, this.progress, this.badge});
-  final String url;
-  final double size;
-  final double? progress;
-  final String? badge;
+/// Thin legacy progress bar (military skill / wellness): 1px border, flat fill.
+class LegacyBar extends StatelessWidget {
+  const LegacyBar({super.key, required this.value, this.color = EjColors.lime, this.height = 8, this.label, this.dark = false});
+  final double value;
+  final Color color;
+  final double height;
+  final String? label;
+  final bool dark;
   @override
-  Widget build(BuildContext context) => SizedBox(
-        width: size + 8, height: size + 8,
-        child: Stack(clipBehavior: Clip.none, children: [
-          if (progress != null)
-            SizedBox(width: size + 8, height: size + 8, child: CircularProgressIndicator(value: progress, strokeWidth: 3, color: EjColors.accent2, backgroundColor: Colors.white.withValues(alpha: .1))),
-          Positioned(
-            left: 4, top: 4,
-            child: ClipOval(
-              child: Image.network(url, width: size, height: size, fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) => Container(width: size, height: size, color: EjColors.bg2, child: const Icon(Icons.person, color: EjColors.muted))),
+  Widget build(BuildContext context) => Container(
+    height: height,
+    decoration: BoxDecoration(
+      color: dark ? const Color(0xFF1B3050) : Colors.white,
+      border: Border.all(color: dark ? const Color(0xFF9FB6D6) : EjColors.black, width: .8),
+      borderRadius: BorderRadius.circular(2),
+    ),
+    child: Stack(
+      children: [
+        FractionallySizedBox(
+          widthFactor: value.clamp(0, 1).toDouble(),
+          child: Container(
+            decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(1.5)),
+          ),
+        ),
+        if (label != null)
+          Center(
+            child: Text(
+              label!,
+              style: TextStyle(fontSize: height - 2, height: 1, color: dark ? Colors.white : EjColors.black, fontWeight: FontWeight.bold),
             ),
           ),
-          if (badge != null)
-            Positioned(
-              right: -4, bottom: -2,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(99), gradient: const LinearGradient(colors: [Color(0xFFFFE08A), EjColors.gold]), boxShadow: [BoxShadow(color: EjColors.gold.withValues(alpha: .45), blurRadius: 10)]),
-                child: Text(badge!, style: display(size: 12, color: const Color(0xFF1B1400))),
-              ),
+      ],
+    ),
+  );
+}
+
+/// `.battles-holder` row — the battles-bg sprite with two flags and the region name.
+class BattleRow extends StatelessWidget {
+  const BattleRow(this.b, {super.key, this.onTap});
+  final Battle b;
+  final VoidCallback? onTap;
+  @override
+  Widget build(BuildContext context) => InkWell(
+    onTap: onTap,
+    child: Container(
+      height: 40,
+      margin: const EdgeInsets.symmetric(vertical: 2),
+      decoration: const BoxDecoration(
+        image: DecorationImage(image: AssetImage('assets/legacy/battles-bg.png'), fit: BoxFit.fill, alignment: Alignment.topCenter),
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 7),
+      child: Row(
+        children: [
+          netImg(b.attackerFlag, width: 26, height: 18),
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  b.region,
+                  style: const TextStyle(color: EjColors.black, fontSize: 12),
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Text(
+                  '${b.attacker} vs ${b.defender} · ${hms(b.timeLeft)}',
+                  style: const TextStyle(color: EjColors.text, fontSize: 9),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
             ),
-        ]),
-      );
+          ),
+          netImg(b.defenderFlag, width: 26, height: 18),
+        ],
+      ),
+    ),
+  );
+}
+
+/// Legacy news row: points badge (points-bg.gif) + title + "wrote X ago" + "in Newspaper".
+class ArticleRow extends StatelessWidget {
+  const ArticleRow(this.a, {super.key, this.onTap});
+  final Article a;
+  final VoidCallback? onTap;
+  @override
+  Widget build(BuildContext context) => InkWell(
+    onTap: onTap,
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 3),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 40,
+            height: 45,
+            alignment: const Alignment(0, .3),
+            decoration: const BoxDecoration(
+              image: DecorationImage(image: AssetImage('assets/legacy/points-bg.gif'), fit: BoxFit.none, alignment: Alignment.topCenter),
+            ),
+            child: Text(
+              '${a.votes}',
+              style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold),
+            ),
+          ),
+          const SizedBox(width: 6),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  a.title,
+                  style: const TextStyle(color: EjColors.link, fontSize: 12, fontWeight: FontWeight.bold),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Text('wrote ${ago(a.time)}', style: const TextStyle(fontSize: 10)),
+                Text.rich(
+                  TextSpan(
+                    children: [
+                      const TextSpan(text: 'in '),
+                      TextSpan(
+                        text: a.npName,
+                        style: const TextStyle(color: EjColors.link),
+                      ),
+                    ],
+                  ),
+                  style: const TextStyle(fontSize: 10),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+/// Underlined-on-hover blue link text, like legacy anchors.
+class LinkText extends StatelessWidget {
+  const LinkText(this.text, {super.key, this.onTap, this.size = 12});
+  final String text;
+  final VoidCallback? onTap;
+  final double size;
+  @override
+  Widget build(BuildContext context) => InkWell(
+    onTap: onTap,
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 2),
+      child: Text(
+        text,
+        style: TextStyle(color: EjColors.link, fontSize: size),
+      ),
+    ),
+  );
 }
 
 class EmptyNote extends StatelessWidget {
   const EmptyNote(this.text, {super.key});
   final String text;
   @override
-  Widget build(BuildContext context) => Padding(padding: const EdgeInsets.symmetric(vertical: 8), child: Text(text, style: const TextStyle(color: EjColors.muted)));
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+    child: Text(text, style: const TextStyle(fontSize: 12)),
+  );
 }
 
 class ErrorNote extends StatelessWidget {
@@ -208,51 +815,98 @@ class ErrorNote extends StatelessWidget {
   final Object error;
   final VoidCallback? onRetry;
   @override
-  Widget build(BuildContext context) => Center(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(mainAxisSize: MainAxisSize.min, children: [
-            const Icon(Icons.cloud_off, color: EjColors.red, size: 36),
-            const SizedBox(height: 8),
-            Text('$error', textAlign: TextAlign.center, style: const TextStyle(color: EjColors.muted)),
-            if (onRetry != null) ...[const SizedBox(height: 12), EjButton('Retry', onPressed: onRetry, ghost: true, icon: Icons.refresh)],
-          ]),
-        ),
-      );
+  Widget build(BuildContext context) => ListView(
+    padding: const EdgeInsets.all(12),
+    children: [
+      Notice('$error', error: true),
+      if (onRetry != null) Center(child: ImgButton('Try again', onPressed: onRetry)),
+    ],
+  );
+}
+
+class Loading extends StatelessWidget {
+  const Loading({super.key});
+  @override
+  Widget build(BuildContext context) => const Padding(
+    padding: EdgeInsets.all(24),
+    child: Center(child: SizedBox(width: 22, height: 22, child: CircularProgressIndicator(strokeWidth: 2))),
+  );
 }
 
 void toast(BuildContext context, String msg, {bool error = false}) {
-  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg), backgroundColor: error ? EjColors.red : EjColors.accent));
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg), backgroundColor: error ? EjColors.red : EjColors.green));
 }
 
-/// Food picker used by train/work: {stars: amount} to consume.
+/// Food picker used by train/work — inventory boxes; tap to add one, long-press to remove.
 class FoodPicker extends StatelessWidget {
-  const FoodPicker({super.key, required this.foods, required this.selected, required this.onChanged, required this.maxRecover});
+  const FoodPicker({super.key, required this.foods, required this.selected, required this.onChanged, required this.maxRecover, this.foodIcon});
   final Map<String, dynamic> foods;
   final Map<int, int> selected;
   final ValueChanged<Map<int, int>> onChanged;
   final int maxRecover;
+  final String? foodIcon;
   @override
   Widget build(BuildContext context) {
     final recover = selected.entries.fold<int>(0, (a, e) => a + e.key * e.value);
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Text('Eat food during the task — recovers $recover / $maxRecover wellness', style: TextStyle(fontSize: 12, color: recover > maxRecover ? EjColors.red : EjColors.muted)),
-      const SizedBox(height: 8),
-      Wrap(spacing: 6, runSpacing: 6, children: [
-        for (var s = 5; s >= 1; s--)
-          if ((foods['$s'] ?? 0) > 0)
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              decoration: BoxDecoration(color: Colors.black.withValues(alpha: .25), borderRadius: BorderRadius.circular(10), border: Border.all(color: EjColors.line)),
-              child: Row(mainAxisSize: MainAxisSize.min, children: [
-                Text('$s★', style: display(size: 13, color: EjColors.gold)),
-                Text(' ×${foods['$s']}', style: const TextStyle(color: EjColors.muted, fontSize: 11)),
-                IconButton(visualDensity: VisualDensity.compact, icon: const Icon(Icons.remove, size: 16), onPressed: (selected[s] ?? 0) > 0 ? () => onChanged({...selected, s: selected[s]! - 1}) : null),
-                Text('${selected[s] ?? 0}', style: display(size: 13)),
-                IconButton(visualDensity: VisualDensity.compact, icon: const Icon(Icons.add, size: 16), onPressed: (selected[s] ?? 0) < (foods['$s'] as int) ? () => onChanged({...selected, s: (selected[s] ?? 0) + 1}) : null),
-              ]),
-            ),
-      ]),
-    ]);
+    final any = [
+      for (var s = 1; s <= 5; s++)
+        if ((foods['$s'] ?? 0) > 0) s,
+    ].isNotEmpty;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SubHead('Consume food'),
+        if (!any)
+          const EmptyNote('You have no food in your inventory.')
+        else ...[
+          Wrap(
+            children: [
+              for (var s = 5; s >= 1; s--)
+                if ((foods['$s'] ?? 0) > 0)
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      InventoryBox(
+                        icon: foodIcon ?? 'assets/legacy/food-icon.png',
+                        stars: s,
+                        amount: (foods['$s'] as num).toInt() - (selected[s] ?? 0),
+                        selected: (selected[s] ?? 0) > 0,
+                        onTap: (selected[s] ?? 0) < (foods['$s'] as num).toInt() ? () => onChanged({...selected, s: (selected[s] ?? 0) + 1}) : null,
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          _mini('−', (selected[s] ?? 0) > 0 ? () => onChanged({...selected, s: selected[s]! - 1}) : null),
+                          Text(
+                            '${selected[s] ?? 0}',
+                            style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: EjColors.black),
+                          ),
+                          _mini('+', (selected[s] ?? 0) < (foods['$s'] as num).toInt() ? () => onChanged({...selected, s: (selected[s] ?? 0) + 1}) : null),
+                        ],
+                      ),
+                    ],
+                  ),
+            ],
+          ),
+          Text('Wellness to recover: $recover / $maxRecover', style: TextStyle(fontSize: 11, color: recover > maxRecover ? EjColors.red : EjColors.text)),
+        ],
+      ],
+    );
   }
+
+  Widget _mini(String t, VoidCallback? f) => InkWell(
+    onTap: f,
+    child: Container(
+      width: 16,
+      height: 16,
+      margin: const EdgeInsets.all(2),
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        border: Border.all(color: f == null ? EjColors.line : EjColors.black),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(2),
+      ),
+      child: Text(t, style: TextStyle(fontSize: 11, height: 1, color: f == null ? EjColors.line : EjColors.black)),
+    ),
+  );
 }

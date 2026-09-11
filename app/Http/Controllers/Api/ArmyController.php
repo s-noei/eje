@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Game\Support\Constants;
 use Illuminate\Http\Request;
 
 /** Training (army.php) and the mines. */
@@ -32,7 +33,15 @@ class ArmyController extends ApiController
             $options[] = ['type' => $t, 'label' => $label, 'unlocked' => $unlocked, 'wellness' => $wChange($t), 'skillGain' => (float) $this->database->getChangedSkill($c, $t, 1)];
         }
 
-        return ['trainedToday' => $c['LastTrained'] == $today, 'occupiedUntil' => (int) $c['occDue'], 'options' => $options, 'foods' => $this->foods($citID), 'report' => $report];
+        $mSkill = (int) $c['mSkill'];
+        $mRank = (int) $c['mRank'];
+        $stats = [
+            'skill' => $mSkill, 'sp' => (float) $c['mSP'], 'spFrom' => Constants::SP_CPS[$mSkill] ?? 0, 'spTo' => Constants::SP_CPS[$mSkill + 1] ?? 0,
+            'rank' => $mRank, 'rankName' => Constants::MILI_RANKS[$mRank] ?? '', 'rankIcon' => url('/images/game/war/mrank/'.$mRank.'.gif'),
+            'damage' => (float) $c['total_damage'], 'damageFrom' => Constants::RANK_DAMAGES[$mRank] ?? 0, 'damageTo' => Constants::RANK_DAMAGES[$mRank + 1] ?? 0,
+        ];
+
+        return ['trainedToday' => $c['LastTrained'] == $today, 'occupiedUntil' => (int) $c['occDue'], 'options' => $options, 'foods' => $this->foods($citID), 'report' => $report, 'stats' => $stats];
     }
 
     /** GET /api/v1/army */

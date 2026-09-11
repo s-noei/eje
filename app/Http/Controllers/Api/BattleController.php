@@ -42,7 +42,8 @@ class BattleController extends ApiController
             ],
             'side' => $side, 'canFight' => $side !== null && $c['accType'] === 'citizen' && $bat['End'] > time() && !$bat['Result'],
             'myForce' => $my, 'wellness' => (float) $c['wellness'], 'occupiedUntil' => (int) $c['occDue'],
-            'heroes' => ['attacker' => array_map($hero, $heroes['attacker']), 'defender' => array_map($hero, $heroes['defender'])],
+            // Attackers lower the wall (negative damage), as on the legacy battle page (ajax heroes-{id}).
+            'heroes' => ['attacker' => array_map($hero, $heroes['defender']), 'defender' => array_map($hero, $heroes['attacker'])],
             'weapons' => array_map(fn ($w) => ['stars' => (int) $w['Stars'], 'amount' => (int) $w['Amount']], $weapons),
             'log' => $this->log($id),
         ]);
