@@ -207,14 +207,14 @@ class _Footer extends StatelessWidget {
           'Copyright © 2013 eJahan',
           style: TextStyle(
             fontSize: 10,
-            color: Gym.muted,
+            color: Er.muted,
           ),
         ),
         Text(
           'Laws | Blog | Wiki | Forum | Contact | About',
           style: TextStyle(
             fontSize: 10,
-            color: Gym.muted,
+            color: Er.muted,
           ),
         ),
       ],

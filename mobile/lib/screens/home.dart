@@ -96,12 +96,12 @@ class _HomeState extends ConsumerState<HomeScreen> {
     child: Container(
       margin: const EdgeInsets.only(bottom: 8),
       padding: const EdgeInsets.all(8),
-      decoration: Gym.card(border: Gym.orange, glow: true, glowColor: Gym.orange),
+      decoration: Er.cardBox(border: Er.orange, glow: true, glowColor: Er.orange),
       child: Row(
         children: [
           legacy('tasks/vote.png', width: 30, height: 30),
           const SizedBox(width: 8),
-          Expanded(child: Text('🗳️ Election day! Cast your vote in the ${(v['type'] as String).toUpperCase()} elections', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12))),
+          Expanded(child: Text('🗳️ Election day! Cast your vote in the ${(v['type'] as String).toUpperCase()} elections', style: const TextStyle(color: Er.text, fontWeight: FontWeight.bold, fontSize: 12))),
         ],
       ),
     ),
@@ -113,7 +113,7 @@ class _HomeState extends ConsumerState<HomeScreen> {
     final stage = ((c.strength + c.stamina) ~/ 2).clamp(0, kShapeMax);
     return Container(
       padding: const EdgeInsets.all(12),
-      decoration: Gym.card(),
+      decoration: Er.cardBox(),
       child: Row(
         children: [
           if (!c.isCA)
@@ -122,7 +122,7 @@ class _HomeState extends ConsumerState<HomeScreen> {
               child: Container(
                 width: 110,
                 height: 150,
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), gradient: RadialGradient(colors: [Gym.cyan.withValues(alpha: .25), Colors.transparent], radius: .8)),
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), gradient: RadialGradient(colors: [Er.accent.withValues(alpha: .18), Colors.transparent], radius: .8)),
                 child: Image.asset('assets/legacy/gym/shape-$stage.png', fit: BoxFit.contain),
               ),
             ),
@@ -131,28 +131,28 @@ class _HomeState extends ConsumerState<HomeScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(c.isCA ? 'Co-account' : c.shapeName.toUpperCase(), style: const TextStyle(color: Gym.cyanSoft, fontSize: 11, fontWeight: FontWeight.w800, letterSpacing: 1.5)),
-                Text(c.rank, style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w800)),
+                Text(c.isCA ? 'Co-account' : c.shapeName.toUpperCase(), style: const TextStyle(color: Er.blue, fontSize: 11, fontWeight: FontWeight.w800, letterSpacing: 1.5)),
+                Text(c.rank, style: const TextStyle(color: Er.text, fontSize: 15, fontWeight: FontWeight.w800)),
                 Row(
                   children: [
                     netImg(c.countryFlag, width: 16, height: 11),
                     const SizedBox(width: 4),
-                    Expanded(child: Text(c.regionName.isEmpty ? c.countryName : '${c.regionName}, ${c.countryName}', style: const TextStyle(color: Gym.muted, fontSize: 11), overflow: TextOverflow.ellipsis)),
+                    Expanded(child: Text(c.regionName.isEmpty ? c.countryName : '${c.regionName}, ${c.countryName}', style: const TextStyle(color: Er.muted, fontSize: 11), overflow: TextOverflow.ellipsis)),
                   ],
                 ),
                 const SizedBox(height: 8),
                 if (!c.isCA) ...[
-                  _stat('🏋️', 'Strength', ShapeMeter(value: c.strength, color: Gym.orange, height: 9), 'hit ${fmt(c.hit)}'),
+                  _stat('🏋️', 'Strength', ShapeMeter(value: c.strength, color: Er.orange, height: 9), 'hit ${fmt(c.hit)}'),
                   const SizedBox(height: 4),
-                  _stat('💓', 'Stamina', ShapeMeter(value: c.stamina, color: Gym.cyan, height: 9), '${fmt(c.fightCost)} / fight'),
+                  _stat('💓', 'Stamina', ShapeMeter(value: c.stamina, color: Er.blue, height: 9), '${fmt(c.fightCost)} / fight'),
                   const SizedBox(height: 8),
                   Wrap(
                     spacing: 6,
                     runSpacing: 4,
                     children: [
-                      _pill(c.trainStreak > 0 ? '🔥 ${c.trainStreak} day streak' : '🌫️ no streak', c.trainStreak > 0 ? Gym.orange : Gym.muted),
-                      _pill('🔧 work skill ${fmt(c.wSkill)}', Gym.cyanSoft),
-                      if (c.worldRank != null) _pill('🌍 #${c.worldRank}', Gym.gold),
+                      _pill(c.trainStreak > 0 ? '🔥 ${c.trainStreak} day streak' : '🌫️ no streak', c.trainStreak > 0 ? Er.orange : Er.muted),
+                      _pill('🔧 work skill ${fmt(c.wSkill)}', Er.blue),
+                      if (c.worldRank != null) _pill('🌍 #${c.worldRank}', Er.gold),
                     ],
                   ),
                 ],
@@ -168,10 +168,10 @@ class _HomeState extends ConsumerState<HomeScreen> {
     children: [
       Text(emoji, style: const TextStyle(fontSize: 12)),
       const SizedBox(width: 4),
-      SizedBox(width: 54, child: Text(label, style: const TextStyle(color: Gym.text, fontSize: 11, fontWeight: FontWeight.bold))),
+      SizedBox(width: 54, child: Text(label, style: const TextStyle(color: Er.text, fontSize: 11, fontWeight: FontWeight.bold))),
       Expanded(child: meter),
       const SizedBox(width: 6),
-      Text(effect, style: const TextStyle(color: Gym.muted, fontSize: 10)),
+      Text(effect, style: const TextStyle(color: Er.muted, fontSize: 10)),
     ],
   );
 
@@ -211,9 +211,9 @@ class _HomeState extends ConsumerState<HomeScreen> {
               borderRadius: BorderRadius.circular(6),
               child: Container(
                 height: 8,
-                color: Colors.white.withValues(alpha: .1),
+                color: Er.surface2,
                 alignment: Alignment.centerLeft,
-                child: FractionallySizedBox(widthFactor: total == 0 ? 0 : done / total, child: Container(decoration: BoxDecoration(color: Gym.green, boxShadow: [BoxShadow(color: Gym.green.withValues(alpha: .7), blurRadius: 6)]))),
+                child: FractionallySizedBox(widthFactor: total == 0 ? 0 : done / total, child: Container(decoration: BoxDecoration(color: Er.accentDark, boxShadow: [BoxShadow(color: Er.accentDark.withValues(alpha: .7), blurRadius: 6)]))),
               ),
             ),
           ),
@@ -232,7 +232,7 @@ class _HomeState extends ConsumerState<HomeScreen> {
         if (!isCA)
           Container(
             padding: const EdgeInsets.all(10),
-            decoration: Gym.card(border: chestOpen ? Gym.gold : null, glow: chestOpen, glowColor: Gym.gold),
+            decoration: Er.cardBox(border: chestOpen ? Er.gold : null, glow: chestOpen, glowColor: Er.gold),
             child: Row(
               children: [
                 Text(c.dailyClaimed ? '✅' : (chestOpen ? '🎁' : '🔒'), style: const TextStyle(fontSize: 30)),
@@ -241,21 +241,21 @@ class _HomeState extends ConsumerState<HomeScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(c.dailyClaimed ? 'Daily reward collected' : (chestOpen ? 'Daily reward unlocked!' : 'Daily reward'), style: TextStyle(fontWeight: FontWeight.w800, color: chestOpen ? Gym.gold : Colors.white, fontSize: 13)),
+                      Text(c.dailyClaimed ? 'Daily reward collected' : (chestOpen ? 'Daily reward unlocked!' : 'Daily reward'), style: TextStyle(fontWeight: FontWeight.w800, color: chestOpen ? Er.orange : Er.text, fontSize: 13)),
                       Row(
                         children: [
                           legacy('xp_icon.png', width: 14, height: 14),
-                          const Text(' 5 EP  +  ', style: TextStyle(fontSize: 11, color: Gym.muted)),
+                          const Text(' 5 EP  +  ', style: TextStyle(fontSize: 11, color: Er.muted)),
                           legacy('food-icon.png', width: 14, height: 14),
-                          const Text(' 1 food ', style: TextStyle(fontSize: 11, color: Gym.muted)),
+                          const Text(' 1 food ', style: TextStyle(fontSize: 11, color: Er.muted)),
                           legacy('5_star.gif', height: 8),
                         ],
                       ),
-                      if (!chestOpen && !c.dailyClaimed) const Text('Train today to unlock it', style: TextStyle(fontSize: 10, color: Gym.muted)),
+                      if (!chestOpen && !c.dailyClaimed) const Text('Train today to unlock it', style: TextStyle(fontSize: 10, color: Er.muted)),
                     ],
                   ),
                 ),
-                if (chestOpen) GlowButton('Claim', busy: _claiming, onPressed: _claim, color: Gym.gold, small: true),
+                if (chestOpen) GlowButton('Claim', busy: _claiming, onPressed: _claim, color: Er.gold, small: true),
               ],
             ),
           ),
@@ -273,12 +273,12 @@ class _HomeState extends ConsumerState<HomeScreen> {
       if (d.battles.isEmpty)
         Container(
           padding: const EdgeInsets.all(10),
-          decoration: Gym.card(),
+          decoration: Er.cardBox(),
           child: Row(
             children: [
               const Text('🕊️', style: TextStyle(fontSize: 22)),
               const SizedBox(width: 8),
-              const Expanded(child: Text('Your country is at peace — no active battle.', style: TextStyle(fontSize: 12, color: Gym.text))),
+              const Expanded(child: Text('Your country is at peace — no active battle.', style: TextStyle(fontSize: 12, color: Er.text))),
               GlowButton('Battles', small: true, onPressed: () => _tab(3)),
             ],
           ),
@@ -295,9 +295,9 @@ class _HomeState extends ConsumerState<HomeScreen> {
       GymTitle('Backpack', trailing: 'Market »', onTrailing: () => openWeb(ref, 'market-en.html')),
       Container(
         padding: const EdgeInsets.all(8),
-        decoration: Gym.card(),
+        decoration: Er.cardBox(),
         child: c.inventory.isEmpty
-            ? const Text('Your backpack is empty — buy food and weapons on the market.', style: TextStyle(fontSize: 12, color: Gym.muted))
+            ? const Text('Your backpack is empty — buy food and weapons on the market.', style: TextStyle(fontSize: 12, color: Er.muted))
             : SizedBox(
                 height: 78,
                 child: ListView(
@@ -308,12 +308,12 @@ class _HomeState extends ConsumerState<HomeScreen> {
                         width: 56,
                         margin: const EdgeInsets.only(right: 6),
                         padding: const EdgeInsets.all(4),
-                        decoration: BoxDecoration(color: Colors.white.withValues(alpha: .06), borderRadius: BorderRadius.circular(10), border: Border.all(color: Gym.line)),
+                        decoration: BoxDecoration(color: Er.surface, borderRadius: BorderRadius.circular(10), border: Border.all(color: Er.line)),
                         child: Column(
                           children: [
                             Expanded(child: netImg(i.icon, fit: BoxFit.contain)),
                             legacy('${i.stars.clamp(0, 5)}_star.gif', width: 44, height: 8, fit: BoxFit.fill),
-                            Text('×${i.amount}', style: const TextStyle(color: Gym.text, fontSize: 10, fontWeight: FontWeight.bold)),
+                            Text('×${i.amount}', style: const TextStyle(color: Er.text, fontSize: 10, fontWeight: FontWeight.bold)),
                           ],
                         ),
                       ),
@@ -334,7 +334,7 @@ class _HomeState extends ConsumerState<HomeScreen> {
       const SizedBox(height: 6),
       Container(
         padding: const EdgeInsets.all(8),
-        decoration: Gym.card(),
+        decoration: Er.cardBox(),
         child: switch (_dispatch) {
           0 => _events(d),
           1 => _news(d),
@@ -352,7 +352,7 @@ class _HomeState extends ConsumerState<HomeScreen> {
       children: [
         GymTabs(items: [d.citizen.countryName, 'International'], selected: _eventTab, onSelect: (i) => setState(() => _eventTab = i), small: true),
         const SizedBox(height: 6),
-        if (list.isEmpty) const Text('No military events yet.', style: TextStyle(fontSize: 12, color: Gym.muted)),
+        if (list.isEmpty) const Text('No military events yet.', style: TextStyle(fontSize: 12, color: Er.muted)),
         for (var i = 0; i < list.length; i++) ...[
           InkWell(
             onTap: () => launchUrl(Uri.parse(list[i].link), mode: LaunchMode.externalApplication),
@@ -362,14 +362,14 @@ class _HomeState extends ConsumerState<HomeScreen> {
                 children: [
                   netImg(list[i].icon, width: 20, height: 20, fit: BoxFit.contain),
                   const SizedBox(width: 8),
-                  Expanded(child: Text(list[i].title, style: const TextStyle(fontSize: 12, color: Gym.text))),
+                  Expanded(child: Text(list[i].title, style: const TextStyle(fontSize: 12, color: Er.text))),
                 ],
               ),
             ),
           ),
-          if (i < list.length - 1) const Divider(height: 4, color: Gym.line),
+          if (i < list.length - 1) const Divider(height: 4, color: Er.line),
         ],
-        Center(child: LinkText('Show all military events', onTap: () => openWeb(ref, 'media-0-eve-en.html'), color: Gym.cyanSoft)),
+        Center(child: LinkText('Show all military events', onTap: () => openWeb(ref, 'media-0-eve-en.html'), color: Er.blue)),
       ],
     );
   }
@@ -384,9 +384,9 @@ class _HomeState extends ConsumerState<HomeScreen> {
       children: [
         GymTabs(items: keys.map((k) => labels[k]!).toList(), selected: _newsTab, onSelect: (i) => setState(() => _newsTab = i), small: true),
         const SizedBox(height: 6),
-        if (list.isEmpty) const Text('There is no article to show.', style: TextStyle(fontSize: 12, color: Gym.muted)),
+        if (list.isEmpty) const Text('There is no article to show.', style: TextStyle(fontSize: 12, color: Er.muted)),
         for (final a in list) _articleRow(a),
-        Center(child: LinkText('Go to Media center', onTap: () => openWeb(ref, 'media-${d.citizen.countryId}-en.html'), color: Gym.cyanSoft)),
+        Center(child: LinkText('Go to Media center', onTap: () => openWeb(ref, 'media-${d.citizen.countryId}-en.html'), color: Er.blue)),
       ],
     );
   }
@@ -402,16 +402,16 @@ class _HomeState extends ConsumerState<HomeScreen> {
             width: 36,
             height: 36,
             alignment: Alignment.center,
-            decoration: BoxDecoration(color: Gym.green.withValues(alpha: .15), borderRadius: BorderRadius.circular(8), border: Border.all(color: Gym.green.withValues(alpha: .5))),
-            child: Text('${a.votes}', style: const TextStyle(color: Gym.green, fontSize: 13, fontWeight: FontWeight.w800)),
+            decoration: BoxDecoration(color: Er.accentDark.withValues(alpha: .15), borderRadius: BorderRadius.circular(8), border: Border.all(color: Er.accentDark.withValues(alpha: .5))),
+            child: Text('${a.votes}', style: const TextStyle(color: Er.accentDark, fontSize: 13, fontWeight: FontWeight.w800)),
           ),
           const SizedBox(width: 8),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(a.title, style: const TextStyle(color: Gym.text, fontSize: 12, fontWeight: FontWeight.bold), maxLines: 2, overflow: TextOverflow.ellipsis),
-                Text('${ago(a.time)} · ${a.npName}', style: const TextStyle(color: Gym.muted, fontSize: 10)),
+                Text(a.title, style: const TextStyle(color: Er.text, fontSize: 12, fontWeight: FontWeight.bold), maxLines: 2, overflow: TextOverflow.ellipsis),
+                Text('${ago(a.time)} · ${a.npName}', style: const TextStyle(color: Er.muted, fontSize: 10)),
               ],
             ),
           ),
@@ -432,8 +432,8 @@ class _HomeState extends ConsumerState<HomeScreen> {
               children: [
                 const Text('📣', style: TextStyle(fontSize: 18)),
                 const SizedBox(width: 8),
-                if (a.isNew) const _Blink(child: Text('NEW ', style: TextStyle(color: Gym.orange, fontSize: 12, fontWeight: FontWeight.w800))),
-                Expanded(child: Text(a.title, style: const TextStyle(color: Gym.text, fontSize: 12))),
+                if (a.isNew) const _Blink(child: Text('NEW ', style: TextStyle(color: Er.orange, fontSize: 12, fontWeight: FontWeight.w800))),
+                Expanded(child: Text(a.title, style: const TextStyle(color: Er.text, fontSize: 12))),
               ],
             ),
           ),
@@ -462,7 +462,7 @@ class _MissionTile extends StatelessWidget {
       borderRadius: BorderRadius.circular(12),
       child: Container(
         padding: const EdgeInsets.all(8),
-        decoration: Gym.card(border: m.done ? Gym.green : (locked ? Gym.line : null), glow: m.done, glowColor: Gym.green),
+        decoration: Er.cardBox(border: m.done ? Er.accentDark : (locked ? Er.line : null), glow: m.done, glowColor: Er.accentDark),
         child: Row(
           children: [
             Container(
@@ -470,7 +470,7 @@ class _MissionTile extends StatelessWidget {
               height: 40,
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: (m.done ? Gym.green : (locked ? Gym.muted : Gym.cyan)).withValues(alpha: .15),
+                color: (m.done ? Er.accentDark : (locked ? Er.muted : Er.accent)).withValues(alpha: .15),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Text(m.done ? '✅' : m.emoji, style: const TextStyle(fontSize: 20)),
@@ -481,12 +481,12 @@ class _MissionTile extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(m.title, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w800, color: m.done ? Gym.green : Colors.white)),
-                  Text(locked ? (m.hint ?? 'Locked') : m.reward, maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 10, color: Gym.muted)),
+                  Text(m.title, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w800, color: m.done ? Er.accentDark : Er.text)),
+                  Text(locked ? (m.hint ?? 'Locked') : m.reward, maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 10, color: Er.muted)),
                 ],
               ),
             ),
-            if (!m.done) Text(locked ? '🔒' : '›', style: TextStyle(color: locked ? Gym.muted : Gym.cyan, fontSize: locked ? 14 : 22, fontWeight: FontWeight.bold)),
+            if (!m.done) Text(locked ? '🔒' : '›', style: TextStyle(color: locked ? Er.muted : Er.accent, fontSize: locked ? 14 : 22, fontWeight: FontWeight.bold)),
           ],
         ),
       ),
@@ -510,11 +510,11 @@ class _BattleCard extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.only(bottom: 8),
         padding: const EdgeInsets.all(10),
-        decoration: Gym.card(border: label != null ? Gym.red : null, glow: label != null, glowColor: Gym.red),
+        decoration: Er.cardBox(border: label != null ? Er.red : null, glow: label != null, glowColor: Er.red),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            if (label != null) Text(label!, style: const TextStyle(fontSize: 9, fontWeight: FontWeight.w800, color: Gym.red, letterSpacing: 1.5)),
+            if (label != null) Text(label!, style: const TextStyle(fontSize: 9, fontWeight: FontWeight.w800, color: Er.red, letterSpacing: 1.5)),
             Row(
               children: [
                 ClipRRect(borderRadius: BorderRadius.circular(4), child: netImg(b.attackerFlag, width: 32, height: 22)),
@@ -523,8 +523,8 @@ class _BattleCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(b.region, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w800, color: Colors.white)),
-                      Text('${b.attacker} vs ${b.defender}', style: const TextStyle(fontSize: 10, color: Gym.muted)),
+                      Text(b.region, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w800, color: Er.text)),
+                      Text('${b.attacker} vs ${b.defender}', style: const TextStyle(fontSize: 10, color: Er.muted)),
                     ],
                   ),
                 ),
@@ -532,7 +532,7 @@ class _BattleCard extends StatelessWidget {
                 const SizedBox(width: 10),
                 Column(
                   children: [
-                    Text(hms(b.timeLeft), style: TextStyle(fontSize: 12, fontWeight: FontWeight.w800, color: closing ? Gym.red : Gym.cyanSoft)),
+                    Text(hms(b.timeLeft), style: TextStyle(fontSize: 12, fontWeight: FontWeight.w800, color: closing ? Er.red : Er.blue)),
                     GlowButton('Fight', small: true, onPressed: onTap),
                   ],
                 ),
@@ -543,12 +543,12 @@ class _BattleCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(4),
               child: Container(
                 height: 8,
-                color: Gym.cyan.withValues(alpha: .35),
+                color: Er.surface2,
                 alignment: Alignment.centerLeft,
-                child: FractionallySizedBox(widthFactor: wallPct, child: Container(color: Gym.orange)),
+                child: FractionallySizedBox(widthFactor: wallPct, child: Container(color: Er.orange)),
               ),
             ),
-            Text('Wall ${fmt(b.wall)} / ${fmt(b.securePoint)}', style: const TextStyle(fontSize: 9, color: Gym.muted)),
+            Text('Wall ${fmt(b.wall)} / ${fmt(b.securePoint)}', style: const TextStyle(fontSize: 9, color: Er.muted)),
           ],
         ),
       ),
@@ -639,8 +639,8 @@ class _ChatState extends ConsumerState<ChatBox> {
       children: [
         Container(
           decoration: BoxDecoration(
-            color: Gym.dark,
-            border: Border.all(color: Gym.line),
+            color: Er.card,
+            border: Border.all(color: Er.line),
             borderRadius: BorderRadius.circular(5),
           ),
           padding: const EdgeInsets.all(4),
@@ -661,14 +661,14 @@ class _ChatState extends ConsumerState<ChatBox> {
                   const SizedBox(width: 8),
                   if (_status != null)
                     Expanded(
-                      child: Text(_status!, style: TextStyle(fontSize: 11, color: _statusError ? Gym.red : Gym.green)),
+                      child: Text(_status!, style: TextStyle(fontSize: 11, color: _statusError ? Er.red : Er.accentDark)),
                     ),
                 ],
               ),
-              const Divider(color: Gym.line, height: 8),
+              const Divider(color: Er.line, height: 8),
               chat.when(
                 loading: () => const Loading(),
-                error: (e, _) => Text('$e', style: const TextStyle(color: Gym.red, fontSize: 11)),
+                error: (e, _) => Text('$e', style: const TextStyle(color: Er.red, fontSize: 11)),
                 data: (d) {
                   final ann = d['announce'] as Map<String, dynamic>?;
                   final msgs = (d['messages'] as List).cast<Map<String, dynamic>>();
@@ -700,21 +700,21 @@ class _ChatState extends ConsumerState<ChatBox> {
                       children: [
                         TextSpan(
                           text: '${m['name']}: ',
-                          style: TextStyle(fontWeight: FontWeight.bold, color: announce ? Gym.orange : Gym.cyanSoft),
+                          style: TextStyle(fontWeight: FontWeight.bold, color: announce ? Er.orange : Er.blue),
                         ),
                         TextSpan(text: m['message'] as String),
                       ],
                     ),
-                    style: const TextStyle(fontSize: 11, color: Gym.text),
+                    style: const TextStyle(fontSize: 11, color: Er.text),
                   ),
-                  Text(ago(m['time'] as int), style: const TextStyle(fontSize: 9, color: Gym.muted)),
+                  Text(ago(m['time'] as int), style: const TextStyle(fontSize: 9, color: Er.muted)),
                 ],
               ),
             ),
           ],
         ),
       ),
-      const Padding(padding: EdgeInsets.symmetric(horizontal: 14), child: Divider(height: 2, color: Gym.line)),
+      const Padding(padding: EdgeInsets.symmetric(horizontal: 14), child: Divider(height: 2, color: Er.line)),
     ],
   );
 }

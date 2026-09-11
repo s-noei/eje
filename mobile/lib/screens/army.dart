@@ -16,13 +16,14 @@ class ArmyScreen extends ConsumerStatefulWidget {
   ConsumerState<ArmyScreen> createState() => _ArmyState();
 }
 
-const _gymDark = Color(0xFF0F1620);
-const _gymPanel = Color(0xFF1B2533);
-const _gymLine = Color(0xFF2A3A4F);
-const _cyan = Color(0xFF22D3EE);
-const _orange = Color(0xFFFF8A3D);
-const _gymText = Color(0xFFE8EEF7);
-const _gymMuted = Color(0xFF9FB3C8);
+// the gym scene itself stays dark (it is a photo); the cards around it follow the light skin
+const _gymDark = Er.card;
+const _gymPanel = Er.surface;
+const _gymLine = Er.line;
+const _cyan = Er.accent;
+const _orange = Er.orange;
+const _gymText = Er.text;
+const _gymMuted = Er.muted;
 
 class _ArmyState extends ConsumerState<ArmyScreen> {
   int? _type;
@@ -75,8 +76,7 @@ class _ArmyState extends ConsumerState<ArmyScreen> {
                 ? '🥵 Too tired to train — eat or drink something first.'
                 : 'Pick today\'s session. Every day adds a stage, every missed day takes one away.';
             return Container(
-              decoration: BoxDecoration(color: _gymDark, borderRadius: BorderRadius.circular(8)),
-              padding: const EdgeInsets.all(6),
+              padding: const EdgeInsets.all(2),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -169,7 +169,7 @@ class _GymScene extends StatelessWidget {
                 children: [
                   _meter('🏋️ Strength', shape['strength'] as int, _orange, 'hit ${fmt(shape['damage'] as num)}', white),
                   const SizedBox(height: 6),
-                  _meter('💓 Stamina', shape['stamina'] as int, _cyan, 'fight ${fmt(shape['fightCost'] as num)} wellness', white),
+                  _meter('💓 Stamina', shape['stamina'] as int, const Color(0xFF22D3EE), 'fight ${fmt(shape['fightCost'] as num)} wellness', white),
                 ],
               ),
             ),
@@ -227,14 +227,14 @@ class _SessionCard extends StatelessWidget {
           gradient: const LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [_gymPanel, _gymDark]),
           border: Border.all(color: selected ? _cyan : _gymLine, width: 2),
           borderRadius: BorderRadius.circular(8),
-          boxShadow: selected ? [BoxShadow(color: _cyan.withValues(alpha: .55), blurRadius: 16)] : null,
+          boxShadow: selected ? [BoxShadow(color: _cyan.withValues(alpha: .45), blurRadius: 12)] : const [BoxShadow(color: Color(0x14000000), blurRadius: 6, offset: Offset(0, 2))],
         ),
         child: Column(
           children: [
             Image.asset('assets/legacy/gym/${weights ? 'session-weights' : 'session-cardio'}.png', height: 130, fit: BoxFit.contain),
             const SizedBox(height: 4),
             Text('${weights ? '🏋️' : '🏃'} ${o['label']}', style: const TextStyle(color: _gymText, fontSize: 15, fontWeight: FontWeight.bold)),
-            Text(maxed ? 'keeps ${o['stat']} at max' : o['effect'] as String, style: const TextStyle(color: Color(0xFF7CFC9A), fontSize: 12, fontWeight: FontWeight.bold)),
+            Text(maxed ? 'keeps ${o['stat']} at max' : o['effect'] as String, style: const TextStyle(color: Er.accentDark, fontSize: 12, fontWeight: FontWeight.bold)),
             Text('${o['desc']} · ${o['wellness']} wellness', textAlign: TextAlign.center, style: const TextStyle(color: _gymMuted, fontSize: 10)),
           ],
         ),
@@ -257,13 +257,13 @@ class _TrainButton extends StatelessWidget {
       alignment: Alignment.center,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(24),
-        gradient: enabled ? const LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [Color(0xFF7FF3FF), _cyan]) : null,
-        color: enabled ? null : const Color(0xFF3A4657),
-        boxShadow: enabled ? [BoxShadow(color: _cyan.withValues(alpha: .6), blurRadius: 18)] : null,
+        gradient: enabled ? const LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [Color(0xFF8FCB4E), _cyan]) : null,
+        color: enabled ? null : Er.line,
+        boxShadow: enabled ? [BoxShadow(color: _cyan.withValues(alpha: .4), blurRadius: 10, offset: const Offset(0, 2))] : null,
       ),
       child: busy
-          ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2, color: Color(0xFF061018)))
-          : Text('⚡ Train', style: TextStyle(color: enabled ? const Color(0xFF061018) : const Color(0xFF8A97A8), fontSize: 17, fontWeight: FontWeight.bold)),
+          ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
+          : Text('⚡ Train', style: TextStyle(color: enabled ? Colors.white : Er.muted, fontSize: 17, fontWeight: FontWeight.bold)),
     ),
   );
 }
@@ -288,14 +288,14 @@ class _SessionReport extends StatelessWidget {
       child: Column(
         children: [
           Text('${weights ? '🏋️ Weights' : '🏃 Cardio'} session done', style: t(16, _gymText, FontWeight.bold)),
-          Text('${weights ? 'Strength' : 'Stamina'} $stat / $kShapeMax', style: t(20, weights ? _orange : _cyan, FontWeight.bold)),
+          Text('${weights ? 'Strength' : 'Stamina'} $stat / $kShapeMax', style: t(20, weights ? _orange : Er.blue, FontWeight.bold)),
           Text('${(r['streak'] as int) > 0 ? '🔥' : ''} Day ${r['streak']} in a row — ${shape['name']}', style: t(11, _gymMuted)),
           const Divider(color: _gymLine),
           Row(
             children: [
               Expanded(child: Column(children: [kv('Strength', '${r['strength']} / $kShapeMax'), kv('Stamina', '${r['stamina']} / $kShapeMax'), kv('Hit', fmt(shape['damage'] as num))])),
               Container(width: 1, height: 70, color: _gymLine, margin: const EdgeInsets.symmetric(horizontal: 8)),
-              Expanded(child: Column(children: [kv('Wellness', fmt(before - (loss - rec))), kv('Fight cost', '${fmt(shape['fightCost'] as num)} wellness'), kv('EP', '+${fmt(r['ep'] as num)}', color: const Color(0xFF7CFC9A))])),
+              Expanded(child: Column(children: [kv('Wellness', fmt(before - (loss - rec))), kv('Fight cost', '${fmt(shape['fightCost'] as num)} wellness'), kv('EP', '+${fmt(r['ep'] as num)}', color: Er.accentDark)])),
             ],
           ),
         ],

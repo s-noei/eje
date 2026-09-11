@@ -22,30 +22,31 @@ class EjColors {
   static const tabHover = Color(0xFF66BBFF);
 }
 
-/// The modern game skin (from the gym): dark graphite chrome, cyan / orange accents, glowing meters.
-class Gym {
-  static const bg = Color(0xFF0B1118);
-  static const dark = Color(0xFF0F1620);
-  static const panel = Color(0xFF1B2533);
-  static const panel2 = Color(0xFF223042);
-  static const line = Color(0xFF2A3A4F);
-  static const cyan = Color(0xFF22D3EE);
-  static const cyanSoft = Color(0xFF9FE7FF);
-  static const orange = Color(0xFFFF8A3D);
-  static const green = Color(0xFF7CFC9A);
-  static const gold = Color(0xFFFFC94D);
-  static const red = Color(0xFFFF6B6B);
-  static const text = Color(0xFFE8EEF7);
-  static const muted = Color(0xFF9FB3C8);
+/// The eRepublik-style skin: light grey page, white cards, dark navy header, green accent.
+class Er {
+  static const bg = Color(0xFFEEF1F4); // page
+  static const card = Color(0xFFFFFFFF);
+  static const surface = Color(0xFFF6F8FA); // inner panels
+  static const surface2 = Color(0xFFE9EEF3);
+  static const line = Color(0xFFD9DEE5);
+  static const header = Color(0xFF1F2F45); // navy top bar
+  static const header2 = Color(0xFF2B4059);
+  static const accent = Color(0xFF74B830); // eRepublik green
+  static const accentDark = Color(0xFF5A9422);
+  static const blue = Color(0xFF2F7DD1);
+  static const orange = Color(0xFFF39C12);
+  static const gold = Color(0xFFE6B422);
+  static const red = Color(0xFFD9534F);
+  static const text = Color(0xFF2D3A48);
+  static const muted = Color(0xFF7A8794);
 
-  static BoxDecoration card({Color? border, bool glow = false, Color glowColor = cyan, double radius = 12}) => BoxDecoration(
-    gradient: const LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [panel, dark]),
+  static BoxDecoration cardBox({Color? border, bool glow = false, Color glowColor = accent, double radius = 8}) => BoxDecoration(
+    color: card,
     border: Border.all(color: border ?? line, width: border == null ? 1 : 1.5),
     borderRadius: BorderRadius.circular(radius),
-    boxShadow: glow ? [BoxShadow(color: glowColor.withValues(alpha: .45), blurRadius: 18)] : const [BoxShadow(color: Color(0x66000000), blurRadius: 12, offset: Offset(0, 4))],
+    boxShadow: glow ? [BoxShadow(color: glowColor.withValues(alpha: .35), blurRadius: 12)] : const [BoxShadow(color: Color(0x14000000), blurRadius: 6, offset: Offset(0, 2))],
   );
 }
-
 /// Legacy body font: Arial/Tahoma 10pt.
 const ejFontFamily = 'Arial';
 
@@ -57,7 +58,7 @@ ThemeData ejTheme() {
   return ThemeData(
     useMaterial3: true,
     colorScheme: scheme,
-    scaffoldBackgroundColor: Gym.bg,
+    scaffoldBackgroundColor: Er.bg,
     fontFamily: ejFontFamily,
     textTheme: const TextTheme(
       bodyMedium: TextStyle(fontSize: 13, color: EjColors.text, height: 1.3),
@@ -86,6 +87,6 @@ ThemeData ejTheme() {
     ),
     progressIndicatorTheme: const ProgressIndicatorThemeData(color: EjColors.link),
     snackBarTheme: const SnackBarThemeData(behavior: SnackBarBehavior.floating),
-    appBarTheme: const AppBarTheme(backgroundColor: Gym.dark, foregroundColor: Colors.white, elevation: 0, centerTitle: true),
+    appBarTheme: const AppBarTheme(backgroundColor: Er.header, foregroundColor: Colors.white, elevation: 0, centerTitle: true),
   );
 }
