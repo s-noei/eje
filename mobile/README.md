@@ -5,7 +5,9 @@ One codebase for iOS, Android and web.
 
 The screens reproduce the original game interface: sky/city ambient, the dark-blue citizen bar
 (avatar, level, XP, wellness + Drink, tala/local money, PM/note counters, logout), logo + day/clock,
-the light-blue menubar, "YOUR TASKS" baloons and inventory boxes, script box titles, blue/red image
+the light-blue menubar with its original six groups (Home · My places · Economy · Rankings ·
+Information · Extra) opening the icon dock — entries the app covers (Army, Workplace, Battles, Messages)
+open natively, the rest open the website page — "YOUR TASKS" baloons and inventory boxes, script box titles, blue/red image
 buttons, green notices, the blue-gradient train/work reports, the battlefield with HEROES columns and
 the mail link bar / black "Inbox" bar. The legacy images live in `assets/legacy/` (copied from
 `public/images`). On wide screens the tasks/inventory column sits on the left as on the website; on

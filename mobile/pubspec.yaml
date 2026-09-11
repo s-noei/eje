@@ -69,6 +69,12 @@ flutter:
     - assets/legacy/train/
     - assets/legacy/work/
     - assets/legacy/mrank/
+    - assets/legacy/menu/home/
+    - assets/legacy/menu/myplaces/
+    - assets/legacy/menu/economy/
+    - assets/legacy/menu/rankings/
+    - assets/legacy/menu/information/
+    - assets/legacy/menu/extra/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

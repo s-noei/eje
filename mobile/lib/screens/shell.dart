@@ -17,9 +17,74 @@ import 'work.dart';
 /// Test builds (--dart-define=ALLOW_URL_TOKEN=true) on the web also accept ?tab=N&battle=ID&article=ID.
 final _devQuery = kIsWeb && const bool.fromEnvironment('ALLOW_URL_TOKEN') ? Uri.base.queryParameters : const <String, String>{};
 
-/// Selected menubar tab: Home · Army · Work · Battles · Mail.
+/// Current app screen: 0 Home · 1 Army · 2 Workplace · 3 Battles · 4 Mail.
 final tabProvider = StateProvider<int>((_) => int.tryParse(_devQuery['tab'] ?? '') ?? 0);
-const kTabs = ['Home', 'Army', 'Work', 'Battles', 'Mail'];
+
+/// Which menubar group has its dock open (null = closed).
+final menuOpenProvider = StateProvider<int?>((_) => int.tryParse(_devQuery['menu'] ?? ''));
+
+/// The legacy menubar (Home · My places · Economy · Rankings · Information · Extra) and its docks.
+/// Pages the app covers open natively; everything else opens the website page.
+const kMenu = ['Home', 'My places', 'Economy', 'Rankings', 'Information', 'Extra'];
+
+List<DockEntry> dockEntries(int group, Citizen? c) {
+  final cid = c?.countryId ?? 0;
+  final ca = c?.isCA ?? false;
+  return switch (group) {
+    0 => const [
+      DockEntry('Main page', 'menu/home/mainpage.png', tab: 0),
+      DockEntry('Messages', 'new_pm.png', tab: 4),
+      DockEntry('Battles', 'menu/rankings/battle.png', tab: 3),
+      DockEntry('Logout', 'menu/home/logout.png', logout: true),
+    ],
+    1 => [
+      DockEntry('Profile', 'menu/myplaces/profile.png', path: 'profile-${c?.id ?? 0}-en.html'),
+      const DockEntry('Company', 'menu/myplaces/company.png', path: 'company-en.html'),
+      if (!ca) const DockEntry('Army', 'menu/myplaces/army.png', tab: 1),
+      if (!ca) const DockEntry('Workplace', 'tasks/work.png', tab: 2),
+      if (!ca) const DockEntry('Explore Mines', 'menu/myplaces/madan.png', path: 'mines-en.html'),
+      if (!ca) const DockEntry('Military Unit', 'tasks/damge-booster.png', path: 'military-unit-en.html'),
+      const DockEntry('Newspaper', 'menu/myplaces/newspaper.png', path: 'newspaper-en.html'),
+      if (!ca) const DockEntry('Party', 'menu/myplaces/party.png', path: 'party-en.html'),
+      const DockEntry('Advertisement', 'menu/myplaces/ads.png', path: 'ads-en.html'),
+    ],
+    2 => const [
+      DockEntry('Market', 'menu/economy/market.png', path: 'market-en.html'),
+      DockEntry('Exchange Money', 'menu/economy/exchange.png', path: 'exchange-en.html'),
+      DockEntry('Job Offers', 'menu/economy/jobs.png', path: 'jobs-en.html'),
+      DockEntry('International Market', 'menu/economy/imarket.png', path: 'imarket-en.html'),
+      DockEntry('Company Market', 'menu/economy/cmarket.png', path: 'company_market-en.html'),
+    ],
+    3 => const [
+      DockEntry('Citizens', 'menu/rankings/citizen.png', path: 'ranking-citizens-1-0-en.html'),
+      DockEntry('Countries', 'menu/rankings/country.png', path: 'ranking-countries-1-1-en.html'),
+      DockEntry('Newspapers', 'menu/rankings/newspaper.png', path: 'ranking-newspapers-1-0-en.html'),
+      DockEntry('Parties', 'menu/rankings/party.png', path: 'ranking-parties-1-0-en.html'),
+      DockEntry('Battles', 'menu/rankings/battle.png', path: 'ranking-battles-1-0-en.html'),
+    ],
+    4 => [
+      const DockEntry('Media Center', 'menu/information/mcenter.png', path: 'media-0-top-1-en.html'),
+      DockEntry('Social Info', 'menu/information/social.png', path: 'country-$cid-en.html'),
+      DockEntry('Economical Info', 'menu/information/economy.png', path: 'country-$cid-economy-en.html'),
+      DockEntry('Political Info', 'menu/information/politics.png', path: 'country-$cid-politics-en.html'),
+      DockEntry('Martial Info', 'menu/information/military.png', path: 'country-$cid-military-en.html'),
+      DockEntry('View congress', 'menu/information/congress.png', path: 'congress-$cid-1-en.html'),
+      const DockEntry('World map', 'menu/information/map.png', path: 'map-en.html'),
+    ],
+    _ => [
+      const DockEntry('Elections', 'menu/extra/elections.png', path: 'elections-en.html'),
+      if (!ca) const DockEntry('Invite', 'menu/extra/invite.png', path: 'invite-en.html'),
+      if (!ca) const DockEntry('Chance boxes', 'tasks/gold-pack.png', path: 'chancebox-en.html'),
+      const DockEntry('Daily Lottery', 'menu/extra/lottery.png', path: 'lottery-en.html'),
+      const DockEntry('Special Items', 'menu/extra/rss.png', path: 'special-en.html'),
+      const DockEntry('eJahan Store', 'menu/extra/store.png', path: 'ejstore-en.html'),
+      const DockEntry('Forum', 'menu/extra/forum.png', path: 'forum-en.html'),
+      const DockEntry('Contact', 'menu/extra/contact.png', path: 'contact-en.html'),
+      const DockEntry('Wiki', 'menu/extra/wiki.png', url: 'http://wiki.ejahan.com'),
+      const DockEntry('Credits', 'menu/extra/credits.png', path: 'extra-en.html'),
+    ],
+  };
+}
 
 /// Opens a page of the website (for parts of the game the app does not cover yet).
 Future<void> openWeb(WidgetRef ref, String path) => launchUrl(Uri.parse('${ref.read(apiProvider).baseUrl}/$path'), mode: LaunchMode.externalApplication);
@@ -68,18 +133,34 @@ class LegacyFrame extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final c = ref.watch(sessionProvider);
     final home = ref.watch(homeProvider).asData?.value;
-    final tab = ref.watch(tabProvider);
+    final open = ref.watch(menuOpenProvider);
     final list = ListView(
       padding: const EdgeInsets.only(bottom: 24),
       children: [
         if (c != null) CitizenBar(citizen: c, newPM: home?.newPM ?? 0, newNotes: home?.newNotes ?? 0, onLogout: () => ref.read(sessionProvider.notifier).logout(), onMail: () => _go(context, ref, 4)),
         LogoHeader(day: home?.day),
         LegacyMenuBar(
-          items: kTabs,
-          selected: back ? -1 : tab,
-          onSelect: (i) => _go(context, ref, i),
-          badges: {1: home?.quests['train'] == true, 2: home?.quests['work'] == true, 3: (home?.battles.isNotEmpty) ?? false, 4: (home?.newPM ?? 0) > 0},
+          items: kMenu,
+          selected: open ?? -1,
+          onSelect: (i) => ref.read(menuOpenProvider.notifier).state = open == i ? null : i,
+          badges: {0: (home?.newPM ?? 0) > 0, 1: home?.quests['train'] == true || home?.quests['work'] == true},
         ),
+        if (open != null)
+          LegacyDock(
+            entries: dockEntries(open, c),
+            onTap: (e) {
+              ref.read(menuOpenProvider.notifier).state = null;
+              if (e.logout) {
+                ref.read(sessionProvider.notifier).logout();
+              } else if (e.tab != null) {
+                _go(context, ref, e.tab!);
+              } else if (e.url != null) {
+                launchUrl(Uri.parse(e.url!), mode: LaunchMode.externalApplication);
+              } else if (e.path != null) {
+                openWeb(ref, e.path!);
+              }
+            },
+          ),
         PagePanel(
           padding: padding,
           child: Column(

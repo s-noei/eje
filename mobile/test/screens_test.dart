@@ -64,6 +64,23 @@ void main() {
     });
   }
 
+  testWidgets('menubar docks', (tester) async {
+    tester.view.physicalSize = const Size(430, 2200);
+    tester.view.devicePixelRatio = 1;
+    await pumpApp(tester, const Shell());
+    await tester.pump(const Duration(milliseconds: 300));
+    for (final (group, entry) in [('My places', 'Explore Mines'), ('Economy', 'Market'), ('Rankings', 'Countries'), ('Information', 'Social Info'), ('Extra', 'Daily Lottery')]) {
+      await tester.tap(find.text(group));
+      await tester.pump();
+      expect(find.text(entry), findsOneWidget);
+    }
+    await tester.tap(find.text('My places'));
+    await tester.pump();
+    await tester.tap(find.text('Workplace'));
+    await tester.pump(const Duration(milliseconds: 300));
+    expect(find.text('Choose your work type:'), findsOneWidget);
+  });
+
   testWidgets('battlefield', (tester) async {
     tester.view.physicalSize = const Size(430, 2200);
     tester.view.devicePixelRatio = 1;

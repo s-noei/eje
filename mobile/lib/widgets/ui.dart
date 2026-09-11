@@ -359,6 +359,7 @@ class LegacyMenuBar extends StatelessWidget {
             child: InkWell(
               onTap: () => onSelect(i),
               child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 3),
                 decoration: BoxDecoration(
                   border: Border(left: BorderSide(color: i == 0 ? Colors.transparent : Colors.white)),
                   image: i == selected ? const DecorationImage(image: AssetImage('assets/legacy/menu-back-h.png'), repeat: ImageRepeat.repeatX, fit: BoxFit.fitHeight) : null,
@@ -367,12 +368,16 @@ class LegacyMenuBar extends StatelessWidget {
                 child: Stack(
                   clipBehavior: Clip.none,
                   children: [
-                    Text(
-                      items[i],
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 13,
-                        shadows: [Shadow(color: Colors.black26, blurRadius: 2)],
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        items[i],
+                        maxLines: 1,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 13,
+                          shadows: [Shadow(color: Colors.black26, blurRadius: 2)],
+                        ),
                       ),
                     ),
                     if (badges[i] == true)
@@ -907,6 +912,49 @@ class FoodPicker extends StatelessWidget {
         borderRadius: BorderRadius.circular(2),
       ),
       child: Text(t, style: TextStyle(fontSize: 11, height: 1, color: f == null ? EjColors.line : EjColors.black)),
+    ),
+  );
+}
+
+/// One entry of the `#submenubar` dock (icon + label) under the menubar.
+class DockEntry {
+  const DockEntry(this.label, this.icon, {this.tab, this.path, this.url, this.logout = false});
+  final String label, icon;
+  final int? tab; // app screen
+  final String? path; // website page (relative to the server)
+  final String? url; // external site
+  final bool logout;
+}
+
+/// The legacy dock: a strip of 60px icons with their labels, shown when a menubar item is open.
+class LegacyDock extends StatelessWidget {
+  const LegacyDock({super.key, required this.entries, required this.onTap});
+  final List<DockEntry> entries;
+  final ValueChanged<DockEntry> onTap;
+  @override
+  Widget build(BuildContext context) => Container(
+    margin: const EdgeInsets.fromLTRB(6, 0, 6, 6),
+    height: 92,
+    decoration: BoxDecoration(color: Colors.white.withValues(alpha: .85), borderRadius: BorderRadius.circular(3), border: Border.all(color: const Color(0xFF3E8FCB))),
+    child: ListView(
+      scrollDirection: Axis.horizontal,
+      padding: const EdgeInsets.symmetric(horizontal: 4),
+      children: [
+        for (final e in entries)
+          InkWell(
+            onTap: () => onTap(e),
+            child: SizedBox(
+              width: 78,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  legacy(e.icon, width: 56, height: 56, fit: BoxFit.contain),
+                  Text(e.label, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 10, color: EjColors.black)),
+                ],
+              ),
+            ),
+          ),
+      ],
     ),
   );
 }
