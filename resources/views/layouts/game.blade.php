@@ -66,7 +66,7 @@ setTimeout("bringBackBlinky()", spe);
 @stack('head')
 </head>
 
-<body{!! $bodStyle ? ' style="'.$bodStyle.'"' : '' !!}>
+<body class="{{ ($actiontype === 'home' && $logged) ? 'home26' : '' }}"{!! $bodStyle ? ' style="'.$bodStyle.'"' : '' !!}>
 <div class="background">
 </div>
 <div id="window">

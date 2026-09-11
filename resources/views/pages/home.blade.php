@@ -1,114 +1,158 @@
 @extends('layouts.game')
 @section('content')
-@push('styles')<link rel="stylesheet" type="text/css" href="/include/css/home.css">@endpush
+@push('styles')<link rel="stylesheet" type="text/css" href="/include/css/home2026.css">@endpush
 @php
+	use App\Game\Support\Constants;
 	$h = fn($k) => $lang->getstr($k, 'home');
 	$t = fn($k) => $lang->getstr($k, 'tasks');
+	$ep = (float) ($citInfo['ep'] ?? 0);
+	$pub = (int) ($citInfo['puberty'] ?? 0);
+	$cur = Constants::PUB_EPS[$pub] ?? 0;
+	$next = Constants::PUB_EPS[$pub + 1] ?? $cur;
+	$xpPct = $next > $cur ? max(0, min(100, round(($ep - $cur) / ($next - $cur) * 100))) : 100;
+	$wel = (float) ($citInfo['wellness'] ?? 0);
+	$rankName = Constants::PUB_RANKS[$pub] ?? '';
+	$tala = $citMoney[1] ?? 0;
+	$cid = $citInfo['CountryID'] ?? 0;
+	$local = $citMoney[$cid] ?? 0;
+	$curName = $citInfo['curName'] ?? '';
+	$flag = fn($n) => '/images/flags/s/' . $n . '.gif';
+	$voteDay = in_array($now['Day'], $electionDays) && !$isCA;
 @endphp
-@if (in_array($now['Day'], $electionDays) && !$isCA)
-				<div class="vote-handler">
-@if ($now['Day'] == $electionDays['cg'])
-						<a href="{{ $vars->getURL('elections', 'cg', $citInfo['CountryID'], $citInfo['regionID'], $now['Year'], $now['Month']) }}">
-							<img src="/images/game/tasks/vote.png" class="inlineIMGs" align="absmiddle" width="30px">
-							{!! $t('vote_title') !!} - {!! sprintf($t('vote_desc'), $t('vote_cg_desc')) !!}
-						</a>
-@elseif ($now['Day'] == $electionDays['cp'])
-						<a href="{{ $vars->getURL('elections', 'cp', $citInfo['CountryID'], '', $now['Year'], $now['Month']) }}">
-							<img src="/images/game/tasks/vote.png" class="inlineIMGs" align="absmiddle" width="30px">
-							{!! $t('vote_title') !!} - {!! sprintf($t('vote_desc'), $t('vote_cp_desc')) !!}
-						</a>
-@else
-						<a href="{{ $vars->getURL('elections', 'pp', $citInfo['CountryID'], $citInfo['PartyID'] ?? 0, $now['Year'], $now['Month']) }}">
-							<img src="/images/game/tasks/vote.png" class="inlineIMGs" align="absmiddle" width="30px">
-							{!! $t('vote_title') !!} - {!! sprintf($t('vote_desc'), $t('vote_pp_desc')) !!}
-						</a>
-@endif
-				</div>
-@endif
+<div id="home26">
+<div class="h26-main">
 
-<div class="column-left">
-{!! $dailyError ?? '' !!}
+	{{-- ===== Player card ===== --}}
+	<div class="h26-card h26-hero">
+		<div class="h26-avatar" style="--xp: {{ $xpPct }}%">
+			<a href="{{ $vars->getURL('profile', $citInfo['CitizenID']) }}"><img src="/uploads/avatars/citizen/{{ $citInfo['Avatar'] }}" alt="{{ $citInfo['name'] }}"></a>
+@if (!$isCA)
+			<div class="h26-level" title="{{ $rankName }}">{{ $pub + 1 }}</div>
+@endif
+		</div>
+		<div>
+			<div class="h26-hero-name"><a href="{{ $vars->getURL('profile', $citInfo['CitizenID']) }}">{{ $citInfo['name'] }}</a></div>
+			<div class="h26-hero-rank">
+				{{ $isNCA ? 'National CA' : ($isCA ? 'Co-Account' : $rankName) }}
+				&middot;
+				<a href="{{ $vars->getURL('country', $cid) }}"><img src="{{ $flag($citInfo['cName'] ?? '') }}" alt=""> {{ $citInfo['cName'] ?? '' }}</a>
+				&middot; <a href="{{ $vars->getURL('region', $citInfo['regionID'] ?? 0) }}">{{ $citInfo['RegionName'] ?? '' }}</a>
+			</div>
+@if (!$isCA)
+			<div class="h26-bars">
+				<div class="h26-bar">
+					<span class="lbl">XP</span>
+					<div class="track"><div class="fill" style="width: {{ $xpPct }}%"></div></div>
+					<span class="val">{{ $vars->formatnumbers($ep) }} / {{ $vars->formatnumbers($next) }}</span>
+				</div>
+				<div class="h26-bar">
+					<span class="lbl">Wellness</span>
+					<div class="track"><div class="fill wel" style="width: {{ $wel }}%"></div></div>
+					<span class="val">{{ $wel }} / 100</span>
+				</div>
+			</div>
+@endif
+		</div>
+		<div class="h26-stats">
+			<div class="h26-chip"><img src="/images/tala.gif" alt=""> <b>{{ $vars->formatnumbers(round($tala, 2)) }}</b> <small>Tala</small></div>
+@if ($cid && $curName)
+			<div class="h26-chip"><img src="{{ $flag($citInfo['cName'] ?? '') }}" alt=""> <b>{{ $vars->formatnumbers(round($local, 2)) }}</b> <small>{{ $curName }}</small></div>
+@endif
+			<div class="h26-chip"><img src="/images/xp_icon.png" alt=""> <b>#{{ $vars->formatnumbers($citInfo['stat_rank_int'] ?? '-') }}</b> <small>world rank</small></div>
+		</div>
+	</div>
+
+	{{-- ===== Quest board: vote / daily reward / unit order ===== --}}
+@if ($voteDay || $canDaily || $unitBattle || ($dailyError ?? false))
+	<div class="h26-card">
+		<div class="h26-head">
+			<div class="h26-title"><span class="ico">⚡</span> Quests</div>
+			<span class="h26-sub">Today, day {{ $vars->formatnumbers($now['Day']) }}</span>
+		</div>
+		{!! $dailyError ?? '' !!}
+@if ($voteDay)
+@php
+	if ($now['Day'] == $electionDays['cg']) { $vUrl = $vars->getURL('elections', 'cg', $cid, $citInfo['regionID'], $now['Year'], $now['Month']); $vDesc = $t('vote_cg_desc'); }
+	elseif ($now['Day'] == $electionDays['cp']) { $vUrl = $vars->getURL('elections', 'cp', $cid, '', $now['Year'], $now['Month']); $vDesc = $t('vote_cp_desc'); }
+	else { $vUrl = $vars->getURL('elections', 'pp', $cid, $citInfo['PartyID'] ?? 0, $now['Year'], $now['Month']); $vDesc = $t('vote_pp_desc'); }
+@endphp
+		<div class="h26-quest vote">
+			<div class="qi"><img src="/images/game/tasks/vote.png" alt=""></div>
+			<div><div class="qt">{!! $t('vote_title') !!}</div><div class="qd">{!! sprintf($t('vote_desc'), $vDesc) !!}</div></div>
+			<a href="{{ $vUrl }}" class="h26-btn gold">Vote</a>
+		</div>
+@endif
 @if ($canDaily)
-		<div class="home-box-title">
-			Daily tasks completed
-			<hr>
-		</div>
-		<div class="home-box-content">
-		<center>
-		<div style="display: inline-block; text-align: center; width: 40px; border: 1px solid; border-radius: 3px; margin: 1px"> <img src="/images/icons/food.png" width="40px" title="Food"> <img src="/images/game/5_star.gif" style="border-bottom: 1px solid; border-top: 1px solid" width="40px"> 1 </div>
-		<div style="display: inline-block; text-align: center; width: 40px; border: 1px solid; border-radius: 3px; margin: 1px"> <img src="/images/xp_icon.png" width="40px" title="Experience Points"> <img src="/images/game/0_star.gif" style="border-bottom: 1px solid; border-top: 1px solid" width="40px"> 5 EP </div>
-		<div style="clear: both"></div>
-		<br>
-		<form action="" method="post" enctype="multipart/form-data">
+		<form action="" method="post" enctype="multipart/form-data" class="h26-quest">
 			@csrf
-			<input type="hidden" name="id" size="10" value="{{ $citInfo['CitizenID'] }}">
-			<input type="submit" name="DailyReward" value="Get reward" class="submit-blue-1">
+			<input type="hidden" name="id" value="{{ $citInfo['CitizenID'] }}">
+			<div class="qi"><img src="/images/game/tasks/food.png" alt=""></div>
+			<div>
+				<div class="qt">Daily tasks completed</div>
+				<div class="qd">Claim today's reward</div>
+				<div class="h26-rewards" style="margin-top: 6px">
+					<div class="h26-reward" title="Food"><img src="/images/icons/food.png" alt=""><img src="/images/game/5_star.gif" width="36" alt="">1</div>
+					<div class="h26-reward" title="Experience Points"><img src="/images/xp_icon.png" alt="">+5 EP</div>
+				</div>
+			</div>
+			<button type="submit" name="DailyReward" value="1" class="h26-btn">Get reward</button>
 		</form>
-		</center>
-		</div>
-        <br />
 @endif
 @if ($unitBattle)
-			<div class="home-box-title">
-				Military Unit<hr>
-			</div>
-			<div class="home-box-content">
-    			<a href="{{ $vars->getURL('battle', $unitBattle['battleID']) }}" align="absmiddle" class="battle-region-link" title="started {{ $session->getDiff($unitBattle['Start']) }}">
-                	<div class="battles-holder">
-                    	<div class="battle-attacker-flag">
-                        	<img src="/images/flags/s/{{ $unitBattle['battle_type'] == 'battle' ? $unitBattle['attName'] : 'revolt' }}.gif">
-                        </div>
-                       	<div class="battle-region">{{ $unitBattle['regionName'] }}</div>
-                		<div class="battle-attacker-flag">
-                        	<img src="/images/flags/s/{{ $unitBattle['defName'] }}.gif" align="absmiddle">
-                        </div>
-                    </div>
-    			</a>
-    		</div>
-    		<br />
+		<a href="{{ $vars->getURL('battle', $unitBattle['battleID']) }}" class="h26-quest" title="started {{ $session->getDiff($unitBattle['Start']) }}">
+			<div class="qi"><img src="{{ $flag($unitBattle['battle_type'] == 'battle' ? $unitBattle['attName'] : 'revolt') }}" alt=""></div>
+			<div><div class="qt">Military unit order</div><div class="qd">Fight in {{ $unitBattle['regionName'] }} &mdash; {{ $unitBattle['battle_type'] == 'battle' ? $unitBattle['attName'] : 'Revolt' }} vs {{ $unitBattle['defName'] }}</div></div>
+			<span class="h26-btn ghost">To battle</span>
+		</a>
 @endif
-		<div class="home-box-title">
-			{!! $h('active_battles') !!}
-			<hr>
+	</div>
+@endif
+
+	{{-- ===== Active battles ===== --}}
+	<div class="h26-card">
+		<div class="h26-head">
+			<div class="h26-title"><span class="ico">⚔</span> {!! $h('active_battles') !!}</div>
+@if (count($battles))
+			<span class="h26-live">Live &middot; {{ count($battles) }}</span>
+@endif
 		</div>
 		<div class="home-box-content" style="display: none">
 @if (count($battles) < 1)
-							There is no active battle for your country.
-@endif
+			<div class="h26-empty">There is no active battle for your country.</div>
+@else
+			<div class="h26-battles">
 @foreach ($battles as $bat)
-    					<a href="{{ $vars->getURL('battle', $bat['battleID']) }}" align="absmiddle" class="battle-region-link" title="started {{ $session->getDiff($bat['Start']) }}">
-                            <div class="battles-holder">
-                                <div class="battle-attacker-flag">
-                                    <img src="/images/flags/s/{{ $bat['battle_type'] == 'battle' ? $bat['attName'] : 'revolt' }}.gif">
-                                </div>
-                                <div class="battle-region">{{ $bat['regionName'] }}</div>
-                                <div class="battle-attacker-flag">
-                                    <img src="/images/flags/s/{{ $bat['defName'] }}.gif" align="absmiddle">
-                                </div>
-                            </div>
-    					</a>
+				<a href="{{ $vars->getURL('battle', $bat['battleID']) }}" class="h26-battle" title="started {{ $session->getDiff($bat['Start']) }}">
+					<img src="{{ $flag($bat['battle_type'] == 'battle' ? $bat['attName'] : 'revolt') }}" alt="">
+					<div class="rg">{{ $bat['regionName'] }}<small>{{ $bat['battle_type'] == 'battle' ? $bat['attName'] : 'Revolt' }} vs {{ $bat['defName'] }}</small></div>
+					<img src="{{ $flag($bat['defName']) }}" alt="">
+				</a>
 @endforeach
+			</div>
+@endif
 		</div>
-        <br />
-		<div class="home-box-title">
-			{!! $h('mili_events') !!}
+	</div>
+
+	{{-- ===== Military events ===== --}}
+	<div class="h26-card">
+		<div class="h26-head">
+			<div class="h26-title"><span class="ico">📡</span> {!! $h('mili_events') !!}</div>
+			<span class="h26-sub"><a class="h26-link" href="{{ $vars->getURL('media', '0', 'eve') }}">{!! $h('show_mili_events') !!}</a> &middot; <a class="h26-link" href="{{ $vars->getURL('wars') }}">{!! $h('show_active_wars') !!}</a></span>
 		</div>
 		<div class="home-box-content" style="display: none">
 			<ul class="nButtons">
 				<li id="elBut" class="snButton"><a href="javascript:void(0)">{{ $citInfo['cName'] }}</a></li>
 				<li id="eiBut"><a href="javascript:void(0)">{!! $h('news_international') !!}</a></li>
 			</ul>
-		<div id="mili-handler" class="newsBox" style="font-size: 8pt; padding: 5px 2px">
+			<div id="mili-handler" class="newsBox"></div>
 		</div>
-		</div>
-		<center>
-			<a href="{{ $vars->getURL('media', '0', 'eve') }}">{!! $h('show_mili_events') !!}</a>
-            |
-			<a href="{{ $vars->getURL('wars') }}">{!! $h('show_active_wars') !!}</a>
-		</center>
-		&nbsp;
-		<div class="home-box-title">
-			 {!! $h('newshead') !!}
+	</div>
+
+	{{-- ===== News ===== --}}
+	<div class="h26-card">
+		<div class="h26-head">
+			<div class="h26-title"><span class="ico">📰</span> {!! $h('newshead') !!}</div>
+			<a id="mcenterlink" class="h26-link" href="{{ $vars->getURL('media', $cid) }}">{!! $h('mcenter') !!}</a>
 		</div>
 		<div class="home-box-contents">
 			<ul class="nButtons">
@@ -121,85 +165,76 @@
 			</ul>
 @foreach ([['lastNews', 'news_latest2', $latest, 'none'], ['lTopNews', 'news_top2', $topL, 'block'], ['ITopNews', 'news_international2', $topI, 'none'], ['subsNews', 'news_mysubs', $subs, 'none']] as [$id, $title, $arts, $disp])
 @if ($id !== 'subsNews' || !$isCA)
-		<div id="{{ $id }}" class="newsBox" style="display: {{ $disp }}">
-		<div style="font-size: 14pt;text-align: center">
-			{!! $h($title) !!}
-		</div>
+			<div id="{{ $id }}" class="newsBox" style="display: {{ $disp }}">
+				<div>{!! $h($title) !!}</div>
+@if (count($arts) < 1)
+				<div class="h26-empty">Nothing here yet.</div>
+@endif
 @foreach ($arts as $artNew)
-						<div class="article-points">{{ $artNew['aVotes'] }}</div>
-						<div class="article-title">
-							<a href="{{ $vars->getURL('article', $artNew['aID']) }}">
-								{!! $artNew['aTitle'] ? strip_tags($artNew['aTitle']) : '----' !!}
-							</a>
-						</div>
-						<div class="article-time">
-							{!! sprintf($lang->getstr('wrote2'), $session->getDiff($artNew['timestamp'])) !!}
-						</div>
-						<div class="article-np">
-							{!! $lang->getstr('inn') !!} <a href="{{ $vars->getURL('newspaper', $artNew['npID']) }}">{{ $artNew['npName'] }}</a>
-						</div>
-						<div style="clear: both"></div>
+				<div class="h26-article">
+					<div class="h26-votes">{{ $artNew['aVotes'] }}<small>VOTES</small></div>
+					<div>
+						<div class="t"><a href="{{ $vars->getURL('article', $artNew['aID']) }}">{!! $artNew['aTitle'] ? strip_tags($artNew['aTitle']) : '----' !!}</a></div>
+						<div class="m">{!! sprintf($lang->getstr('wrote2'), $session->getDiff($artNew['timestamp'])) !!} &middot; {!! $lang->getstr('inn') !!} <a href="{{ $vars->getURL('newspaper', $artNew['npID']) }}">{{ $artNew['npName'] }}</a></div>
+					</div>
+				</div>
 @endforeach
-		</div>
+			</div>
 @endif
 @endforeach
 		</div>
-	<div style="clear: both; text-align: center">
-		<a id="mcenterlink" href="{{ $vars->getURL('media', $citInfo['CountryID']) }}">{!! $h('mcenter') !!}</a><br><br>
 	</div>
-		<div class="home-box-title">
-			{!! $h('around_ej') !!}
-            <hr size="1" />
-		</div>
-		<div class="home-box-content">
+
+	{{-- ===== Around eJahan ===== --}}
+	<div class="h26-card h26-around">
+		<div class="h26-head"><div class="h26-title"><span class="ico">🌍</span> {!! $h('around_ej') !!}</div></div>
 @foreach ($adminNews as $artAdmin)
-					<a href="{{ $vars->getURL('article', $artAdmin['aID']) }}">
-                        <img src="/images/logo.gif" alt="Around eJahan" width="50px" align="absmiddle" />
-    						{!! ($artAdmin['timestamp'] > time() - (24*3600*2)) ? '<blink style="color: red">NEW</blink>' : '' !!}
-    							{!! $artAdmin['aTitle'] ? strip_tags($artAdmin['aTitle']) : '----' !!}
-					</a>
-					<div style="clear: both"></div>
+		<a href="{{ $vars->getURL('article', $artAdmin['aID']) }}">
+			<img src="/images/logo.gif" alt="Around eJahan">
+@if ($artAdmin['timestamp'] > time() - (24*3600*2))<span class="h26-new">NEW</span>@endif
+			<span>{!! $artAdmin['aTitle'] ? strip_tags($artAdmin['aTitle']) : '----' !!}</span>
+		</a>
 @endforeach
 	</div>
 </div>
-<div class="column-right">
-		<div class="home-box-title">
-			{!! $h('chatbox') !!}<hr size="1">
-		</div>
+
+{{-- ===== Chatbox ===== --}}
+<div class="h26-side">
+	<div class="h26-card h26-chat">
+		<div class="h26-head"><div class="h26-title"><span class="ico">💬</span> {!! $h('chatbox') !!}</div></div>
 		<div class="home-box-content" style="display: none;">
-				<div style="border: 1px solid; border-radius: 5px">
-    				<div class="send-pm">
-    					<form action="" method="post">
-    						<textarea name="yourmessage" id="yourmessage" cols="55" rows="2" style="font-family: tahoma; font-size: 9pt"></textarea>
-    						<br>
-    						<div style="text-align: left; padding-left: 8px">
-    						<input type="submit" class="submit-blue-1" id="addmessage" value="{{ $h('chatbox_send') }}" onclick="return false">
-    							<img src="/images/chatloader.gif" id="chatter-loader" align="absmiddle">
-    						</div>
-    					</form>
-    				</div>
-					<div id="chatters-hold" style="border-top: 1px solid; margin-top: 3px">
-                        <div id="chat-msg">&nbsp;</div>
-    					<div id="chatter-announce" class="chatters" style="display: none">
-    						<div class="chat-sender"><img src="/test.jpg" class="chat-avatar"></div>
-    						<div class="chat-message">&nbsp;</div>
-    						<div style="clear: both"><hr width="90%"></div>
-    					</div>
-    					<div id="chatter-sample" class="chatters" style="display: none">
-    						<div class="chat-sender"><img src="/test.jpg" class="chat-avatar"></div>
-    						<div class="chat-message">&nbsp;</div>
-    						<div style="clear: both"><hr size="1" width="90%"></div>
-    					</div>
-                    </div>
+			<div class="send-pm">
+				<form action="" method="post">
+					<textarea name="yourmessage" id="yourmessage" rows="2" placeholder="Say something to {{ $citInfo['cName'] ?? 'everyone' }}…"></textarea>
+					<div class="send-row">
+						<input type="submit" class="h26-btn" id="addmessage" value="{{ $h('chatbox_send') }}" onclick="return false">
+						<img src="/images/chatloader.gif" id="chatter-loader" alt="">
+					</div>
+				</form>
+			</div>
+			<div id="chatters-hold">
+				<div id="chat-msg"></div>
+				<div id="chatter-announce" class="chatters" style="display: none">
+					<div class="chat-sender"><img src="/uploads/avatars/citizen/no-avatar-m.gif" class="chat-avatar"></div>
+					<div class="chat-message">&nbsp;</div>
+					<div style="clear: both"></div>
 				</div>
+				<div id="chatter-sample" class="chatters" style="display: none">
+					<div class="chat-sender"><img src="/uploads/avatars/citizen/no-avatar-m.gif" class="chat-avatar"></div>
+					<div class="chat-message">&nbsp;</div>
+					<div style="clear: both"></div>
+				</div>
+			</div>
 		</div>
+	</div>
+</div>
 </div>
 <script>
 	var actTab = 'ltBut';
 	$(document).ready(function(){
-            var urlLT = '{{ $vars->getURL('media', $citInfo['CountryID']) }}';
-            var urlLN = '{{ $vars->getURL('media', $citInfo['CountryID'], 'new') }}';
-            var urlIT = '{{ $vars->getURL('media') }}';
+			var urlLT = '{{ $vars->getURL('media', $cid) }}';
+			var urlLN = '{{ $vars->getURL('media', $cid, 'new') }}';
+			var urlIT = '{{ $vars->getURL('media') }}';
 			function sw(show, tab, url) {
 				$("div #lastNews, div #ITopNews, div #subsNews, div #lTopNews").hide();
 				$("div #"+show).fadeIn('500');
@@ -212,30 +247,29 @@
 			$("#subBut").click(function(){ sw('subsNews', 'subBut', urlLT); });
 			$("div .todo").fadeIn('300');
 			$("div .home-box-content").fadeIn('300');
-            actMil = {{ (int) $citInfo['CountryID'] }};
-			$("#elBut").click(function(){ $("#elBut").addClass("snButton"); $("#eiBut").removeClass("snButton"); actMil = {{ (int) $citInfo['CountryID'] }}; getMili(actMil); });
+			actMil = {{ (int) $cid }};
+			$("#elBut").click(function(){ $("#elBut").addClass("snButton"); $("#eiBut").removeClass("snButton"); actMil = {{ (int) $cid }}; getMili(actMil); });
 			$("#eiBut").click(function(){ $("#eiBut").addClass("snButton"); $("#elBut").removeClass("snButton"); actMil = 0; getMili(actMil); });
-            getMili(actMil);
+			getMili(actMil);
 		});
-    function getMili(location) {
-        $("#mili-handler").slideUp(200, function(){
-            	$.getJSON("/getevents-"+location+".html", function(data) {
-                        $("#mili-handler").text("");
-                        co = 0;
-						if (data.noeve) {
-							$("#mili-handler").text(data.noeve);
-						}else{
-							$.each(data['event'], function(idx, event) {
-								co++;
-								$("#mili-handler").append("<a href='" + event.link + "' id='a"+co+"'></a>");
-								$("#mili-handler #a"+co).append("<img src='" + event.icon + "' align='absmiddle'>");
-								$("#mili-handler #a"+co).append("&nbsp;"+event.title);
-								if (co < 5) $("#mili-handler").append("<hr size='1'>");
-							});
-						}
-                        $("#mili-handler").slideDown(200);
-            		});
-            });
-    }
+	function getMili(location) {
+		$("#mili-handler").slideUp(200, function(){
+			$.getJSON("/getevents-"+location+".html", function(data) {
+				$("#mili-handler").text("");
+				var co = 0;
+				if (data.noeve) {
+					$("#mili-handler").html('<div class="h26-empty">' + data.noeve + '</div>');
+				}else{
+					$.each(data['event'], function(idx, event) {
+						co++;
+						$("#mili-handler").append("<a href='" + event.link + "' id='a"+co+"'></a>");
+						$("#mili-handler #a"+co).append("<img src='" + event.icon + "' align='absmiddle'>");
+						$("#mili-handler #a"+co).append("<span>"+event.title+"</span>");
+					});
+				}
+				$("#mili-handler").slideDown(200);
+			});
+		});
+	}
 </script>
 @endsection

@@ -1,0 +1,203 @@
+/* eJahan — 2026 gamified home dashboard. Scoped to body.home26 so the rest of the game keeps its legacy skin. */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Rajdhani:wght@500;600;700&display=swap');
+
+body.home26 {
+	--h26-bg: #0b1020;
+	--h26-bg2: #151c35;
+	--h26-card: rgba(20, 27, 52, 0.72);
+	--h26-card-2: rgba(28, 37, 70, 0.72);
+	--h26-line: rgba(140, 160, 255, 0.16);
+	--h26-text: #e8ecf8;
+	--h26-muted: #9aa5c8;
+	--h26-accent: #7c5cff;
+	--h26-accent-2: #22d3ee;
+	--h26-gold: #f5c542;
+	--h26-green: #34d399;
+	--h26-red: #fb7185;
+	--h26-radius: 16px;
+	--h26-font: 'Inter', 'Segoe UI', system-ui, sans-serif;
+	--h26-display: 'Rajdhani', 'Inter', sans-serif;
+	background: radial-gradient(1200px 600px at 20% -10%, #2a1f6b 0%, transparent 60%),
+	            radial-gradient(900px 500px at 100% 0%, #0e3b4f 0%, transparent 55%),
+	            linear-gradient(180deg, var(--h26-bg) 0%, #070b16 100%) !important;
+	color: var(--h26-text);
+	text-shadow: none;
+	font-family: var(--h26-font);
+	min-height: 100vh;
+}
+body.home26 .background { display: none; }
+body.home26::before {
+	content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+	background-image: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+	background-size: 32px 32px;
+	mask-image: linear-gradient(180deg, rgba(0,0,0,.6), transparent 70%);
+}
+body.home26 #page, body.home26 #footer { position: relative; z-index: 1; }
+body.home26 a, body.home26 a:visited { color: #b8c4ff; }
+body.home26 a:hover { color: #fff; }
+
+/* ---- shell: header / menu / side panels become glass cards ---- */
+body.home26 #header, body.home26 #upmenubar, body.home26 #footer, body.home26 #game-body .adbar, body.home26 #game-body .sidebar {
+	background: var(--h26-card);
+	border: 1px solid var(--h26-line);
+	border-radius: var(--h26-radius);
+	backdrop-filter: blur(14px);
+	-webkit-backdrop-filter: blur(14px);
+	box-shadow: 0 10px 30px rgba(0, 0, 0, .35);
+	color: var(--h26-text);
+}
+body.home26 #header { margin-top: 8px; }
+body.home26 #upmenubar { margin-top: 8px; }
+body.home26 #game-body { margin-top: 10px; }
+body.home26 #game-body .adbar, body.home26 #game-body .sidebar { padding-top: 8px; padding-bottom: 8px; color: var(--h26-text); }
+body.home26 #game-body .adbar hr, body.home26 #game-body .sidebar hr { border: 0; border-top: 1px solid var(--h26-line); }
+body.home26 #footer { margin-top: 14px; margin-bottom: 20px; color: var(--h26-muted); font-size: 8.5pt; }
+body.home26 #date, body.home26 #clock { color: var(--h26-text); }
+body.home26 .search input.search { background: rgba(255,255,255,.08); color: #fff; border: 1px solid var(--h26-line); border-radius: 8px; }
+body.home26 #submenubar a, body.home26 #menubar a { color: #1b1f33; }
+body.home26 #game-body .sidebar .citInfo, body.home26 #game-body .sidebar .allround, body.home26 #game-body .sidebar .noround { color: var(--h26-text); }
+body.home26 #game-body .sidebar .menu-cat { color: var(--h26-text); }
+body.home26 #hummytasks { color: var(--h26-text); font-family: var(--h26-display); letter-spacing: .04em; }
+body.home26 #game-body .contents { color: var(--h26-text); padding: 0 4px; }
+body.home26 .errHandle, body.home26 .infHandle { border-radius: 10px; }
+
+/* ---- content grid ---- */
+#home26 { display: grid; grid-template-columns: minmax(0, 1fr) 250px; gap: 14px; align-items: start; text-align: left; }
+#home26 .h26-main, #home26 .h26-side { display: grid; gap: 14px; }
+#home26 .h26-card {
+	background: var(--h26-card);
+	border: 1px solid var(--h26-line);
+	border-radius: var(--h26-radius);
+	backdrop-filter: blur(12px);
+	-webkit-backdrop-filter: blur(12px);
+	box-shadow: 0 8px 24px rgba(0, 0, 0, .28);
+	padding: 14px 16px;
+	position: relative;
+	overflow: hidden;
+}
+#home26 .h26-card::before {
+	content: ''; position: absolute; inset: 0 0 auto 0; height: 2px;
+	background: linear-gradient(90deg, var(--h26-accent), var(--h26-accent-2)); opacity: .8;
+}
+#home26 .h26-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+#home26 .h26-title { font-family: var(--h26-display); font-weight: 700; font-size: 15pt; letter-spacing: .04em; text-transform: uppercase; color: #fff; display: flex; align-items: center; gap: 8px; }
+#home26 .h26-title .ico { width: 26px; height: 26px; border-radius: 8px; display: inline-grid; place-items: center; background: linear-gradient(135deg, var(--h26-accent), var(--h26-accent-2)); font-size: 13px; }
+#home26 .h26-sub { color: var(--h26-muted); font-size: 8.5pt; }
+#home26 .h26-link { color: var(--h26-accent-2); font-size: 9pt; font-weight: 600; }
+
+/* ---- hero player card ---- */
+#home26 .h26-hero { display: grid; grid-template-columns: 96px 1fr auto; gap: 16px; align-items: center; }
+#home26 .h26-hero::before { background: linear-gradient(90deg, var(--h26-gold), var(--h26-accent)); }
+#home26 .h26-avatar { position: relative; width: 88px; height: 88px; }
+#home26 .h26-avatar img { width: 88px; height: 88px; border-radius: 50%; object-fit: cover; border: 3px solid transparent; background: linear-gradient(var(--h26-bg2), var(--h26-bg2)) padding-box, conic-gradient(var(--h26-accent-2) var(--xp, 0%), rgba(255,255,255,.12) 0) border-box; }
+#home26 .h26-level { position: absolute; right: -6px; bottom: -4px; min-width: 30px; height: 30px; padding: 0 8px; border-radius: 999px; display: grid; place-items: center; font-family: var(--h26-display); font-weight: 700; font-size: 12pt; color: #1b1400; background: linear-gradient(135deg, #ffe08a, var(--h26-gold)); box-shadow: 0 4px 12px rgba(245,197,66,.45); }
+#home26 .h26-hero-name { font-family: var(--h26-display); font-size: 20pt; font-weight: 700; line-height: 1; color: #fff; }
+#home26 .h26-hero-name a { color: #fff; }
+#home26 .h26-hero-rank { color: var(--h26-muted); font-size: 9pt; margin-top: 2px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+#home26 .chatters .chat-avatar { background: #2a3358; }
+#home26 .h26-hero-rank img { height: 14px; border-radius: 2px; }
+#home26 .h26-bars { display: grid; gap: 8px; margin-top: 10px; }
+#home26 .h26-bar { display: grid; grid-template-columns: 70px 1fr auto; align-items: center; gap: 8px; font-size: 8.5pt; }
+#home26 .h26-bar .lbl { color: var(--h26-muted); font-weight: 600; letter-spacing: .06em; text-transform: uppercase; font-size: 7.5pt; }
+#home26 .h26-bar .track { height: 9px; border-radius: 999px; background: rgba(255,255,255,.08); overflow: hidden; }
+#home26 .h26-bar .fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--h26-accent), var(--h26-accent-2)); box-shadow: 0 0 12px rgba(34,211,238,.5); transition: width .8s ease; }
+#home26 .h26-bar .fill.wel { background: linear-gradient(90deg, #f97316, var(--h26-green)); box-shadow: 0 0 12px rgba(52,211,153,.5); }
+#home26 .h26-bar .val { font-family: var(--h26-display); font-weight: 700; color: #fff; min-width: 70px; text-align: right; }
+#home26 .h26-stats { display: grid; gap: 8px; }
+#home26 .h26-chip { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,.06); border: 1px solid var(--h26-line); border-radius: 12px; padding: 6px 10px; font-size: 9pt; white-space: nowrap; }
+#home26 .h26-chip img { height: 18px; }
+#home26 .h26-chip b { font-family: var(--h26-display); font-size: 12pt; color: #fff; }
+#home26 .h26-chip small { color: var(--h26-muted); }
+
+/* ---- quests (vote / daily / unit order) ---- */
+#home26 .h26-quest { display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,.05); border: 1px solid var(--h26-line); margin-bottom: 8px; }
+#home26 .h26-quest:last-child { margin-bottom: 0; }
+#home26 .h26-quest .qi { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; background: linear-gradient(135deg, rgba(124,92,255,.35), rgba(34,211,238,.25)); }
+#home26 .h26-quest .qi img { width: 30px; height: 30px; object-fit: contain; }
+#home26 .h26-quest .qt { font-weight: 700; color: #fff; font-size: 10pt; }
+#home26 .h26-quest .qd { color: var(--h26-muted); font-size: 8.5pt; }
+#home26 .h26-quest.vote { background: linear-gradient(90deg, rgba(245,197,66,.16), rgba(124,92,255,.14)); border-color: rgba(245,197,66,.4); }
+#home26 .h26-rewards { display: flex; gap: 6px; }
+#home26 .h26-reward { display: grid; place-items: center; width: 46px; border-radius: 10px; background: rgba(0,0,0,.25); border: 1px solid var(--h26-line); padding: 4px; font-size: 7.5pt; color: var(--h26-gold); font-weight: 700; }
+#home26 .h26-reward img { width: 28px; height: 28px; object-fit: contain; }
+#home26 .h26-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 999px; border: 0; cursor: pointer; font-family: var(--h26-display); font-weight: 700; font-size: 11pt; letter-spacing: .04em; text-transform: uppercase; color: #fff; background: linear-gradient(135deg, var(--h26-accent), #4f46e5); box-shadow: 0 6px 18px rgba(124,92,255,.45); transition: transform .12s ease, box-shadow .12s ease; text-decoration: none; }
+#home26 .h26-btn:hover { transform: translateY(-1px); box-shadow: 0 10px 24px rgba(124,92,255,.6); color: #fff; }
+#home26 .h26-btn.gold { background: linear-gradient(135deg, #ffe08a, #f59e0b); color: #1b1400; box-shadow: 0 6px 18px rgba(245,158,11,.45); }
+#home26 .h26-btn.ghost { background: rgba(255,255,255,.08); box-shadow: none; border: 1px solid var(--h26-line); }
+
+/* ---- battles ---- */
+#home26 .h26-battles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+#home26 .h26-battle { display: grid; grid-template-columns: 34px 1fr 34px; align-items: center; gap: 8px; padding: 10px; border-radius: 12px; background: rgba(255,255,255,.05); border: 1px solid var(--h26-line); color: var(--h26-text); transition: transform .12s ease, border-color .12s ease; }
+#home26 .h26-battle:hover { transform: translateY(-2px); border-color: var(--h26-accent-2); color: #fff; }
+#home26 .h26-battle img { width: 34px; height: 24px; object-fit: cover; border-radius: 4px; box-shadow: 0 2px 6px rgba(0,0,0,.5); }
+#home26 .h26-battle .rg { text-align: center; font-weight: 700; font-size: 9pt; line-height: 1.15; }
+#home26 .h26-battle .rg small { display: block; color: var(--h26-muted); font-weight: 500; font-size: 7.5pt; margin-top: 2px; }
+#home26 .h26-battle.unit { grid-column: 1 / -1; border-color: rgba(245,197,66,.45); background: linear-gradient(90deg, rgba(245,197,66,.12), rgba(255,255,255,.04)); }
+#home26 .h26-empty { color: var(--h26-muted); font-size: 9pt; padding: 8px 2px; }
+#home26 .h26-live { display: inline-flex; align-items: center; gap: 6px; font-size: 7.5pt; font-weight: 700; letter-spacing: .1em; color: var(--h26-red); text-transform: uppercase; }
+#home26 .h26-live::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--h26-red); box-shadow: 0 0 0 0 rgba(251,113,133,.7); animation: h26pulse 1.6s infinite; }
+@keyframes h26pulse { 0% { box-shadow: 0 0 0 0 rgba(251,113,133,.7); } 70% { box-shadow: 0 0 0 8px rgba(251,113,133,0); } 100% { box-shadow: 0 0 0 0 rgba(251,113,133,0); } }
+
+/* ---- tabs (pills) ---- */
+#home26 .nButtons { list-style: none; margin: 0 0 10px 0; padding: 3px; display: inline-flex; gap: 2px; background: rgba(0,0,0,.3); border-radius: 999px; border: 1px solid var(--h26-line); }
+#home26 .nButtons li { display: inline-block; }
+#home26 .nButtons a { display: block; float: none; padding: 5px 12px; border-radius: 999px; font-size: 8.5pt; font-weight: 600; color: var(--h26-muted); background: transparent; border: 0; text-shadow: none; }
+#home26 .nButtons li.snButton a { background: linear-gradient(135deg, var(--h26-accent), #4f46e5); color: #fff; box-shadow: 0 4px 12px rgba(124,92,255,.4); }
+#home26 .nButtons a:hover { color: #fff; background: rgba(255,255,255,.08); }
+#home26 .newsBox { background: transparent; border: 0; padding: 0; }
+#home26 .newsBox > div:first-child { display: none; } /* legacy tab caption; the pill already says it */
+
+/* ---- events list ---- */
+#home26 #mili-handler { display: grid; gap: 4px; font-size: 9pt !important; padding: 0 !important; }
+#home26 #mili-handler a { display: flex; align-items: center; gap: 8px; padding: 7px 10px; border-radius: 10px; background: rgba(255,255,255,.04); border: 1px solid transparent; color: var(--h26-text); }
+#home26 #mili-handler a:hover { border-color: var(--h26-line); background: rgba(255,255,255,.08); color: #fff; }
+#home26 #mili-handler a img { width: 22px; height: 22px; object-fit: contain; }
+#home26 #mili-handler hr { display: none; }
+
+/* ---- news ---- */
+#home26 .h26-article { display: grid; grid-template-columns: 44px 1fr; gap: 10px; align-items: center; padding: 8px 6px; border-bottom: 1px solid var(--h26-line); }
+#home26 .h26-article:last-child { border-bottom: 0; }
+#home26 .h26-votes { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; font-family: var(--h26-display); font-weight: 700; font-size: 13pt; color: #fff; background: linear-gradient(160deg, rgba(124,92,255,.5), rgba(34,211,238,.35)); border: 1px solid var(--h26-line); }
+#home26 .h26-votes small { font-size: 6.5pt; color: var(--h26-muted); font-weight: 600; letter-spacing: .08em; margin-top: -3px; }
+#home26 .h26-article .t a { color: #fff; font-weight: 600; font-size: 10pt; }
+#home26 .h26-article .m { color: var(--h26-muted); font-size: 8pt; margin-top: 2px; }
+#home26 .h26-article .m a { color: var(--h26-accent-2); }
+
+/* ---- around eJahan ---- */
+#home26 .h26-around a { display: flex; align-items: center; gap: 10px; padding: 8px 6px; border-radius: 10px; color: var(--h26-text); }
+#home26 .h26-around a:hover { background: rgba(255,255,255,.06); color: #fff; }
+#home26 .h26-around img { width: 34px; height: 34px; border-radius: 8px; background: #fff; padding: 2px; object-fit: contain; }
+#home26 .h26-new { font-size: 7pt; font-weight: 800; letter-spacing: .1em; padding: 2px 6px; border-radius: 6px; background: var(--h26-red); color: #fff; animation: h26blink 1.2s steps(2, start) infinite; }
+@keyframes h26blink { to { visibility: hidden; } }
+
+/* ---- chat ---- */
+#home26 .h26-chat .send-pm form { display: grid; gap: 6px; }
+#home26 .h26-chat textarea { width: 100%; box-sizing: border-box; resize: vertical; min-height: 54px; background: rgba(0,0,0,.3); color: #fff; border: 1px solid var(--h26-line); border-radius: 10px; padding: 8px; font-family: var(--h26-font); font-size: 9pt; }
+#home26 .h26-chat textarea:focus { outline: none; border-color: var(--h26-accent-2); box-shadow: 0 0 0 3px rgba(34,211,238,.18); }
+#home26 .h26-chat .send-row { display: flex; align-items: center; gap: 8px; }
+#home26 .h26-chat #chatter-loader { height: 14px; opacity: .05; }
+#home26 #chatters-hold { margin-top: 10px; max-height: 520px; overflow-y: auto; display: grid; gap: 6px; padding-right: 2px; }
+#home26 #chatters-hold::-webkit-scrollbar { width: 6px; }
+#home26 #chatters-hold::-webkit-scrollbar-thumb { background: rgba(255,255,255,.15); border-radius: 999px; }
+#home26 #chat-msg { color: var(--h26-gold); font-size: 8.5pt; }
+#home26 #chat-msg:empty { display: none; }
+#home26 .chatters { display: grid; grid-template-columns: 30px 1fr; gap: 8px; align-items: start; padding: 7px 8px; border-radius: 10px; background: rgba(255,255,255,.05); border: 1px solid transparent; font-size: 8.5pt; line-height: 1.35; }
+#home26 .chatters:hover { border-color: var(--h26-line); }
+#home26 .chatters .chat-sender { float: none; }
+#home26 .chatters .chat-avatar { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,.12); }
+#home26 .chatters .chat-message { float: none; width: auto; color: var(--h26-text); word-break: break-word; }
+#home26 .chatters .chat-message a { color: var(--h26-accent-2); font-weight: 600; }
+#home26 .chatters > div:last-child { display: none; } /* legacy <hr> separator row */
+#home26 #chatter-announce { background: linear-gradient(90deg, rgba(245,197,66,.16), rgba(255,255,255,.04)); border-color: rgba(245,197,66,.4); }
+
+/* ---- fixes against legacy global rules ---- */
+body.home26 #page, body.home26 #page2, body.home26 #game-body, body.home26 #game-body .contents { background: transparent !important; }
+#home26 a span { display: inline; }
+#home26 #chatters-hold, body.home26 #chatters-hold { background: transparent !important; border: 0 !important; }
+body.home26 #hummytasks .baloon .title a { color: #fff; }
+body.home26 #hummytasks .baloon { background: rgba(255,255,255,.06); border-radius: 10px; }
+body.home26 #game-body .adbar .citAd, body.home26 #game-body .adbar .ad-content, body.home26 #game-body .adbar .ad-title a { color: var(--h26-text); }
+body.home26 #upmenubar #menubar > div a { color: #eef1ff; }
+body.home26 #upmenubar #menubar { background: transparent; }
+body.home26 #upmenubar #menubar > div a { background: rgba(255,255,255,.06) !important; }
+body.home26 #upmenubar #menubar > div a:hover { background: rgba(124,92,255,.35) !important; }
