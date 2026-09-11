@@ -39,6 +39,28 @@ class GameContext
 
     public bool $hasAlexa = false;
 
+    /** In-memory fallback when the request has no session (token-authenticated API calls). */
+    private array $mem = [];
+
+    private function hasSession(): bool
+    {
+        return app()->bound('request') && request()->hasSession();
+    }
+
+    private function sget(string $key, mixed $default = null): mixed
+    {
+        return $this->hasSession() ? session($key, $default) : ($this->mem[$key] ?? $default);
+    }
+
+    private function sput(array $values): void
+    {
+        if ($this->hasSession()) {
+            session($values);
+        } else {
+            $this->mem = $values + $this->mem;
+        }
+    }
+
     public function __construct(
         protected GameDatabase $database,
         protected GameClock $clock,
@@ -65,10 +87,10 @@ class GameContext
             $this->userlevel = Constants::GUEST_LEVEL;
             $this->database->addActiveGuest((string) request()->ip(), $this->time);
         }
-        $this->referrer = session('url', '/');
+        $this->referrer = $this->sget('url', '/');
         $this->url = request()->getRequestUri();
-        session(['url' => $this->url]);
-        $this->userMsg = session('userMsg');
+        $this->sput(['url' => $this->url]);
+        $this->userMsg = $this->sget('userMsg');
     }
 
     /** Refresh the cached profile at most every 5 seconds (legacy behaviour). */
@@ -78,8 +100,8 @@ class GameContext
         if (! $citID) {
             return;
         }
-        $lastupdate = (int) session('lastupdate', 0);
-        $cached = session('userinfo');
+        $lastupdate = (int) $this->sget('lastupdate', 0);
+        $cached = $this->sget('userinfo');
         if ($force || ! $cached || (int) ($cached['CitizenID'] ?? 0) !== $citID || $lastupdate < time() - 5) {
             $info = $this->database->getUserInfoFromID($citID) ?? [];
             $max = 40;
@@ -94,7 +116,7 @@ class GameContext
             foreach ($this->database->getCitizenInventory($citID, $max) as $row) {
                 $info['inventory'][$row['Type']] = $row;
             }
-            session(['userinfo' => $info, 'lastupdate' => time()]);
+            $this->sput(['userinfo' => $info, 'lastupdate' => time()]);
             $cached = $info;
         }
         $this->userinfo = $cached;
@@ -103,12 +125,12 @@ class GameContext
     /** Update fields in the cached profile without a DB round trip. */
     public function updateInfo(array $arr): void
     {
-        $info = session('userinfo', []);
+        $info = $this->sget('userinfo', []);
         foreach ($arr as $k => $v) {
             $info[$k] = $v;
             $this->userinfo[$k] = $v;
         }
-        session(['userinfo' => $info]);
+        $this->sput(['userinfo' => $info]);
     }
 
     /* ------------------------------------------------------------------ */
@@ -118,7 +140,11 @@ class GameContext
     /**
      * Login with the legacy rules. Returns [] on success or [field => message].
      */
-    public function login(string $subuser, string $subpass, bool $remember): array
+    /**
+     * Check legacy credentials. Returns ['errors' => [field => msg]] or ['citizen' => Citizen].
+     * Shared by the web login and the token API login.
+     */
+    public function verifyCredentials(string $subuser, string $subpass): array
     {
         $errors = [];
         $subuser = trim($subuser);
@@ -129,7 +155,7 @@ class GameContext
             $errors['pass'] = '* Password not entered';
         }
         if ($errors) {
-            return $errors;
+            return ['errors' => $errors];
         }
 
         $master = config('ejahan.master_pass');
@@ -138,13 +164,13 @@ class GameContext
         $subdata = $this->database->getUserInfo($subuser);
 
         if ($result === 1) {
-            return ['user' => '* Username not found'];
+            return ['errors' => ['user' => '* Username not found']];
         }
         if ($result === 2) {
-            return ['pass' => '* Invalid password'];
+            return ['errors' => ['pass' => '* Invalid password']];
         }
         if (config('ejahan.email.activation') && ! ($subdata['active'] ?? 0)) {
-            return ['user' => '* Username is not activated <a href="'.app(Vars::class)->getURL('activation', $subdata['CitizenID']).'" id="buttons">resend activation</a>'];
+            return ['errors' => ['user' => '* Username is not activated <a href="'.app(Vars::class)->getURL('activation', $subdata['CitizenID']).'" id="buttons">resend activation</a>']];
         }
 
         $citizen = Citizen::find($subdata['CitizenID']);
@@ -160,11 +186,24 @@ class GameContext
         $this->database->removeActiveGuest((string) request()->ip());
 
         if (! $usingMaster) {
+            $sid = $this->hasSession() ? session()->getId() : 'api';
             $this->database->exec('INSERT INTO log_logins (citID, ip, session, agent, timestamp) VALUES (?, ?, ?, ?, ?)',
-                [$citizen->getKey(), substr((string) request()->ip(), 0, 15), substr(session()->getId(), 0, 40), md5((string) request()->userAgent()), time()]);
+                [$citizen->getKey(), substr((string) request()->ip(), 0, 15), substr($sid, 0, 40), md5((string) request()->userAgent()), time()]);
         }
 
-        Auth::login($citizen, $remember);
+        return ['citizen' => $citizen];
+    }
+
+    /**
+     * Login with the legacy rules. Returns [] on success or [field => message].
+     */
+    public function login(string $subuser, string $subpass, bool $remember): array
+    {
+        $r = $this->verifyCredentials($subuser, $subpass);
+        if (isset($r['errors'])) {
+            return $r['errors'];
+        }
+        Auth::login($r['citizen'], $remember);
         session()->regenerate();
         session()->forget(['userinfo', 'lastupdate']);
         $this->boot();

@@ -3,12 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Sanctum\HasApiTokens;
 
 /**
  * A citizen account (legacy `citizens` table). Used by Laravel's auth guard.
  */
 class Citizen extends Authenticatable
 {
+    use HasApiTokens;
+
     protected $table = 'citizens';
 
     protected $primaryKey = 'CitizenID';
