@@ -1,0 +1,41 @@
+services:
+  app:
+    build: .
+    container_name: ejahan-app
+    working_dir: /var/www/html
+    volumes:
+      - .:/var/www/html
+      - ../ejahan.sql:/legacy/ejahan.sql:ro
+    ports:
+      - "8088:8000"
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: ejahan
+      DB_USERNAME: ejahan
+      DB_PASSWORD: ejahan
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: mysql:8.0
+    container_name: ejahan-db
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --sql-mode="NO_ENGINE_SUBSTITUTION"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ejahan
+      MYSQL_USER: ejahan
+      MYSQL_PASSWORD: ejahan
+    ports:
+      - "33060:3306"
+    volumes:
+      - ejahan-mysql:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  ejahan-mysql:

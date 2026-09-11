@@ -1,0 +1,143 @@
+﻿.vote-handler {
+    padding: 6px;
+    border: 1px #bfbfbf solid;
+    border-radius: 4px;
+    width: 660px;
+    height: 35px;
+    margin-bottom: 5px;
+    font-size: 8pt
+}
+
+.home-box-title {
+	font-family: "Harlow Solid Italic", "Comic sans ms", Arial;
+	font-size: 16pt;
+	padding-left: 3px;
+	color: black
+}
+
+.home-box-content {
+	display: none
+}
+
+.article-points {
+	background: transparent url('../../images/game/points-bg.gif') no-repeat;
+	width: 40px;
+	height: 45px;
+	text-align: center;
+	vertical-align: middle;
+	font-family: "Comic sans ms";
+	font-size: 14pt;
+	color: white;
+	overflow: hidden;
+	display: block;
+	padding-top: 15px;
+	float: left;
+	margin-top: 2px;
+	margin-bottom: 2px
+}
+
+.article-title {
+	height: 25px;
+	padding: 2px 5px 2px 1px;
+	float: left;
+	width: 280px
+}
+
+.article-time {
+	height: 11px;
+	padding: 2px 5px 2px 1px;
+	float: left;
+	width: 280px;
+	font-size: 8pt
+}
+
+.article-np {
+	height: 11px;
+	padding: 2px 5px 2px 1px;
+	float: left;
+	width: 280px;
+	font-size: 8pt
+}
+
+.nButtons {
+    margin: 0;
+    padding: 0 10px;
+    overflow: hidden;
+    margin-bottom: -1px;
+    height: 1.75em;
+	text-align: center
+}
+
+.nButtons li {
+    display: inline-block;
+    list-style: none;
+    padding: .25em .25em 0;
+    height: 1.5em;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+    border-bottom: 1px solid #FFF;
+	font-size: 10pt;
+	font-family: "Arial Narrow", Arial;
+}
+
+.nButtons .snButton a {
+    background: #FFF;
+    -webkit-box-shadow: #CCC 0 0 .25em;
+    -moz-box-shadow: #CCC 0 0 .25em;
+    box-shadow: #CCC 0 0 .25em;
+}
+
+.nButtons li.snButton {
+    z-index: 3
+}
+
+.nButtons a {
+    float: left;
+    height: 2em;
+    line-height: 1em;
+    -webkit-border-radius: 4px 4px 0 0;
+    -moz-border-radius: 4px 4px 0 0;
+    border-radius: 4px 4px 0 0;
+    background: #EEE;
+    border: 1px solid #CCC;
+    border-bottom: 0;
+    padding: 0 10px;
+    color: #000;
+    text-decoration: none;
+    behavior: url(PIE.htc);
+}
+
+.nButtons a:hover {
+    background: -webkit-gradient(linear, 0 0, 0 40%, from(#6BF), to(#FFF));
+    background: -moz-linear-gradient(#6BF, #FFF 40%);
+    background: linear-gradient(#6BF, #FFF 40%);
+    -pie-background: linear-gradient(#6BF, #FFF 40%);
+}
+
+.battles-holder {
+    width: 280px;
+    height: 26px;
+    background: url('../../images/game/battles-bg.png');
+    padding: 7px 25px;
+    margin: 2px 0;
+}
+
+.battles-holder:hover {
+    background-position: 0px -40px;
+}
+
+.battles-holder div {
+    display: inline-block;
+    vertical-align: top
+}
+
+.battle-link div {
+    color: black
+}
+
+.battle-region {
+    width: 220px;
+    text-align: center;
+    padding-top: 2px
+}

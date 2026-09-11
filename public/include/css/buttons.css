@@ -1,0 +1,147 @@
+.button-blue-1 {
+	width: 140px;
+	height: 18px;
+	border: 0;
+	text-align: center;
+	background: url('../../images/game/buttons/button-blue-1.png');
+	overflow: hidden;
+	display: inline-block;
+	padding: 1px 5px;
+	color: black
+}
+
+.button-blue-1:hover, .submit-blue-1:hover {
+	background: url('../../images/game/buttons/button-blue-1-h.png');
+	color: black;
+	cursor: pointer
+}
+
+.submit-blue-1 {
+	width: 150px;
+	height: 20px;
+	border: 0;
+	text-align: center;
+	background: url('../../images/game/buttons/button-blue-1.png');
+	overflow: hidden;
+	display: inline-block;
+	color: black;
+	vertical-align: top
+}
+
+.button-red-1 {
+	width: 140px;
+	height: 18px;
+	border: 0;
+	text-align: center;
+	background: url('../../images/game/buttons/button-red-1.png');
+	overflow: hidden;
+	display: inline-block;
+	padding: 1px 5px;
+	color: black
+}
+
+.button-red-1:hover, .submit-red-1:hover {
+	background: url('../../images/game/buttons/button-red-1-h.png');
+	color: black;
+	cursor: pointer
+}
+
+.submit-red-1 {
+	width: 150px;
+	height: 20px;
+	border: 0;
+	text-align: center;
+	background: url('../../images/game/buttons/button-red-1.png');
+	overflow: hidden;
+	display: inline-block;
+	color: black;
+	vertical-align: top
+}
+
+.button-gray-1 {
+	width: 140px;
+	height: 18px;
+	border: 0;
+	text-align: center;
+	background: url('../../images/game/buttons/button-gray-1.png');
+	overflow: hidden;
+	display: inline-block;
+	padding: 1px 5px;
+	color: GhostWhite
+}
+
+.submit-gray-1 {
+	width: 150px;
+	height: 20px;
+	border: 0;
+	text-align: center;
+	background: url('../../images/game/buttons/button-gray-1.png');
+	overflow: hidden;
+	display: inline-block;
+	color: black;
+	vertical-align: top
+}
+
+.button-blue-0 {
+	width: 65px;
+	height: 18px;
+	border: 0;
+	text-align: center;
+	background: url('../../images/game/buttons/button-blue-0.png');
+	overflow: hidden;
+	display: inline-block;
+	padding: 1px 5px;
+	color: black
+}
+
+.button-blue-0:hover, .submit-blue-0:hover {
+	background: url('../../images/game/buttons/button-blue-0-h.png');
+	color: black;
+	cursor: pointer
+}
+
+.submit-blue-0 {
+	width: 75px;
+	height: 20px;
+	border: 0;
+	text-align: center;
+	background: url('../../images/game/buttons/button-blue-0.png');
+	overflow: hidden;
+	display: inline-block;
+	color: black;
+	vertical-align: top
+}
+
+.button-red-0 {
+	width: 65px;
+	height: 18px;
+	border: 0;
+	text-align: center;
+	background: url('../../images/game/buttons/button-red-0.png');
+	overflow: hidden;
+	display: inline-block;
+	padding: 1px 5px;
+	color: black
+}
+
+.button-red-0:hover, .submit-red-0:hover {
+	background: url('../../images/game/buttons/button-red-0-h.png');
+	color: black;
+	cursor: pointer
+}
+
+.submit-red-0 {
+	width: 75px;
+	height: 20px;
+	border: 0;
+	text-align: center;
+	background: url('../../images/game/buttons/button-red-0.png');
+	overflow: hidden;
+	display: inline-block;
+	color: black;
+	vertical-align: top
+}
+
+a:visited.button-blue-0, a:visited.button-blue-1, a:visited.button-red-0, a:visited.button-red-1, a:visited.button-gray-0, a:visited.button-gray-1 {
+	color: black
+}

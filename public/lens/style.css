@@ -1,0 +1,56 @@
+body {
+	width: 100%;
+	font-family: tahoma;
+}
+
+#header {
+	height: 115px;
+	background: url('images/header-bg.jpg') no-repeat;
+	font-size: 24pt;
+	padding-top: 35px;
+	padding-left: 200px;
+}
+
+#header .line {
+	height: 5px;
+	background: url('images/header-line.jpg') repeat-Y;
+}
+
+#header .navbar {
+	font-size: 10pt;
+}
+
+#page {
+	width: 90%;
+	text-align: left;
+	padding: 5px;
+	font-size: 10pt
+}
+
+#table {
+//	width: 500px;
+}
+
+#table td {
+	padding-left: 15px;
+	padding-right: 15px;
+}
+
+#table .center {
+	text-align: center;
+}
+
+.Avatar-s {
+	width: 80px;
+	height: 80px;
+}
+
+a, a:visited {
+	text-decoration: none;
+	color: green;
+}
+
+a:hover {
+	text-decoration: underline;
+	color: maroon;
+}

@@ -1,0 +1,31 @@
+.headdiv{
+	width:180;
+	height:15;
+	background: #C5ECB9 url('../../images/box-bg.gif') repeat-X;
+	border:1px solid rgb(75, 84, 54);
+	-moz-border-radius: 5px 5px 0 0;
+	padding:2px;
+	font-family:tahoma;
+	font-size:8pt;
+	color: black;
+	text-align: center;
+	filter:progid:DXImageTransform.Microsoft.Alpha(opacity=80);
+	opacity: 0.8;
+}
+
+
+.bodydiv {
+	background:#C5ECB9;
+	font-family:tahoma;
+	font-size:8pt;
+	border-left:1px solid rgb(75, 84, 54);
+	border-right:1px solid rgb(75, 84, 54);
+	border-bottom:1px solid rgb(75, 84, 54);		
+	-moz-border-radius: 0 0 5px 5px;
+	padding:2px;
+	width:180px; 
+	color: black;
+	text-align: justify;			
+	filter:progid:DXImageTransform.Microsoft.Alpha(opacity=85);
+	opacity: 0.7;
+}

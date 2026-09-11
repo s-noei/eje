@@ -1,0 +1,247 @@
+/* =Navigation
+============================================================================== */
+
+	/* =Reflection Nav
+	-------------------------------------------------------------------------- */
+		
+		#nav-reflection {
+			margin: 0 auto 50px auto;
+			padding: 50px 0 0 172px;
+			width: 452px;
+			min-height: 130px;
+			background: url(../images/page-shadow.jpg) top center no-repeat;
+			list-style: none;
+			}
+			
+		#nav-reflection li {
+			margin-right: 15px;
+			width: 59px;
+			float: left;
+			}
+			
+		#nav-reflection a, #nav-reflection a:visited, #nav-reflection a:hover {
+			width: 59px;
+			height: 59px;
+			text-indent: -9999px;
+			overflow: hidden;
+			background: url(../images/icons.png) no-repeat;
+			display: block;
+			}
+			
+		#nav-reflection span {
+			margin-top: 1px;
+			width: 59px;
+			height: 34px;
+			text-align: center;
+			background: url(../images/icons-reflections.jpg) no-repeat;
+			display: block;
+			}
+			
+		/* Button Colors */
+		
+		#nav-reflection li.button-color-1 a {
+			background-position: -3px -3px;
+			}
+			
+		#nav-reflection li.button-color-2 a {
+			background-position: -92px -3px;
+			}
+			
+		#nav-reflection li.button-color-3 a {
+			background-position: -181px -3px;
+			}
+			
+		#nav-reflection li.button-color-4 a {
+			background-position: -270px -3px;
+			}
+			
+		/* Button Reflection Color */
+		
+		#nav-reflection li.button-color-1 span {
+			background-position: 0 0;
+			}
+			
+		#nav-reflection li.button-color-2 span {
+			background-position: -89px 0;
+			}
+			
+		#nav-reflection li.button-color-3 span {
+			background-position: -178px 0;
+			}
+			
+		#nav-reflection li.button-color-4 span {
+			background-position: -267px 0;
+			}
+			
+			
+	/* =Shadow Nav
+	-------------------------------------------------------------------------- */
+		
+		.nav-shadow {
+			margin: 0 auto 50px auto;
+			padding: 30px 0 0 80px;
+			width: 810px;
+			min-height: 130px;
+			text-align: center;
+			background: url(../images/page-shadow.jpg) top center no-repeat;
+			list-style: none;
+			}
+			
+		.nav-shadow li {
+			width: 81px;
+			height: 72px;
+			position: relative;
+			float: left;
+			}
+			
+		.nav-shadow a, .nav-shadow a:visited, .nav-shadow a, .nav-shadow a:hover {
+			margin: 0 auto;
+			width: 59px;
+			height: 59px;
+			text-indent: -9999px;
+			overflow: hidden;
+			background: url('../../images/menubar-icons.png') no-repeat;
+			display: block;
+			position: relative;
+			z-index: 2;
+			}
+			
+		/* Button Colors */
+		
+		.nav-shadow li.lens a {
+			background: url('../../images/theme/menu/My Places/lens.png');
+			}
+			
+		.nav-shadow li.home a {
+			background: url('../../images/theme/menu/Home/mainpage.png');
+			}
+			
+		.nav-shadow li.logout a {
+			background: url('../../images/theme/menu/Home/logout.png');
+			}
+
+		.nav-shadow li.profile a {
+			background-position: -177px 0px
+			}
+
+		.nav-shadow li.company a {
+			background-position: -236px 0px
+			}
+			
+		.nav-shadow li.army a, .nav-shadow li.info-military a {
+			background-position: -295px 0px
+			}
+			
+		.nav-shadow li.mines a {
+			background-position: -531px -118px
+			}
+
+		.nav-shadow li.military-unit a {
+			background-position: -590px -59px
+			}
+			
+		.nav-shadow li.newspaper a, .nav-shadow li.rank-newspapers a, .nav-shadow li.info-media a {
+			background-position: -413px 0px
+			}
+			
+		.nav-shadow li.party a, .nav-shadow li.rank-parties a, .nav-shadow li.info-politics a {
+			background-position: -472px 0px
+			}
+			
+		.nav-shadow li.advertise a {
+			background-position: -531px 0px
+			}
+			
+		.nav-shadow li.eco-cmarket a {
+			background-position: 0px -59px
+			}
+			
+		.nav-shadow li.eco-imarket a {
+			background-position: -118px -59px
+			}
+			
+		.nav-shadow li.eco-market a, .nav-shadow li.ext-special a {
+			background-position: -236px -59px
+			}
+			
+		.nav-shadow li.eco-jobs a {
+			background-position: -177px -59px
+			}
+			
+		.nav-shadow li.eco-monetary a {
+			background-position: -59px -59px
+			}
+			
+		.nav-shadow li.rank-citizens a {
+			background-position: -295px -59px
+			}
+			
+		.nav-shadow li.rank-countries a {
+			background-position: -354px -59px
+			}
+			
+		.nav-shadow li.rank-battles a {
+			background-position: -354px 0px
+			}
+			
+		.nav-shadow li.info-social a {
+			background-position: -413px -59px
+			}
+			
+		.nav-shadow li.info-economy a {
+			background-position: -472px -59px
+			}
+			
+		.nav-shadow li.info-congress a {
+			background-position: -531px -59px
+			}
+			
+		.nav-shadow li.info-map a {
+			background-position: 0px -118px
+			}
+			
+		.nav-shadow li.ext-elections a {
+			background-position: -59px -118px
+			}
+			
+		.nav-shadow li.ext-invite a {
+			background-position: -118px -118px
+			}
+			
+		.nav-shadow li.ext-chancebox a {
+			background-position: -590px 0px
+			}
+			
+		.nav-shadow li.ext-lottery a {
+			background-position: -177px -118px
+			}
+			
+		.nav-shadow li.ext-store a {
+			background-position: -590px -118px
+			}		
+			
+		.nav-shadow li.ext-forum a {
+			background-position: -236px -118px
+			}
+			
+		.nav-shadow li.ext-contact a {
+			background-position: -295px -118px
+			}
+			
+		.nav-shadow li.ext-wiki a {
+			background-position: -354px -118px
+			}
+			
+		.nav-shadow li.ext-credits a {
+			background-position: -472px -118px
+			}
+			
+		/* Button Shadow */
+		
+		.nav-shadow li img.shadow {
+			margin: 0 auto;
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			z-index: 1;
+			}

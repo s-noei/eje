@@ -1,0 +1,33 @@
+﻿.viol-box {
+	border: 1px #A60000 solid;
+	margin: 2px 30px 2px 30px;
+	padding: 2px;
+}
+
+.viol-head {
+	height: 18px;
+	font-weight: bold;
+	border-bottom: 1px black solid
+}
+
+.viol-body {
+	margin: 0 15px 0 15px
+}
+
+.viol-details {
+	height: 15px;
+	font-size: 8pt;
+	border-top: 1px black solid;
+	text-align: center
+}
+
+.viol-tail {
+	font-style: italic;
+	font-size: 8pt;
+	border-top: 1px black solid;
+	text-align: center
+}
+
+.viol-appeal {
+	display: none
+}

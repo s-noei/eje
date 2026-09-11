@@ -1,0 +1,106 @@
+﻿.page-out {
+	width: 800px;
+	padding: 0px 25px 5px 25px;
+	text-align:center;
+	color: black;
+	background: url('../../themes/green/body-bg-out.png') repeat-y;
+}
+
+.out-head {
+	width: 800px;
+	padding: 0px 25px 0px 25px;
+	text-align:center;
+	margin-top: 16px;
+	color: black;
+}
+
+.out-head .header {
+	background: url('../../images/top-banner.png') no-repeat;
+	height: 200px;
+	margin-right: -27px;
+	margin-left: -27px;
+	padding-right: 27px;
+	padding-left: 27px
+}
+
+.page-out .column-left {
+	width: 506px;
+	padding: 0 2px 0 2px;
+	overflow: hidden;
+	float: left
+}
+
+.page-out .column-right {
+	width: 276px;
+	padding: 0 2px 0 2px;
+	overflow: hidden;
+	float: left
+}
+
+.page-out .box-small {
+	float: left;
+	width: 50%
+}
+
+.page-out .box-head {
+	font-weight: bold;
+	font-size: 11pt;
+	height: 15px;
+	background: url('../../images/game/out-box-head.png') repeat-X transparent center bottom;
+	padding: 2px 1px 3px 1px;
+}
+
+.page-out .box-body {
+	font-size: 9pt;
+	text-align: justify;
+	padding: 3px;
+	margin-top: 0px;
+	border: 1px black solid;
+	border-top: 0;
+}
+
+#topcountries {
+	font-size: 8pt
+}
+
+#topcountries div {
+	text-align: justify;
+}
+
+#topcountries blockquote {
+	margin: 0 2px 0 2px
+}
+
+#topcountries .no {
+	float: left;
+	padding-top: 12px;
+	width: 10px;
+	text-align: center
+}
+
+#topcountries .name {
+	float: left;
+	padding-top: 4px;
+	width: 120px;
+	text-align: left;
+}
+
+#topcountries .ep {
+	float: right;
+	padding-top: 4px;
+	width: 90px;
+}
+
+#topcountries .pop {
+	float: right;
+	padding-top: 0px;
+	width: 90px;
+}
+
+#shots {
+	text-align: center
+}
+
+#shots .preview {
+	width: 400px
+}

@@ -1,0 +1,25 @@
+body {
+		background: #ddd;
+	}
+
+#table-main {
+		background: #ddd;
+		border: 2px #b67 solid;
+		width: 350px;
+		color: black;
+	}
+
+#table-main .head{
+		text-align: center;
+		font-family: Arial;
+	}
+
+#table-main .body{
+		text-align: justify;
+		padding: 5px;
+	}
+
+#table-main .foot{
+		text-align: center;
+		font-size: 8pt;
+	}

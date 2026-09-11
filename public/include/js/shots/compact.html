@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+	<head>
+		<link type="text/css" href="compact.css" rel="stylesheet" />
+		
+		<script type="text/javascript" src="js/jquery.js"></script>
+		<script type="text/javascript" src="js/pikachoose-min.js"></script>
+		<script language="javascript">
+			<!--
+			$(document).ready(
+				function (){
+					$("#pikame_compact").PikaChoose({user_thumbs:true, show_prev_next:false,thumb_width:10,thumb_height:10,buttons_text: { play: "Play", stop: "Stop", previous: "Previous", next: "Next" }});
+			});
+			-->
+		</script>
+
+		
+</head>
+<body>
+<div class="pikachooseCompact">
+Compact example
+	<ul id="pikame_compact">
+		<li><img ref="1.jpg" src="thumb-circle-active.png"/><span><a href="http://www.pikachoose.com">Now you can have links!</a></span></li>
+		<li><img ref="2.jpg" src="thumb-circle-active.png"/><span> Set custom thumbnails.</span></li>
+		<li><img ref="3.jpg" src="thumb-circle-active.png"/><span> Or let PikaChoose make them for you!. </span></li>
+		<li><img ref="4.jpg" src="thumb-circle-active.png"/><span> Integer id dolor a erat sagittis volutpat. </span></li>
+		<li><img ref="5.jpg" src="thumb-circle-active.png"/><span> Aliquam erat volutpat. </span></li>
+</div>
+
+</body>
+</html>

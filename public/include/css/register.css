@@ -1,0 +1,165 @@
+.txtregister {
+	border: 1px solid #CCC;
+	font-size: 12pt;
+	border-radius: 3px 8px;
+	border-color: gray
+}
+
+.register-holder, .register-holder2 {
+	border: 1px solid;
+	border-radius: 5px;
+	padding: 3px;
+	vertical-align: top;
+	margin-bottom: 5px;
+	display: none
+}
+
+.register-holder {
+	width: 306px;
+	min-height: 350px;
+	overflow: hidden
+}
+
+.register-holder .bottom {
+	position: absolute;
+	margin-top: 331px;
+	height: 25px;
+	width: 300px;
+	text-align: center
+}
+
+.register-holder .loading {
+	position: absolute;
+	margin-top: -5px;
+	height: 25px;
+	padding: 167px 0;
+	background: white;
+	opacity: 0.8;
+	z-index: 2000;
+	display: none;
+	width: 306px;
+	text-align: center
+}
+
+.register-holder .ok {
+	position: absolute;
+	margin-top: -5px;
+	height: 129px;
+	padding: 115px 0;
+	background: Lavender;
+	opacity: 0.8;
+	z-index: 2000;
+	display: none;
+	width: 306px;
+	text-align: center
+}
+
+.map-holder {
+	width: 300px;
+	height: 150px;
+	border: 1px solid blue;
+	border-radius: 5px;
+	background: url('../../images/game/map-bg.gif');
+}
+
+.map-holder .flag-holder {
+	position: absolute;
+	margin-top: 115px;
+	margin-left: 3px
+}
+
+#reg-success {
+	display: inline-block;
+	vertical-align: middle;
+	width: 310px;
+	height: 250px;
+	padding: 4px;
+	border: 3px solid turquoise;
+	border-radius: 5px
+}
+
+#reg-success div {
+	position: absolute;
+	overflow: hidden
+}
+
+#reg-success .avatar {
+	margin-top: 5px;
+	margin-left: 5px;
+	width: 70px;
+	height: 70px;
+	border: 1px solid;
+	border-radius: 3px
+}
+
+#reg-success .title {
+	margin-top: 5px;
+	margin-left: 83px;
+	width: 225px;
+	height: 25px;
+	text-align: center;
+	padding: 1px;
+	color: black;
+	font-size: 10pt;
+	background: -webkit-gradient(linear, 0 0, 0 bottom, from(#EAF5FF), to(#8FC9FE));
+	background: -moz-linear-gradient(#EAF5FF, #8FC9FE);
+	background: linear-gradient(#EAF5FF, #8FC9FE);
+	-pie-background: linear-gradient(#EAF5FF, #8FC9FE);
+}
+
+#reg-success .name {
+	margin-top: 40px;
+	margin-left: 80px;
+	text-align: center;
+	width: 225px;
+	height: 30px;
+	padding: 1px;
+	color: RoyalBlue;
+	font-size: 16pt
+}
+
+#reg-success .location {
+	margin-top: 80px;
+	margin-left: 80px;
+	text-align: justify;
+	color: black;
+	width: 225px;
+	height: 90px;
+	padding: 1px;
+	background: white;
+	border: 2px solid red;
+	border-radius: 5px
+}
+
+#reg-success .lochandle, #reg-success .award-amount {
+	position: static;
+	display: inline-block;
+}
+
+#reg-success .award {
+	margin-top: 180px;
+	margin-left: 5px;
+	text-align: center;
+	color: black;
+	width: 300px;
+	height: 70px;
+	padding: 1px
+}
+
+#reg-success .award-amount {
+	color: green;
+	font-weight: bold;
+	font-size: 12pt;
+}
+
+#reg-success .stamp {
+	margin-top: 35px;
+	margin-left: 35px;
+	text-align: center;
+	color: black;
+	width: 70px;
+	height: 70px;
+	padding: 1px;
+	z-index: 9000;
+	display: none
+}

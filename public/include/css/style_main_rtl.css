@@ -1,0 +1,778 @@
+﻿
+.blg1 {background: url(../../images/boxes/bl-green1.gif) 0 100% no-repeat #CDF7B5; width: 270px}
+.blg2 {background: url(../../images/boxes/bl-green1.gif) 0 100% no-repeat #CDF7B5; width: 510px}
+.brg {background: url(../../images/boxes/br-green1.gif) 100% 100% no-repeat}
+.tlg {background: url(../../images/boxes/tl-green1.gif) 0 0 no-repeat}
+.trg {background: url(../../images/boxes/tr-green1.gif) 100% 0 no-repeat; padding:10px}
+
+.blb1 {background: url(../../images/boxes/bl-blue1.gif) 0 100% no-repeat #B5E8F7; width: 270px}
+.blb2 {background: url(../../images/boxes/bl-blue1.gif) 0 100% no-repeat #B5E8F7; width: 510px}
+.brb {background: url(../../images/boxes/br-blue1.gif) 100% 100% no-repeat}
+.tlb {background: url(../../images/boxes/tl-blue1.gif) 0 0 no-repeat}
+.trb {background: url(../../images/boxes/tr-blue1.gif) 100% 0 no-repeat; padding:10px}
+
+.clear {font-size: 1px; height: 10px}
+
+.clear-r {font-size: 1px; height: 10px; float: right}
+
+.blb21 {background: url(../../images/boxes/bl-blue2.gif) 0 100% no-repeat #B5E8F7; width: 270px; float: right; font-size: 14pt; text-align: center}
+.blb22 {background: url(../../images/boxes/bl-blue2.gif) 0 100% no-repeat #B5E8F7; width: 510px}
+.blb23 {background: url(../../images/boxes/bl-blue2.gif) 0 100% no-repeat #B5E8F7; width: 190px; float: right; font-size: 9pt; text-align: center}
+.brb2 {background: url(../../images/boxes/br-blue2.gif) 100% 100% no-repeat}
+.tlb2 {background: url(../../images/boxes/tl-blue2.gif) 0 0 no-repeat}
+.trb2 {background: url(../../images/boxes/tr-blue2.gif) 100% 0 no-repeat; padding:10px}
+
+.blg21 {background: url(../../images/boxes/bl-green2.gif) 0 100% no-repeat #CDF7B5; width: 270px; float: right; font-size: 14pt; text-align: center}
+.blg22 {background: url(../../images/boxes/bl-green2.gif) 0 100% no-repeat #CDF7B5; width: 510px}
+.blg23 {background: url(../../images/boxes/bl-green2.gif) 0 100% no-repeat #CDF7B5; width: 190px; float: right; font-size: 9pt; text-align: center}
+.brg2 {background: url(../../images/boxes/br-green2.gif) 100% 100% no-repeat}
+.tlg2 {background: url(../../images/boxes/tl-green2.gif) 0 0 no-repeat}
+.trg2 {background: url(../../images/boxes/tr-green2.gif) 100% 0 no-repeat; padding:10px}
+
+#header {
+		width: 800px;
+		height: 100px;
+		overflow: hidden;
+	}
+
+.languages {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 24px;
+	background: black;
+	filter: alpha (opacity=20);
+	opacity: 0.2;
+}
+
+#logo {
+		width: 140px;
+		height: 80px;
+		float: right;
+		padding-top: 5px;
+		overflow: hidden;
+	}
+
+#header #time {
+		position: absolute;
+		margin-top: 52px;
+		margin-right: 154px;
+		float: right;
+		text-align: right;
+		padding-right: 37px;
+		padding-top: 9px;
+		width: 106px;
+		height: 26px;
+	}
+
+#header #date {
+		position: absolute;
+		margin-top: 16px;
+		margin-right: 154px;
+		float: right;
+		text-align: right;
+		padding-right: 37px;
+		padding-top: 9px;
+		width: 106px;
+		height: 25px;
+		font-size: 9pt;
+	}
+
+#header #search {
+		position: absolute;
+		margin-top: 15px;
+		margin-right: 314px;
+		float: right;
+		text-align: right;
+		width: 150px;
+		height: 70px;
+	}
+
+#header #search .search {
+		position: absolute;
+		margin-top: 5px;
+		margin-right: 10px;
+		height: 22px;
+		width: 132px;
+		padding-right: 2px;
+		border: 0;
+		background: url('');
+	}
+
+#searchfields {
+		position: absolute;
+		width: 100px;
+		margin-top: 30px;
+		margin-right: 10px;
+		font-size: 10pt;
+		text-align: justify
+	}
+
+#btnSearch {
+		position: absolute;
+		margin-top: 44px;
+		margin-right: 113px;
+		height: 22px;
+		width: 30px;
+		background: url('images/game/find.gif') no-repeat;
+		background-position: 5px 0px;
+		border: 0;
+	}
+
+#occ-stat {
+		position: absolute;
+		margin-top: 14px;
+		margin-right: 490px;
+		padding: 2px;
+		padding-right: 5px;
+		float: right;
+		text-align: right;
+		width: 288px;
+		height: 66px;
+	}
+
+#occ-stat #occstat {
+		text-align: center;
+		font-size: 18pt;
+	}
+
+#occ-stat #occdesc {
+		text-align: center;
+		font-size: 8pt;
+	}
+
+#topbar {
+		width: 600px;
+		height: 50px;
+		overflow: hidden;
+	}
+
+#citInfo {
+		width: 800px;
+		height: 110px;
+		float: right;
+		overflow: hidden;
+	}
+
+#citInfo .avatar {
+		width: 100px;
+		height: 110px;
+		float: right;
+		overflow: hidden;
+		font-size: 9pt;
+		margin-top: 4px;
+		margin-bottom: 2px;
+	}
+
+#citInfo img.avatar {
+		border: 0;
+		width: 72px;
+		height: 72px;
+		padding: 1px;
+		float: none;
+	}
+
+#citInfo .details {
+		width: 592px;
+		height: 85px;
+		overflow: hidden;
+		font-size: 9pt;
+		padding: 3px;
+	}
+
+#citInfo .title {
+		width: 695px;
+		height: 16px;
+		overflow: hidden;
+		font-size: 9pt;
+		padding: 1px;
+		padding-top: 0px;
+	}
+
+#citInfo .country {
+		width: 97px;
+		height: 85px;
+		float: left;
+		text-align: center;
+		padding-right: 3px;
+		overflow: hidden;
+		font-size: 9pt;
+		padding-top: 1px;
+	}
+
+#citInfo img.flag {
+		border: 0;
+		width: 85px;
+		height: 63px;
+		float: none;
+	}
+
+#wellness {
+		float: right;
+		height: 67px;
+		width: 50px;
+		display: table-cell;
+		vertical-align: middle;
+		padding: 5px;
+		padding-top: 0;
+		padding-right: 6px;
+		text-align: justify;
+		overflow: hidden;
+	}
+
+#accounts {
+		float: right;
+		height: 67px;
+		width: 75px;
+		display: table-cell;
+		vertical-align: middle;
+		padding-top: 10px;
+		padding-bottom: 0;
+		padding-left: 20px;
+		padding-right: 20px;
+		text-align: justify;
+		overflow: hidden;
+	}
+
+#accounts img.curIco {
+		width: 24px;
+		height: 24px;
+		padding: 1px;
+	}
+
+#messages {
+		float: right;
+		height: 65px;
+		width: 71px;
+		display: table-cell;
+		vertical-align: middle;
+		padding-top: 10px;
+		padding-bottom: 0;
+		padding-left: 20px;
+		padding-right: 20px;
+		text-align: justify;
+		margin: 2px;
+		margin-top: 0;
+		overflow: hidden;
+	}
+
+#messages img.msgIco {
+		width: 26px;
+		height: 22px;
+		padding: 0 0 5px 5px;
+	}
+
+#detAds {
+		float: right;
+		height: 85px;
+		width: 225px;
+		display: table-cell;
+		vertical-align: middle;
+		padding: 1px;
+		padding-left: 2px;
+		padding-right: 73px;
+		text-align: justify;
+		overflow: hidden;
+		background: url('../../images/hummy/detad.png') no-repeat -3px;
+	}
+
+#detAds img.ad {
+		width: 300px;
+		height: 75px;
+		padding: 0;
+	}
+
+#wnmeter {
+		width: 39px;
+		height: 60px;
+		float: right;
+		overflow: hidden;
+		clear:none;
+		display:block;
+		padding-bottom:0px;
+		padding-top:0px;
+		margin-right:3px;
+}
+
+#wnmeter .meter {
+	display:block;
+	overflow:hidden;
+	padding-left:3px;
+}
+
+#indmeter {
+		width: 39px;
+		height: 60px;
+		float: right;
+		overflow: hidden;
+		clear:none;
+		display:block;
+		padding-bottom:0px;
+		padding-top:0px;
+}
+
+#indmeter .meter {
+	display:block;
+	overflow:hidden;
+	padding-right:3px;
+}
+
+#wntitle {
+	width: 53px;
+	text-align: center;
+	font-weight: bold;
+	font-size: 8pt;
+	position:absolute;
+	border-top:2px green solid; 
+	margin-top: 60px;
+}
+
+#wnind {
+	background:#628F4C none repeat scroll 0 0;
+	border-top:3px solid #467531;
+	display:block;
+	font-weight:bold;
+	font-size:8pt;
+	color: black;
+	padding-top:0px;
+	text-align: center;
+	width:42px;
+	overflow:hidden;
+}
+
+#menubar {
+		height: 42px;
+		background: url('../../images/game/menubar.png') no-repeat;
+		cursor: pointer;
+	}
+
+#menubar div {
+		display: block;
+		float: left;
+		height: 40px;
+//		border: 1px solid
+	}
+
+#menubar div a {
+		height: 41px;
+		display: block;
+	}
+
+#menubar div a span {
+		display: none;
+	}
+
+#menubar .home a, #menubar .home a:hover {
+		width: 120px;
+	}
+
+#menubar .myplaces a, #menubar .myplaces a:hover {
+		width: 130px;
+		background-position: -120px 0px;
+	}
+
+#menubar .economy a, #menubar .economy a:hover {
+		width: 140px;
+		background-position: -250px 0px;
+	}
+
+#menubar .ranking a, #menubar .ranking a:hover {
+		width: 130px;
+		background-position: -390px 0px;
+	}
+
+#menubar .info a, #menubar .info a:hover {
+		width: 140px;
+		background-position: -520px 0px;
+	}
+
+#menubar .extra a, #menubar .extra a:hover {
+		width: 140px;
+		background-position: -660px 0px;
+	}
+
+#submenubar {
+		height: 85px;
+		margin-top: -20px;
+	}
+	
+#dock div {
+//		display: none;
+	}
+
+#game-body .adbar {
+		width: 110px;
+		float: right;
+		padding-right: 3px;
+		padding-left: 3px;
+		font-size: 9pt;
+		color: black;
+		overflow-X: hidden;
+	}
+
+#game-body hr.sidebar {
+		width: 90%;
+		height: 1px;
+		color: black;
+	}
+
+.menu-cat {
+		font-weight: bold;
+		text-align: center;
+		width: 106px;
+		height: 15px;
+		overflow: hidden;
+		color: black;
+		padding: 2px;
+		border: 1px black solid;
+		border-bottom: 0;
+		cursor: pointer;
+	}
+
+.spacer {
+		font-size: 1px;
+	}
+
+.submenus {
+		border: 1px black solid;
+		border-top: 0;
+		width: 106px;
+		overflow-X: hidden;
+		padding: 2px;
+	}
+
+.menu-sub {
+		padding: 2px;
+		padding-right: 10px;
+	}
+
+#game-body .sidebar {
+		width: 98px;
+		padding-right: 5px;
+		float: left;
+		text-align: justify;
+		overflow-X: hidden;
+	}
+
+#game-body .contents {
+		width: 570px;
+		text-align: justify;
+		overflow-X: hidden;
+		padding: 4px;
+		padding-top: 0;
+	}
+
+a, a:visited {
+		text-decoration: none;
+	}
+
+a span {
+	display: none;
+}
+
+a:hover {
+	position: relative;
+	text-decoration: none;
+}
+
+a:hover span {
+	display: block;
+   	position: absolute;
+}
+
+a:hover span {
+	top: 10px; left: 0;
+}
+
+.column-left {
+		float: right;
+		width: 280px;
+		margin-left: 5px;
+		overflow-X: hidden;
+	}
+
+.column-right {
+		float: left;
+		width: 280px;
+		margin-right: 5px;
+		overflow-X: hidden;
+	}
+
+.column-double {
+		width: 560px;
+		margin-right: 5px;
+		margin-left: 5px;
+		display: block;
+		position: relative;
+	}
+
+.column-headcol {
+		width: 90px;
+		overflow-X: hidden;
+		float: right;
+		padding: 2px;
+		text-align: center;
+		font-size: 12pt;
+		font-weight: bold;
+		display: block;
+	}
+
+.column-rank {
+		width: 90px;
+		overflow-X: hidden;
+		float: right;
+		padding: 2px;
+		text-align: justify;
+		font-size: 8.5pt;
+		font-weight: normal;
+		display: block;
+	}
+
+.column-infrigments {
+		padding: 3px;
+		padding-right: 5px;
+		margin-bottom: 2px;
+		text-align: justify;
+		font-size: 8.5pt;
+		text-decoration: blink;
+		font-style:italic;
+		background:#FF5353;
+		color: white;
+		display: block;
+	}
+
+.column-viopoints {
+		padding: 3px;
+		padding-right: 5px;
+		margin-bottom: 2px;
+		text-align: justify;
+		font-size: 8.5pt;
+		font-style:italic;
+		border:1px #FF5353 solid;
+		color:#FF5353;
+		display: block;
+	}
+
+.column-details {
+		width: 458px;
+		overflow-X: hidden;
+		float: left;
+		padding: 2px;
+		display: block;
+	}
+
+.column-details-left {
+		width: 225px;
+		overflow-X: hidden;
+		float: right;
+		padding: 2px;
+		display: block;
+	}
+
+.column-details-right {
+		width: 225px;
+		overflow-X: hidden;
+		float: left;
+		padding: 2px;
+		display: block;
+	}
+
+.profile-details {
+		width: 190px;
+		float: right;
+		padding: 5px;
+		overflow-X: hidden;
+	}
+
+.profile-details2 {
+		width: 240px;
+		float: right;
+		padding: 5px;
+		overflow-X: hidden;
+	}
+
+.profile-name {
+		padding-right: 5px;
+		font-size: 14pt;
+		overflow-X: hidden;
+	}
+
+.column-name {
+		padding-right: 5px;
+		font-size: 14pt;
+		overflow-X: hidden;
+	}
+
+.company-name {
+		padding-right: 5px;
+		font-size: 14pt;
+		overflow-X: hidden;
+	}
+
+.company-name sup {
+		font-family: Verdana;
+		font-size: 8pt;
+		font-weight: bold;
+	}
+
+.company-message {
+		font-size: 8pt;
+	}
+
+.profile-aboutme {
+		width: 175px;
+		height: 65px;
+		padding-top: 3px;
+		padding-bottom: 13px;
+		padding-right: 7px;
+		padding-left: 8px;
+		color: white;
+		font-size: 9pt;
+		overflow-Y: hidden;
+		background: url('../../images/game/profile/aboutme-bg.gif') no-repeat;
+	}
+
+.profile-forfeits {
+		height: 60px;
+		padding-right: 5px;
+		font-size: 10pt;
+		color: maroon;
+		font-size: 8pt;
+		overflow: hidden;
+	}
+
+.profile-living {
+		height: 70px;
+		padding-right: 5px;
+		font-size: 10pt;
+		overflow: hidden;
+	}
+
+.profile-box {
+		float: right;
+		text-align: center;
+		margin-left: 10px;
+	}
+
+#trophy {
+		text-align: center;
+		margin-right: 35px;
+		margin-left: 35px;
+	}
+
+#trophy .trophy-det {
+		width: 64px;
+		height: 28px;
+		float: right;
+		padding-top: 36px;
+		color: white;
+		font-weight: bold;
+		font-family: Verdana, Tahoma;
+		font-size: 8pt;
+	}
+	
+.txtAmount-4 {
+	border: 0;
+	width: 50px;
+	height: 22px;
+	background: url('../../images/game/textboxes/txtbox-4.gif');
+	text-align: center;
+	font-size: 14pt;
+	font-family: Verdana, Tahoma;
+	padding: 2px;
+	}
+
+#invite-head {
+		width: 320px;
+		background: #ffffff url('../../images/invite-bg.jpg') 100% 0% no-repeat;
+		padding-left: 270px;
+	}
+
+#invite-head .title {
+		font-size: 20pt;
+		padding-top: 50px;
+		padding-bottom: 20px;
+		padding-right: 25px;
+	}
+
+#security-head {
+		width: 320px;
+		background: #ffffff url('../../images/hummy/security-q.gif') 100% 0% no-repeat;
+		padding-left: 270px;
+	}
+
+#security-head .title {
+		font-size: 20pt;
+		padding-top: 50px;
+		padding-bottom: 20px;
+		padding-right: 25px;
+	}
+
+#loading-div {
+		position: fixed;
+		background: black;
+		top: 0px;
+		left: 0px;
+		width: 100%;
+		height: 100%;
+		font-size: 14pt;
+		color: white;
+		filter: alpha (opacity=50);
+		opacity: 0.5;
+	}
+
+#loading-div .loader1 {
+		top: 50%;
+		display: table;
+		vertical-align: middle;
+	}
+
+#loading-div .loader2 {
+		position: absolute;
+		top: 50%;
+		width: 100%;
+		display: table-cell;
+		vertical-align: middle;
+	}
+
+.send-pm {
+		text-align: center;
+		padding-top: 10px;
+	}
+
+#chat-msg {
+		display: none;
+		text-align: center
+	}
+
+.chat-sender {
+		float: right;
+		width: 20px;
+		padding: 1px;
+		text-align: center;
+	}
+
+.chat-avatar {
+		width: 18px;
+		height: 18px;
+		padding: 1px;
+	}
+
+.chat-name {
+		width: 20px;
+		padding: 0px;
+		text-align: center;
+	}
+
+.chat-message {
+		float: right;
+		width: 220px;
+		padding: 3px;
+		text-align: justify;
+	}
+
+#chatters-hold {
+		overflow-Y: auto;
+		height: 250px;
+	}

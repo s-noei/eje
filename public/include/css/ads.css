@@ -1,0 +1,69 @@
+#myads {
+	width: 670px;
+	border-bottom: 1px solid;
+	font-size: 9pt;
+}
+
+#myads div {
+	float: left;
+	padding: 5px;
+	text-align: center;
+	overflow: hidden;
+}
+
+#myads .no {
+	width: 40px;
+}
+
+#myads .title {
+	width: 150px;
+}
+
+#myads .price {
+	width: 130px;
+}
+
+#myads .time {
+	width: 100px;
+}
+
+#myads .view {
+	width: 60px;
+}
+
+#myads .click {
+	width: 60px;
+}
+
+#myads .oper {
+	width: 60px;
+}
+
+#myads .clear {
+	border: 0;
+	clear: both;
+	float: none;
+	padding: 0;
+}
+
+/**** ADS ****/
+#add-ad {
+	width: 400px;
+	padding: 3px;
+	border: 1px solid;
+}
+
+#add-ad .title {
+	width: 150px;
+	height: 30px;
+	padding-top: 10px;
+	float: left;
+	text-align: left;
+}
+
+#add-ad .content {
+	width: 250px;
+	padding-top: 10px;
+	float: left;
+	text-align: left;
+}

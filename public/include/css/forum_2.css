@@ -1,0 +1,158 @@
+table .forum {
+	width: 560px;
+}
+
+.cat {
+	background: black;
+	color: white;
+	padding: 3px;
+	text-align: center;
+	font-family: Verdana;
+	font-size: 11pt;
+	font-weight: bold;
+}
+
+.cat a {
+	color: white;
+}
+
+.empty-notify {
+	width: 100%;
+	border: 1px black solid;
+	padding: 3px;
+	text-align: center;
+}
+
+.board-img {
+	padding: 3px;
+	width: 38px;
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+	border-left: 1px solid black;
+	border-right: 1px dashed black;
+}
+
+.board-title {
+	width: 220px;
+	padding: 3px;
+	padding-left: 10px;
+	text-align: justify;
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+	border-left: 1px dashed black;
+	border-right: 1px dashed black;
+}
+
+.board-count {
+	width: 40px;
+	padding: 7px;
+	text-align: justify;
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+	border-left: 1px dashed black;
+	border-right: 1px dashed black;
+	text-align: center;
+}
+
+.board-last {
+	padding: 3px;
+	padding-left: 10px;
+	text-align: justify;
+	font-size: 8pt;
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+	border-left: 1px dashed black;
+	border-right: 1px solid black;
+}
+
+.post-poster {
+	text-align: center;
+	padding: 5px;
+	width: 90px;
+	height: 100%;
+	float: left;
+	margin-right: 3px;
+	overflow-X: hidden;
+	border-right: 1px dashed black;
+}
+.post-content {
+	width: 440px;
+	float: right;
+	border-left: 1px black dashed;
+	padding-left: 3px;
+	font-size: 9pt;
+}
+
+.post-body {
+	padding: 3px;
+	padding-left: 10px;
+	text-align: justify;
+	border: 1px solid black;
+}
+
+.modbut {
+	width: 24px;
+	height: 24px;
+	border: 0px;
+}
+
+a.forum {
+	font-family: Verdana;
+	font-size: 11pt;
+}
+
+a.Button {
+	background: black;
+	color: white;
+	font-family: verdana;
+	font-size: 10pt;
+	padding: 1px;
+	padding-right: 20px;
+	padding-left: 20px;
+}
+
+a:hover.Button {
+	background: #444;
+	color: white;
+	font-family: verdana;
+	font-size: 10pt;
+	padding: 1px;
+	padding-right: 20px;
+	padding-left: 20px;
+}
+
+.page-nav {
+	padding-right: 3px;
+	padding-left: 3px;
+	margin-right: 2px;
+	width: 10px;
+	height: 16px;
+	color: black;
+	text-align: center;
+	border: 1px black solid;
+	float: left;
+}
+
+.page-sel {
+	padding-right: 3px;
+	padding-left: 3px;
+	margin-right: 2px;
+	width: 10px;
+	height: 16px;
+	color: white;
+	background: black;
+	text-align: center;
+	border: 1px black solid;
+	float: left;
+}
+
+.page-etc {
+	padding-right: 3px;
+	padding-left: 3px;
+	margin-right: 2px;
+	width: 12px;
+	height: 18px;
+	color: black;
+	text-align: center;
+	float: left;
+}

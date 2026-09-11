@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+	<head>
+		<link type="text/css" href="styles.css" rel="stylesheet" />
+		
+		<script type="text/javascript" src="js/jquery.js"></script>
+		<script type="text/javascript" src="js/pikachoose-min.js"></script>
+		<script language="javascript">
+			<!--
+			$(document).ready(
+				function (){
+					$("#pikame").PikaChoose();
+				});
+				
+			$(document).ready(
+				function (){
+					$("#pikame_user").PikaChoose({user_thumbs:true, show_prev_next:false});
+			});
+			
+			$(document).ready(
+				function (){
+					$("#pikame_compact").PikaChoose({user_thumbs:true, show_prev_next:false});
+			});
+			-->
+		</script>
+
+		
+</head>
+<body>
+<!-- not really needed, i'm using it to center the gallery. -->
+
+<div class="pikachoose">
+Basic example
+	<ul id="pikame">
+		<li><img src="1.jpg"/><span><a href="http://www.pikachoose.com">Now you can have links!</a></span></li>
+		<li><img src="2.jpg"/><span>Or any html you want inside of captions!</span></li>
+		<li><img src="3.jpg"/><span> Donec in ante. Donec pretium. </span></li>
+		<li><img src="4.jpg"/><span> Aliquam erat volutpat. </span></li>
+		<li><img src="5.jpg"/><span> In ornare, neque ut malesuada hendrerit.</span></li>
+		<li><img src="6.jpg"/><span> Aliquam condimentum dolor sed elit. </span></li>
+		<li><img src="7.jpg"/><span> Aliquam condimentum dolor sed elit.</span></li>
+		<li><img src="8.jpg"/><span> Ut non magna at purus cursus facilisis.</span></li>
+		<li><img src="9.jpg"/><span> Nunc semper dapibus erat. Nulla hendrerit.</span></li>
+		<li><img src="10.jpg"/><span> Nunc semper dapibus erat. Nulla hendrerit.</span></li>
+	</ul>
+</div>
+
+
+<div class="pikachoose">
+User defined thumbs example
+	<ul id="pikame_user">
+		<li><img ref="1.jpg" src="user.jpg"/><span><a href="http://www.pikachoose.com">Now you can have links!</a></span></li>
+		<li><img ref="2.jpg" src="user.jpg"/><span> Set custom thumbnails.</span></li>
+		<li><img ref="3.jpg" src="user.jpg"/><span> Or let PikaChoose make them for you!. </span></li>
+		<li><img ref="4.jpg" src="user.jpg"/><span> Integer id dolor a erat sagittis volutpat. </span></li>
+		<li><img ref="5.jpg" src="user.jpg"/><span> Aliquam erat volutpat. </span></li>
+	</ul>
+</div>
+</body>
+</html>

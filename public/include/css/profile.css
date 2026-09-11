@@ -1,0 +1,193 @@
+#head-left {
+	width: 400px;
+	float: left
+}
+
+#head-left .cit-avatar {
+	background: url('../../images/profile/avatar.png') no-repeat;
+	width: 116px;
+	height: 118px;
+	padding: 5px;
+	padding-left: 7px;
+	float: left;
+	cursor: pointer
+}
+
+#head-left .cit-name {
+	float: right;
+	padding-left: 5px;
+	padding-top: 5px;
+	width: 265px;
+	height: 30px;
+	font-size: 14pt;
+	overflow-X: hidden;
+}
+
+#head-left .cit-about {
+	float: left;
+	padding: 2px 5px;
+	margin-left: 5px;
+	margin-bottom: 5px;
+	width: 240px;
+	height: 80px;
+	font-size: 9pt;
+	overflow: auto;
+	border: 1px solid;
+	border-radius: 3px
+}
+
+#head-left .cit-rank {
+	float: left;
+	margin-left: 5px;
+	width: 375px;
+	padding: 1px;
+	border: 1px solid;
+	border-radius: 3px
+}
+
+#head-left .cit-rank  .rank-t{
+	float: left;
+	width: 100px;
+	padding-left: 10px;
+	padding-top: 5px
+}
+
+#head-left .cit-rank  .rank-l, #head-left .cit-rank  .rank-i{
+	float: left;
+	width: 120px
+}
+
+#head-right {
+	width: 300px;
+	float: right
+}
+
+#head-right .cit-living, #head-right .cit-nationality {
+	float: left;
+	width: 128px;
+	padding-left: 2px
+}
+
+#head-right .cit-vio {
+	float: left;
+	width: 240px;
+	height: 20px;
+	overflow: hidden;
+	margin: 20px 10px 10px;
+	padding: 5px;
+	font-size: 9pt;
+	color: maroon;
+	text-align: center;
+	border: 1px solid;
+	border-radius: 5px;
+    behavior: url(PIE.htc);
+}
+
+#head-right .cit-links {
+	float: left;
+	text-align: center;
+	width: 290px;
+	padding: 5px
+}
+
+#head-right .cit-links img {
+	border: 0px;
+	width: 40px;
+	height: 46px
+}
+
+.profile-living {
+	height: 70px;
+	padding-left: 5px;
+	font-size: 10pt;
+	overflow: hidden;
+}
+
+.profile-box {
+	display: inline-block;
+	vertical-align: top;
+	text-align: center;
+	margin-right: 10px;
+}
+
+.profile-holder {
+	border: 1px black solid;
+	border-radius: 5px;
+	padding: 2px
+}
+
+.buyfood {
+    display: block;
+    margin-left: 16px;
+    width: 524px;
+    height: 110px;
+    border: 1px solid #8FC9FE;
+    border-radius: 5px;
+	background: -webkit-gradient(linear, 0 0, 0 bottom, from(#EAF5FF), to(#8FC9FE));
+	background: -moz-linear-gradient(#EAF5FF, #8FC9FE);
+	background: linear-gradient(#EAF5FF, #8FC9FE);
+	-pie-background: linear-gradient(#EAF5FF, #8FC9FE);
+    z-index: 9999;
+}
+
+.buyfood .link {
+    display: block;
+    border: 0;
+    font-size: 14pt
+}
+
+.inventory-item {
+    display: inline-block;
+    width: 64px;
+    height: 85px;
+    padding: 2px;
+    text-align: center;
+    border: 1px solid;
+    border-radius: 3px;
+    cursor: pointer
+}
+
+.inventory-item .hover {
+    height:  85px;
+    width: 64px;
+    position: absolute;
+	background: -webkit-gradient(linear, 0 0, 0 bottom, from(#EAF5FF), to(#8FC9FE));
+	background: -moz-linear-gradient(#EAF5FF, #8FC9FE);
+	background: linear-gradient(#EAF5FF, #8FC9FE);
+	-pie-background: linear-gradient(#EAF5FF, #8FC9FE);
+    opacity: 0.01
+}
+
+.inventory-item .hover:hover {
+    opacity: 0.25
+}
+
+.inventory-item .icon {
+    height:  64px;
+}
+
+.inventory-item .quality {
+    margin-top: -10px
+}
+
+.inventory-item .amount {
+    height: 16px;
+    font-size: 8pt;
+	background: -webkit-gradient(linear, 0 0, 0 bottom, from(#EAF5FF), to(#8FC9FE));
+	background: -moz-linear-gradient(#EAF5FF, #8FC9FE);
+	background: linear-gradient(#EAF5FF, #8FC9FE);
+	-pie-background: linear-gradient(#EAF5FF, #8FC9FE);
+    color: black;
+    font-weight: bolder
+}
+
+.inventory-item .donate {
+    padding: 4px 0;
+    text-align: justify
+}
+
+.inventory-item .donate input {
+    font-size: 8pt;
+    border: 1px solid;
+    border-radius: 2px
+}

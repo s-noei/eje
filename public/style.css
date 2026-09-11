@@ -1,0 +1,3365 @@
+@font-face {
+	font-family: TitleFont;
+	src: url('include/fonts/file.otf')
+}
+
+body {
+	font-family: Arial;
+	font-size: 10pt;
+	background: white;
+	vertical-align: middle;
+	text-align: center;
+	color: #4b4e50;
+	text-shadow: 0px 1px 3px #fff;
+	padding: 20px;
+	padding-top: 45px;
+	margin-top: 0;
+	padding-bottom: 10px;
+}
+
+#page {
+	width: 1000px;
+	overflow: hidden;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#page2 {
+	width: 950px;
+	overflow-X: hidden;
+	padding-left: 25px;
+	padding-right: 25px;
+	background: url('body-bg.png') repeat-Y;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#game-body {
+	width: 950px;
+	overflow-X: hidden;
+}
+
+#footer {
+	width: 950px;
+	overflow-X: hidden;
+	margin-left: auto;
+	margin-right: auto;
+	padding-left: 25px;
+	padding-right: 25px;
+	padding-top: 5px;
+	padding-bottom: 10px;
+	font-size: 8.5pt;
+	background: transparent url('images/theme/footer-bg.png') repeat-X;
+}
+
+a, a:visited {
+	color: #216120;
+}
+
+#menubar .home a, #menubar .myplaces a, #menubar .economy a,
+	#menubar .ranking a, #menubar .info a, #menubar .extra a {
+		background: url('images/theme/menubar-bg.png');
+	}
+
+#menubar .home a:hover, #menubar .myplaces a:hover, #menubar .economy a:hover,
+	#menubar .ranking a:hover, #menubar .info a:hover, #menubar .extra a:hover {
+		background: url('images/theme/menubar-bg-hover.png');
+	}
+
+.main-top {
+	background: #eee url('images/main-top.gif') repeat-X scroll bottom;
+	font-size: 5px
+}
+
+.main-bottom {
+	background: #fdfdf url('images/main-bottom.gif') no-repeat scroll bottom;
+	font-size: 5px
+}
+
+.pmBody {
+	border: 0;
+	color: black;
+	padding: 5px;
+	width: 530px;
+	overflow-X: auto;
+}
+
+.pmBody p {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+.pmBody blockquote {
+	border: 1px solid #d0f497;
+	padding: 2px;
+	font-style: italic;
+	background: #e7ffc2;
+	margin-top: 0;
+	margin-bottom: 0;
+	margin-left: 5px;
+	margin-right: 5px;
+}
+
+.articleBody {
+	border: 0;
+	width: 100%;
+	height: 400px;
+}
+
+.body {
+	font-family: Tahoma;
+	font-size: 10pt;
+	background: #fdfdfd;
+	vertical-align: middle;
+	text-align: center;
+	color: #575855;
+}
+
+#article_operations {
+	float: left;
+	width: 50px;
+	text-align: center;
+	padding-right: 5px;
+	margin-right: 5px;
+}
+
+#article_operations .cmdRemove {
+	font-size: 10.5pt;
+	padding-right: 5px;
+	padding-left: 5px;
+	width: 50px;
+}
+
+#article_operations .cmdEdit {
+	font-size: 11pt;
+	padding-right: 5px;
+	padding-left: 5px;
+	width: 50px;
+}
+
+#article_contents {
+	width: 580px;
+	padding-left: 5px;
+	margin-left: 5px;
+	overflow: hidden;
+	float: left;
+	padding: 5px;
+	display: block;
+	font-size: 9pt;
+}
+
+#article_contents p, #article_contents blockquote {
+	margin-top: 0.1em;
+	margin-bottom: 0.1em;
+}
+
+#mailbar {
+	text-align: center;
+	background: #DDF9EB;
+	color: black;
+	font-weight: bold;
+	width: 660px;
+	padding: 5px
+}
+
+.message-table {
+	background: #f8feff;
+	font-size: 10pt;
+	width: 667px;
+	padding-bottom: 4px;
+	border: 1px solid;
+}
+
+.message-header {
+	background: black;
+	font-size: 10pt;
+	width: 667px;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	text-align: center;
+	color: white;
+	font-weight: bold;
+}
+
+.message-from {
+	width: 100px;
+	padding: 4px;
+	float: left;
+	text-align: center;
+}
+
+.message-subject {
+	width: 340px;
+	padding: 4px;
+	float: left;
+}
+
+.message-date {
+	width: 120px;
+	padding: 4px;
+	float: left;
+	text-align: center;
+}
+
+.message-oper {
+	width: 57px;
+	padding: 4px;
+	float: left;
+	text-align: center;
+}
+
+.note-subject {
+	width: 470px;
+	padding: 4px;
+	float: left;
+}
+
+.note-date {
+	width: 100px;
+	padding: 4px;
+	float: left;
+	text-align: center;
+}
+
+.note-oper {
+	width: 57px;
+	padding: 4px;
+	float: left;
+	text-align: center;
+}
+
+#tblMessage a {
+	color: #3EA481;
+}
+
+#fundNum {
+	padding-left: 40px;
+	left: 65px;
+	width: 100%;
+	height: 100%;
+}
+
+.page {
+	width:95%;
+	height:95%;
+	text-align:center;
+	background: white;
+}
+
+.logo {
+	width:100px;
+	height:100px;
+	background: #ACE157 url('images/menu-bg.gif') repeat-X bottom;
+	padding: 0;
+}
+
+.menubar {
+	text-align: center;
+	background: #c3f7ae url('images/menu-bg.gif') repeat-X bottom;
+	font-family: "Hobo std", "Comic sans ms", "Monotype Corsiva" , "Arial Narrow", Tahoma;
+	font-size: 12pt;
+	color: black;
+}
+
+.sidebar {
+	text-align: center;
+	vertical-align: top;
+}
+
+.column {
+	display:block;
+	float:left;
+	padding-right:25px;
+	width:233px;
+	display: block;
+}
+
+#newsaTitle {
+	font-family: "Arial Narrow";
+	font-size: 14pt;
+	padding-right: 15px;
+	padding-left: 5px;
+}
+
+#newstTitle {
+	background: #e7f9ff url('images/game/newstab-right.gif') no-repeat 100% 0;
+	height: 25px;
+	font-family: "Arial Narrow";
+	font-size: 16pt;
+	padding-right: 15px;
+	padding-left: 5px;
+}
+
+#newstab {
+	background: #e7f9ff url('images/game/newstab-right.gif') no-repeat 100% 0;
+	padding: 5px;
+	width: 320px;
+	overflow: hidden;
+}
+
+.newsBox {
+    clear: left;
+    position: relative;
+    z-index: 2;
+    border: 1px solid #CCC;
+    background: #FFF;
+	padding: 1px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-box-shadow: #CCC 0 0 .25em;
+    -moz-box-shadow: #CCC 0 0 .25em;
+    box-shadow: #CCC 0 0 .25em;
+    behavior: url(PIE.htc);
+}
+
+#newsHandle {
+	background: transparent url('images/game/news-bg.gif') no-repeat;
+	height: 60px;
+	width: 330px;
+	padding: 0;
+	margin-bottom: 3px;
+}
+
+#newsHandle .votes {
+	float: left;
+	background: transparent url('images/game/votes-bg.gif') no-repeat;
+	float: left;
+	width: 50px;
+	height: 50px;
+	text-align: center;
+	vertical-align: middle;
+	font-family: "Comic sans ms";
+	font-size: 16pt;
+	color: #37c;
+	overflow: hidden;
+	display: block;
+	padding-top: 8px;
+}
+
+.votes {
+	background: transparent url('images/game/votes-bg.gif') no-repeat;
+	width: 50px;
+	height: 70px;
+	text-align: center;
+	vertical-align: middle;
+	font-family: "Comic sans ms";
+	font-size: 16pt;
+	color: #37c;
+	overflow: hidden;
+	display: block;
+	padding-top: 5px;
+}
+
+#Vote {
+	background: transparent url('images/game/artvote-bg.gif');
+	width: 50px;
+	height: 17px;
+	text-align: center;
+	vertical-align: top;
+	font-family: "Comic sans ms";
+	font-size: 9pt;
+	font-weight: bold;
+	color: white;
+	overflow: hidden;
+	display: block;
+	padding-top: 0;
+	float: left;
+}
+
+#Vote a {
+	color: white;
+	cursor:pointer;
+}
+
+.voteit {
+	cursor:pointer;
+}
+
+.points {
+	background: transparent url('images/game/points-bg.gif') no-repeat;
+	width: 40px;
+	height: 60px;
+	text-align: center;
+	vertical-align: middle;
+	font-family: "Comic sans ms";
+	font-size: 14pt;
+	color: white; //#37c;
+	overflow: hidden;
+	display: block;
+	padding-top: 0;
+	float: center;
+}
+
+#Vote-agree {
+	background: transparent url('images/game/artagree-bg.gif');
+	width: 40px;
+	height: 16px;
+	text-align: center;
+	vertical-align: top;
+	font-family: "Comic sans ms";
+	font-size: 9pt;
+	font-weight: bold;
+	color: white;
+	overflow: hidden;
+	display: block;
+	padding-top: 0;
+	float: left;
+	cursor:pointer;
+}
+
+#Vote-agree a {
+	color: white;
+	cursor:pointer;
+}
+
+#Vote-disagree {
+	background: transparent url('images/game/artdisagree-bg.gif');
+	width: 40px;
+	height: 16px;
+	text-align: center;
+	vertical-align: top;
+	font-family: "Comic sans ms";
+	font-size: 9pt;
+	font-weight: bold;
+	color: white;
+	overflow: hidden;
+	display: block;
+	padding-top: 0;
+	float: left;
+	cursor:pointer;
+}
+
+#Vote-disagree a {
+	color: white;
+	cursor:pointer;
+}
+
+#newsHandle .nContent {
+	float: left;
+	width: 220px;
+	height: 50px;
+	text-align: left;
+	vertical-align: top;
+	font-family: "Arial Narrow";
+	font-size: 11pt;
+	line-height:14px;
+	padding-left: 2px;
+	margin: 0;
+}
+
+#newsHandle .nTitle {
+	height: 40px;
+	width: 220px;
+	text-align: left;
+	vertical-align: top;
+	font-family: "Arial";
+	font-size: 10pt;
+	line-height:15px;
+	overflow: hidden;
+}
+
+#newsHandle .nDate {
+	height: 20px;
+	width: 220px;
+	text-align: left;
+	vertical-align: top;
+	font-family: "Arial Narrow";
+	font-size: 8pt;
+	overflow: hidden;
+	line-height:12px;
+	display: block;
+}
+
+#newsHandle span {
+	line-height:11px;
+}
+
+.sidebox {
+	background: #f8f8f8;
+	text-align: center;
+	vertical-align: top;
+	font-size: 10pt;
+}
+
+.sidebox img {
+	border: 0px;
+}
+
+#msgbox {
+	background: #f8f8f8;
+	text-align: left;
+	vertical-align: top;
+	font-size: 10pt;
+	padding: 5px 6px;
+}
+
+.msgbox {
+	background: #f8f8f8;
+	text-align: left;
+	vertical-align: top;
+	font-size: 10pt;
+	padding: 5px 6px;
+}
+
+#fundsbox {
+	background: #f8f8f8;
+	text-align: left;
+	vertical-align: top;
+	font-size: 10pt;
+	padding: 5px 6px;
+}
+
+#fundsbox img {
+	display: inline;
+	padding: 2px 5px 0 0;
+}
+
+#regions {
+	height: 30px;
+	overflow: hidden;
+	padding: 10px 10px 2px 10px;
+	font-family: Arial;
+	font-size: 14pt;
+	font-weight: none;
+	width: 550px
+}
+
+#regions div {
+	float: left
+}
+
+#regions img {
+	border: 0
+}
+
+#regions #flag {
+	width: 35px;
+}
+
+#regions #name {
+	width: 330px;
+}
+
+#regions #faraway {
+	width: 30px;
+}
+
+#regions #god {
+	width: 35px;
+}
+
+#regions #clinic {
+	width: 80px;
+}
+
+#regions #muni {
+	width: 40px;
+}
+
+#regions a, #regions a:visited, #regions a:hover {
+	color: #676865;
+}
+
+#sResults {
+	height: 80px;
+	overflow: hidden;
+	padding: 5px 5px 2px 50px;
+	font-family: Arial;
+	font-size: 14pt;
+	font-weight: none;
+}
+
+#sResults a, #regions a:visited, #regions a:hover {
+	color: #676865;
+}
+
+.post-comment {
+	background: #c2f5ad;
+	font-family: "Hobo std", "Arial Narrow", Tahoma;
+}
+
+#comments {
+	width: 620px;
+	overflow-X: hidden;
+	margin: 30px;
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+#comment-head {
+	float: left;
+	width: 125px;
+	padding: 5px;
+	padding-left: 10px;
+}
+
+#comment-body {
+	float: left;
+	padding: 5px;
+	font-size: 9pt;
+	width: 470px;
+	overflow-X:hidden;
+}
+
+#comment-body blockquote {
+	background: lightgray;
+	padding: 3px;
+	border-radius: 5px;
+	margin-left: 5px
+}
+
+.smileys {
+	float: left;
+	width: 160px;
+	padding: 5px;
+	text-align: center;
+}
+
+.comment-area {
+	float: left;
+	height: 100%;
+	width: 390px;
+	padding: 5px;
+	text-align: center;
+}
+
+#articles {
+	overflow-X: hidden;
+	padding: 10px 10px 2px 30px;
+	font-family: Arial;
+	font-size: 13pt;
+	font-weight: none;
+}
+
+#articles .votes {
+	float: left;
+	background: transparent url('images/game/votes-bg.gif') no-repeat;
+	float: left;
+	width: 50px;
+	height: 50px;
+	text-align: center;
+	vertical-align: middle;
+	font-family: "Comic sans ms";
+	font-size: 16pt;
+	color: #37c;
+	overflow: hidden;
+	display: block;
+	padding-top: 8px;
+}
+
+#licenses {
+	height: 50px;
+	width: 430px;
+	overflow: hidden;
+	padding: 5px 5px 2px 20px;
+	font-family: "Arial Narrow", Arial;
+	font-size: 11pt;
+	font-weight: none;
+	background: #f9fffc;
+/*	border: 1px solid #f00; */
+}
+
+#licenses .licCountry {
+	float: left;
+	width: 50px;
+	height: 40px;
+/*	border: 1px solid #0f0; */
+}
+
+#licenses .licAmount {
+	float: left;
+	width: 100px;
+	height: 40px;
+/*	border: 1px solid #00f; */
+}
+
+#licenses .licPrice {
+	float: left;
+	width: 110px;
+	height: 40px;
+/*	border: 1px solid #ff0; */
+}
+
+#licenses .licOPrice {
+	float: left;
+	width: 50px;
+	height: 30px;
+	font-size:10pt;
+	font-family: "Comic sans ms", "Arial Narrow";
+/*	border: 1px solid #0ff; */
+}
+
+#licenses .licSubmit {
+	float: left;
+	width: 100px;
+	height: 40px;
+/*	border: 1px solid #f0f; */
+}
+
+#licenses .licMarket {
+	float: left;
+	width: 50px;
+	height: 40px;
+/*	border: 1px solid #888; */
+}
+
+#companies {
+	height: 70px;
+	width: 450px;
+	overflow: hidden;
+	padding: 10px 10px 2px 50px;
+	font-family: Arial;
+	font-size: 14pt;
+	font-weight: none;
+}
+
+#companies .industry {
+	height: 55px;
+	width: 55px;
+	border: 0;
+	float: right;
+}
+
+#companies img {
+	border: 0px;
+	padding-right: 2px;
+}
+
+#tblCompany {
+	width: 100%;
+	overflow-X:hidden;
+}
+
+#tblCompany td {
+	vertical-align: top;
+}
+
+#tblCompany td .Icons {
+	width: 20px;
+	overflow: hide;
+	display: block;
+	text-align: right;
+}
+
+#tblCompany td .Cont {
+	width: 200px;
+	overflow: hide;
+	display: block;
+	text-align: right;
+}
+
+.style {
+	font-family: tahoma;
+	font-size: 10pt;
+	padding: 3px;
+}
+
+.style .td {
+	font-family: tahoma;
+	font-size: 10pt;
+	padding: 3px;
+	text-align: center;
+	display: block;
+}
+
+.tdstyle {
+	font-family: tahoma;
+	font-size: 10pt;
+	padding: 3px;
+	display: block;
+/*	width: 100% */
+}
+
+.menubar a, .menubar a:visited, .menubar a:hover {
+	color: black;
+}
+.actbar {
+	height: 50px;
+	text-align: center;
+	background: #ACE157;
+	color: black;
+	text-align: left;
+	font-size: 18pt;
+	display: block;
+}
+
+.cmdEdit {
+	background: #41a1df;
+	text-decoration: none;
+	color: white
+}
+.cmdAdd {
+	border: 1px Black solid;
+	background: white;
+	font-family: tahoma;
+}
+.pageTable {
+	border: 0px;
+	width: 100%;
+	height: 100%
+}
+.footer {
+	text-align: center
+}
+
+.inlineIMGs {
+	display: inline;
+	border: 0;
+	padding: 2px 5px 2px 2px;
+}
+
+.smiley {
+	display: inline;
+	border: 0;
+	padding: 1px
+}
+
+.Avatars {
+	display: inline;
+	border: 0;
+	width: 70px;
+	height: 70px;
+	padding: 2px;
+}
+
+.Avatar-xl {
+	display: inline;
+	border: 0;
+	width: 115px;
+	height: 115px;
+	padding: 2px;
+}
+
+.Avatar-l {
+	display: inline;
+	border: 0;
+	width: 80px;
+	height: 80px;
+	padding: 2px;
+}
+
+.Avatar-s {
+	display: inline;
+	border: 0;
+	width: 60px;
+	height: 60px;
+	padding: 2px;
+}
+
+.Avatar-xs {
+	display: inline;
+	border: 0;
+	width: 50px;
+	height: 50px;
+	padding: 2px;
+}
+
+.Avatar-xxs {
+	display: inline;
+	border: 0;
+	width: 10px;
+	height: 10px;
+	padding: 2px;
+}
+
+.inputs {
+	height: 20px;
+	font-size: 11pt;
+	font-family: "Comic sans ms", "Arial Narrow";
+	border: 0;
+	text-align: center;
+	background: transparent;
+}
+
+#submits {
+	height: 30px;
+	font-size: 12pt;
+	font-family: "Arial Narrow", Arial;
+	border: 0px black dotted;
+	color: #333;
+	font-weight: bold;
+	text-align: center;
+	background: #c9dfcc url('images/button.gif') repeat-X;
+	vertical-align: middle;
+	padding: 0px;
+	padding-right: 10px;
+	padding-left: 10px;
+	cursor: pointer;
+}
+
+a#submits, a:hover#submits {
+	padding-top: 6px;
+	padding-bottom: 5px;
+}
+
+#submits:hover {
+	height: 30px;
+	font-size: 12pt;
+	font-family: "Arial Narrow", Arial;
+	border: 0px black dotted;
+	color: #333;
+	font-weight: bold;
+	text-align: center;
+	background: #c9dfcc url('images/button-h.gif') repeat-X;
+	vertical-align: middle;
+	padding: 0px;
+	padding-right: 10px;
+	padding-left: 10px;
+}
+
+#btnSearch {
+	height: 20px;
+	font-size: 11pt;
+	font-family: "Arial Narrow", Arial;
+	border: 0px black dotted;
+	color: black;
+	font-weight: bold;
+	text-align: center;
+	background: #b0df9d;
+	vertical-align: middle;
+	cursor: pointer;
+}
+
+#forms {
+	background: #f0fff0;
+	padding: 10px;
+	padding-left: 45px;
+}
+
+#forms h3 {
+}
+
+#forms .text {
+	font-family: "Comic sans ms", Arial;
+	border: 1px #939393 solid;
+	font-size: 14pt;
+}
+
+#forms .submit {
+	font-family: "Comic sans ms", Arial;
+	border: 1px #939393 solid;
+	font-size: 14pt;
+}
+
+ul.pMenu {
+	width: 183px;
+	display: block;
+	border: 1px #c9dfcc solid;
+}
+
+ul.pMeny li {
+	width: 183px;
+	border: 1px #c9dfcc solid;
+	padding-left: 0;
+}
+
+ul.pMenu li a, ul.pMenu li a:visited {
+	height: 30px;
+	width: 180px;
+	font-size: 11pt;
+	font-family: "Arial Narrow", Arial;
+	color: white;
+	font-weight: bold;
+	text-align: center;
+	background: #c9dfcc;
+	vertical-align: middle;
+	padding: 5px;
+	padding-right: 25px;
+	padding-left: 25px;
+}
+
+ul.pMenu li a:hover {
+	background: #d9efdc;
+}
+
+
+#buttons, a#buttons, input#buttons {
+	height: 20px;
+	font-size: 12pt;
+	font-family: "Arial Narrow", Arial;
+	font-weight: bold;
+	border: 0px black dotted;
+	color: #333;
+	text-align: center;
+	background: #c9dfcc url('images/button.gif') repeat-X;
+	vertical-align: middle;
+	padding-top: 1px;
+	padding-right: 15px;
+	padding-left: 15px;
+	cursor: pointer;
+}
+
+#buttons-fix {
+	font-size: 12pt;
+	font-family: "Arial Narrow", Arial;
+	border: 0px black dotted;
+	color: #333;
+	font-weight: bold;
+	text-align: center;
+	background: #c9dfcc url('images/button.gif') repeat-X;
+	vertical-align: middle;
+	padding: 0px;
+	padding-right: 15px;
+	padding-left: 15px;
+	width: 250px;
+}
+
+a#buttons-fix {
+	background: transparent;
+}
+
+a:hover#buttons, input:hover#buttons {
+	height: 20px;
+	font-size: 12pt;
+	font-family: "Arial Narrow", Arial;
+	border: 0px black dotted;
+	color: #333;
+	font-weight: bold;
+	text-align: center;
+	background: #c9dfcc url('images/button-h.gif') repeat-X;
+	vertical-align: middle;
+	padding: 0px;
+	padding-top: 1px;
+	padding-right: 15px;
+	padding-left: 15px;
+}
+
+#todo-title {
+	font-size: 14pt;
+	font-family: "Arial Narrow", Arial;
+	border: 0px black dotted;
+	color: #333;
+	font-weight: bold;
+	text-align: center;
+	background: url('images/todo-bg.gif') no-repeat;
+	vertical-align: middle;
+	padding: 0px;
+	width: 330px;
+}
+
+#todo-body {
+	font-family: "Arial Narrow", Arial;
+	border: 1px #bbb dotted;
+	border-top: 0;
+	color: #333;
+	font-weight: bold;
+	background: #c9dfcc url('images/button.gif') repeat-X;
+	vertical-align: middle;
+	padding: 0px;
+	padding-bottom: 10px;
+	width: 328px;
+}
+
+#todo-item {
+	font-size: 13pt;
+	padding-top: 10px;
+	padding-left: 40px;
+	background: url('images/game/todo.gif') no-repeat 2% 60%
+}
+
+#todo-desc {
+	font-size: 8pt;
+	font-family: Arial;
+	font-weight: normal;
+}
+
+#mili-title {
+	font-size: 14pt;
+	font-family: "Arial Narrow", Arial;
+	border: 0px black dotted;
+	color: #333;
+	font-weight: bold;
+	text-align: center;
+	background: url('images/todo-bg.gif') no-repeat;
+	vertical-align: middle;
+	padding: 0px;
+	width: 330px;
+}
+
+#mili-body {
+	font-family: "Arial Narrow", Arial;
+	border: 1px #bbb dotted;
+	border-top: 0;
+	color: #333;
+	font-weight: bold;
+	background: #c9dfcc url('images/button.gif') repeat-X;
+	vertical-align: middle;
+	padding: 0px;
+	padding-bottom: 10px;
+	width: 328px;
+}
+
+#mili-item {
+	font-size: 10pt;
+	padding-top: 10px;
+	padding-left: 40px;
+}
+
+#mili-desc {
+	font-size: 7pt;
+	font-family: Arial;
+	font-weight: normal;
+}
+
+/***** Finance *****/
+.finance {
+	width: 650px;
+	overflow-X: hidden;
+	text-align: center;
+}
+
+.finance-cur {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	width: 90px;
+	text-align: center;
+	padding-right: 15px;
+	float: left;
+}
+
+.finance-your {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	width: 150px;
+	text-align: center;
+	padding-right: 15px;
+	float: left;
+}
+
+.finance-comp {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	width: 150px;
+	text-align: center;
+	padding-right: 15px;
+	float: left;
+}
+
+.finance-amount {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	width: 75px;
+	text-align: center;
+	padding-right: 15px;
+	float: left;
+}
+
+.finance-oper {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	width: 100px;
+	text-align: center;
+	padding-right: 0;
+	float: left;
+}
+
+/***** Workers *****/
+.workers {
+	width: 650px;
+	overflow-X: hidden;
+	text-align: center;
+}
+
+.workers-no {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	width: 30px;
+	text-align: center;
+	padding-right: 15px;
+	float: left;
+}
+
+.workers-name {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	width: 100px;
+	text-align: center;
+	padding-right: 15px;
+	float: left;
+}
+
+.workers-skill {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	width: 85px;
+	text-align: center;
+	padding-right: 15px;
+	float: left;
+}
+
+.workers-wellness {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	width: 85px;
+	text-align: center;
+	padding-right: 15px;
+	float: left;
+}
+
+.workers-salary {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	width: 85px;
+	text-align: center;
+	padding-right: 15px;
+	float: left;
+}
+
+.workers-last {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	width: 105px;
+	text-align: center;
+	padding-right: 15px;
+	float: left;
+}
+
+.workers-oper {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	width: 60px;
+	text-align: center;
+	float: left;
+}
+
+.workers-text {
+	border: 1px dotted;
+	background: transparent;
+	font-size: 14pt;
+	font-family: Verdana, Arial, Tahoma;
+	font-weight: bold;
+	text-align: center;
+}
+
+/***** Party Info *****/
+.party-cg-candidate {
+	padding: 2px;
+	display: none;
+	text-align: center;
+	border: 1px solid;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	behaviour: ('inclide/lib/PIE.htc');
+}
+
+/***** Party Members *****/
+#pMembers {
+	width: 690px;
+	padding-right: 5px;
+	padding-left: 5px;
+	overflow-X: hidden;
+}
+
+.pmember-no {
+	padding-right: 15px;
+	padding-left: 5px;
+	width: 40px;
+	overflow-X: hidden;
+	float: left;
+}
+
+.pmember-name {
+	padding-right: 20px;
+	padding-left: 5px;
+	width: 100px;
+	overflow-X: hidden;
+	text-align: center;
+	float: left;
+}
+
+.pmember-posts {
+	padding-right: 20px;
+	padding-left: 5px;
+	width: 140px;
+	overflow-X: hidden;
+	float: left;
+}
+
+.pmember-propose {
+	padding-right: 20px;
+	padding-left: 5px;
+	width: 175px;
+	overflow-X: hidden;
+	float: left;
+}
+
+#pMembers .td {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	text-align: left;
+	padding-right: 40px;
+	padding-left: 20px;
+}
+
+#pMembers .text {
+	border: 1px dotted;
+	background: transparent;
+	font-size: 14pt;
+	font-family: Verdana, Arial, Tahoma;
+	font-weight: bold;
+	text-align: center;
+}
+
+#pMembers hr {
+	width: 95%;
+}
+
+/***** Elections table *****/
+#electable {
+	width: 650px;
+}
+
+.et-no {
+	font-family: Arial, Tahoma;
+	font-size: 9pt;
+	text-align: center;
+	padding-right: 20px;
+	float: left;
+	width: 60px;
+}
+
+.et-name {
+	font-family: Arial, Tahoma;
+	font-size: 9pt;
+	text-align: left;
+	padding-right: 20px;
+	float: left;
+	width: 490px;
+}
+
+.et-name2 {
+	font-family: Arial, Tahoma;
+	font-size: 9pt;
+	text-align: left;
+	padding-right: 20px;
+	float: left;
+	width: 210px;
+}
+
+.et-party {
+	font-family: Arial, Tahoma;
+	font-size: 9pt;
+	text-align: left;
+	padding-right: 20px;
+	float: left;
+	width: 210px;
+}
+
+.et-votes {
+	font-family: Arial, Tahoma;
+	font-size: 9pt;
+	text-align: center;
+	float: left;
+	width: 60px;
+}
+
+/***** Battles Table *****/
+#battlestable {
+	width: 600px;
+	margin-left: 25px;
+	margin-right: 25px;
+}
+
+#battlestable .region {
+	width: 600px;
+	padding-top: 5px;
+	font-weight: bold;
+	clear: both;
+}
+
+#battlestable .time {
+	font-family: Arial, Tahoma;
+	font-size: 14pt;
+	text-align: center;
+	float: left;
+	padding: 5px;
+	width: 90px;
+	color: #89be2d;
+}
+
+#battlestable .force {
+	font-family: Arial, Tahoma;
+	font-size: 14pt;
+	text-align: center;
+	float: left;
+	padding: 5px;
+	width: 180px;
+	color: #89be2d;
+}
+
+#battlestable .buts {
+	font-family: Arial, Tahoma;
+	font-size: 14pt;
+	text-align: center;
+	float: left;
+	padding: 5px;
+	margin-left: 30px;
+	width: 160px;
+	color: white;
+}
+
+/***** Battle *****/
+.battle-timer-container {
+	width: 630px;
+	margin-right: 20px;
+	margin-left: 20px;
+}
+
+.battle-timer-holder {
+	float: left;
+	background: url('images/pages/war/battle-timer-bg.png') no-repeat 7px 0;
+	width: 207px;
+	height: 150px;
+	text-align: center;
+	font-family: Verdana, Arial;
+	font-size: 20pt;
+	color: white
+}
+
+.battle-timer-holder-disabled {
+	float: left;
+	background: url('images/pages/war/battle-timer-bg-disabled.png') no-repeat 7px 0;
+	width: 207px;
+	height: 150px;
+	text-align: center;
+	font-family: Verdana, Arial;
+	font-size: 20pt;
+	color: white
+}
+
+.battle-timer {
+	position: absolute;
+	width: 180px;
+	height: 37px;
+	text-align: center;
+	font-family: Verdana, Arial;
+	font-size: 20pt;
+	margin-top: 96px;
+	margin-left: 18px;
+	color: white
+}
+
+.battle-timer-title {
+	position: absolute;
+	width: 180px;
+	height: 37px;
+	text-align: center;
+	font-family: Arial;
+	font-size: 20pt;
+	margin-top: 6px;
+	margin-left: 18px;
+	color: white
+}
+
+.battle-timer-desc {
+	position: absolute;
+	width: 180px;
+	height: 37px;
+	text-align: center;
+	font-family: Arial;
+	font-size: 10pt;
+	margin-top: 45px;
+	margin-left: 18px;
+	color: #333
+}
+
+.battle-field {
+	width: 530px;
+	height: 100px;
+	border: 1px solid;
+	overflow: hidden;
+	padding: 0;
+	background: url('images/game/war/field.gif');
+}
+
+.battle-occupied {
+	height: 100px;
+	overflow: hidden;
+	padding: 0;
+	float: left;
+	background: url('images/game/war/field-ucc.gif');
+}
+
+.battle-ind {
+	background: black;
+	color: white;
+	text-align: center;
+}
+
+/***** Wars Table *****/
+#warstable {
+	width: 670px;
+}
+
+#warstable .flag-att {
+	font-family: Arial, Tahoma;
+	font-size: 12pt;
+	text-align: left;
+	float: left;
+	padding-left: 10px;
+	width: 60px;
+}
+
+#warstable .flag-def {
+	font-family: Arial, Tahoma;
+	font-size: 12pt;
+	text-align: left;
+	float: left;
+	padding-right: 10px;
+	width: 60px;
+}
+
+#warstable .name-att {
+	font-family: Arial, Tahoma;
+	font-size: 12pt;
+	text-align: left;
+	padding-right: 20px;
+	padding-top: 13px;
+	padding-left: 5px;
+	float: left;
+	width: 145px;
+}
+
+#warstable .name-def {
+	font-family: Arial, Tahoma;
+	font-size: 12pt;
+	text-align: right;
+	padding-right: 5px;
+	padding-top: 13px;
+	padding-left: 20px;
+	float: left;
+	width: 145px;
+}
+
+#warstable .versus {
+	font-family: Arial, Tahoma;
+	font-size: 12pt;
+	text-align: center;
+	padding-right: 20px;
+	padding-left: 20px;
+	float: left;
+	width: 150px;
+}
+
+
+/***** Wars Table Smaller *****/
+#warstable-s {
+	width: 370px;
+}
+
+#warstable-s .flag-att {
+	font-family: Arial, Tahoma;
+	font-size: 12pt;
+	text-align: left;
+	float: left;
+	padding-left: 10px;
+	width: 50px;
+}
+
+#warstable-s .flag-def {
+	font-family: Arial, Tahoma;
+	font-size: 12pt;
+	text-align: left;
+	float: left;
+	padding-right: 10px;
+	width: 50px;
+}
+
+#warstable-s .name-att {
+	font-family: Arial, Tahoma;
+	font-size: 11pt;
+	text-align: left;
+	padding-right: 0px;
+	padding-top: 13px;
+	padding-left: 5px;
+	float: left;
+	width: 75px;
+}
+
+#warstable-s .name-def {
+	font-family: Arial, Tahoma;
+	font-size: 11pt;
+	text-align: right;
+	padding-right: 5px;
+	padding-top: 13px;
+	padding-left: 0px;
+	float: left;
+	width: 75px;
+}
+
+#warstable-s .versus {
+	font-family: Arial, Tahoma;
+	font-size: 12pt;
+	text-align: center;
+	padding-right: 5px;
+	padding-left: 5px;
+	float: left;
+}
+
+/***** Rankings *****/
+#rankings {
+	width: 670px;
+}
+
+.rank-no {
+	font-family: Arial, Tahoma;
+	font-size: 12pt;
+	text-align: center;
+	padding-right: 20px;
+	padding-top: 15px;
+	float: left;
+	width: 50px;
+}
+
+.rank-name {
+	font-family: Arial, Tahoma;
+	font-size: 12pt;
+	text-align: left;
+	padding-right: 20px;
+	float: left;
+	width: 370px;
+}
+
+.rank-country {
+	font-family: Arial, Tahoma;
+	font-size: 12pt;
+	text-align: center;
+	padding-right: 20px;
+	padding-top: 5px;
+	float: left;
+	width: 70px;
+}
+
+.rank-ep {
+	font-family: Arial, Tahoma;
+	font-size: 12pt;
+	text-align: center;
+	padding-right: 20px;
+	padding-top: 20px;
+	font-weight: bold;
+	float: left;
+	width: 100px;
+}
+
+.rank-avgep {
+	font-family: Arial, Tahoma;
+	font-size: 12pt;
+	text-align: center;
+	padding-right: 20px;
+	padding-top: 15px;
+	font-weight: bold;
+	float: left;
+	width: 100px;
+}
+
+.rank-pop {
+	font-family: Arial, Tahoma;
+	font-size: 12pt;
+	text-align: center;
+	padding-right: 20px;
+	padding-top: 15px;
+	font-weight: bold;
+	float: left;
+	width: 190px;
+}
+
+#rankings .text {
+	border: 1px dotted;
+	background: transparent;
+	font-size: 14pt;
+	font-family: Verdana, Arial, Tahoma;
+	font-weight: bold;
+	text-align: center;
+}
+
+/***** Donations *****/
+#donations  {
+	width: 450px;
+}
+
+#donations div {
+	font-size: 9pt;
+	font-family: Arial, Tahoma;
+}
+
+#donations .no {
+	float: left;
+	width: 30px;
+	padding-right: 20px;
+	padding-top: 25px;
+}
+
+#donations .fromto {
+	float: left;
+	width: 50px;
+	padding-right: 20px;
+	padding-top: 25px;
+}
+
+#donations .with {
+	float: left;
+	width: 130px;
+	padding-right: 20px;
+}
+
+#donations .amount{
+	float: left;
+	width: 60px;
+	padding-right: 20px;
+	padding-top: 25px;
+}
+
+#donations .time {
+	float: left;
+	width: 100px;
+	padding-top: 25px;
+}
+
+#donations .text {
+	border: 1px dotted;
+	background: transparent;
+	font-size: 14pt;
+	font-family: Verdana, Arial, Tahoma;
+	font-weight: bold;
+	text-align: center;
+}
+
+.npHead {
+	font-size: 9pt;
+}
+
+.inventory {
+	width: 44px;
+	height: 15px;
+	overflow: hidden;
+	vertical-align: bottom;
+	float: left;
+	padding-right: 3px;
+	padding-left: 3px;
+	padding-top: 35px;
+	border: 1px solid;
+}
+
+a, a:visited {
+	text-decoration: none;
+	color: #305252;
+}
+
+.textarea {
+	background: transparent;
+	border: 1px solid;
+	overflow: auto;
+	scrollbar-face-color: #c2f5ad;
+	scrollbar-arrow-color: green;
+	scrollbar-shadow-color: transparent;
+	scrollbar-darkshadow-color: transparent;
+	scrollbar-3dlight-color: transparent;
+}
+
+.cm-textarea {
+	background: transparent url('images/game/textarea.gif') no-repeat;
+	border: 1px solid;
+	overflow: auto;
+	scrollbar-face-color: #c2f5ad;
+	scrollbar-arrow-color: green;
+	scrollbar-shadow-color: transparent;
+	scrollbar-darkshadow-color: transparent;
+	scrollbar-3dlight-color: transparent;
+}
+
+.addCM {
+	padding-right: 10px;
+}
+
+.cmdEdit {
+	height: 25px;
+	font-size: 12pt;
+	font-family: "Arial Narrow", Arial;
+	border: 0px black dotted;
+	color: #333;
+	font-weight: bold;
+	text-align: center;
+	background: #41a1df url('images/button-blue.gif') repeat-X;
+	vertical-align: middle;
+	padding: 0px;
+	padding-right: 5px;
+	padding-left: 5px;
+}
+
+a.cmdEdit, a:visited.cmdEdit {
+	height: 30px;
+	font-size: 12pt;
+	font-family: "Arial Narrow", Arial;
+	border: 0px black dotted;
+	color: #333;
+	font-weight: bold;
+	text-align: center;
+	background: #41a1df url('images/button-blue.gif') repeat-X;
+	vertical-align: middle;
+	padding: 0px;
+	padding-right: 15px;
+	padding-left: 15px;
+}
+
+a:hover.cmdEdit {
+	height: 30px;
+	font-size: 12pt;
+	font-family: "Arial Narrow", Arial;
+	border: 0px black dotted;
+	color: #333;
+	font-weight: bold;
+	text-align: center;
+	background: #41a1df url('images/button-blue-h.gif') repeat-X;
+	vertical-align: middle;
+	padding: 0px;
+	padding-right: 15px;
+	padding-left: 15px;
+}
+
+a.cmdRemove, a:visited.cmdRemove {
+	height: 30px;
+	font-size: 12pt;
+	font-family: "Arial Narrow", Arial;
+	border: 0px black dotted;
+	color: #333;
+	font-weight: bold;
+	text-align: center;
+	background: #c9dfcc url('images/button-red.gif') repeat-X;
+	vertical-align: middle;
+	padding: 0px;
+	padding-right: 15px;
+	padding-left: 15px;
+}
+
+a:hover.cmdRemove {
+	height: 30px;
+	font-size: 12pt;
+	font-family: "Arial Narrow", Arial;
+	border: 0px black dotted;
+	color: #333;
+	font-weight: bold;
+	text-align: center;
+	background: #c9dfcc url('images/button-red-h.gif') repeat-X;
+	vertical-align: middle;
+	padding: 0px;
+	padding-right: 15px;
+	padding-left: 15px;
+}
+
+.errHandle, h3.errHandle, .infHandle, h3.infHandle {
+	font-size: 9pt;
+	font-weight: none;
+	font-family: Arial, Tahoma;
+	padding: 5px;
+	padding-left: 35px;
+	border: 1px solid;
+	min-height: 20px;
+	border-radius: 5px;
+}
+
+.errHandle, h3.errHandle {
+	background: url('images/game/icon_error.png') no-repeat 0 25%;
+	color: red;
+}
+
+.infHandle, h3.infHandle {
+	background: url('images/game/icon_ok.png') no-repeat 0 25%;
+	color: green;
+}
+
+#explore {
+	direction: ltr;
+	background: url('images/madan-bg.gif') no-repeat;
+	font-family: Arial;
+	font-size: 11pt;
+	color: #333;
+	padding: 10px;
+	width: 570px;
+	height: 350px;
+}
+
+#explore div {
+	overflow: hidden;
+}
+
+#explore .advance {
+	position: absolute;
+	font-size: 12pt;
+	font-weight: bold;
+	text-align: center;
+	margin-left: 313px;
+	margin-top: 180px;
+	width: 52px;
+	height: 30px;
+}
+
+#explore .msg {
+	position: absolute;
+	font-size: 10pt;
+	font-weight: bold;
+	text-align: center;
+	margin-left: 240px;
+	margin-top: 20px;
+	width: 290px;
+	height: 55px;
+	padding-top: 35px;
+}
+
+#explore .duration {
+	position: absolute;
+	font-size: 10pt;
+	font-weight: bold;
+	text-align: center;
+	margin-left: 170px;
+	margin-top: 157px;
+	width: 60px;
+	height: 25px;
+}
+
+#explore .wellinf {
+	position: absolute;
+	font-size: 10pt;
+	font-weight: bold;
+	text-align: center;
+	margin-left: 170px;
+	margin-top: 190px;
+	width: 60px;
+	height: 25px;
+}
+
+#explore .wellness {
+	position: absolute;
+	color: red;
+	font-size: 10pt;
+	font-weight: bold;
+	text-align: center;
+	margin-left: 170px;
+	margin-top: 223px;
+	width: 60px;
+	height: 25px;
+}
+
+#explore .chance {
+	position: absolute;
+	font-size: 10pt;
+	font-weight: bold;
+	text-align: center;
+	margin-left: 170px;
+	margin-top: 255px;
+	width: 60px;
+	height: 25px;
+}
+
+#explore .ep {
+	position: absolute;
+	font-size: 10pt;
+	font-weight: bold;
+	text-align: center;
+	margin-left: 170px;
+	margin-top: 285px;
+	width: 60px;
+	height: 25px;
+}
+
+#work {
+	direction: ltr;
+	background: url('images/work-bg.gif') no-repeat;
+	font-family: Arial;
+	font-size: 11pt;
+	color: #333;
+	padding: 10px;
+	width: 570px;
+	height: 350px;
+}
+
+#work div {
+	overflow: hidden;
+//	border: 1px solid;
+}
+
+#work .product {
+	position: absolute;
+	font-size: 12pt;
+	font-weight: bold;
+	text-align: center;
+	margin-left: 313px;
+	margin-top: 175px;
+	width: 52px;
+	height: 30px;
+}
+
+#work .compmsg {
+	position: absolute;
+	font-size: 11pt;
+	font-weight: bold;
+	text-align: center;
+	margin-left: 240px;
+	margin-top: 20px;
+	width: 290px;
+	height: 70px;
+	padding: 2.5px;
+	padding-top: 15px;
+	padding-bottom: 0;
+}
+
+#work .complogo {
+	text-align: center;
+	float: left;
+	width: 50px;
+	height: 50px;
+	margin-right: 2px;
+	margin-bottom: 2px;
+}
+
+#work .complogo img {
+	width: 50px;
+	height: 50px;
+}
+
+#work .skill {
+	position: absolute;
+	font-size: 13pt;
+	font-weight: bold;
+	color: green;
+	text-align: center;
+	margin-left: 175px;
+	margin-top: 155px;
+	width: 50px;
+	height: 25px;
+}
+
+#work .type {
+	position: absolute;
+	font-size: 13pt;
+	font-weight: bold;
+	text-align: center;
+	margin-left: 175px;
+	margin-top: 185px;
+	width: 50px;
+	height: 25px;
+}
+
+#work .stars {
+	position: absolute;
+	font-size: 13pt;
+	font-weight: bold;
+	text-align: center;
+	margin-left: 175px;
+	margin-top: 215px;
+	width: 50px;
+	height: 25px;
+}
+
+#work .wellness {
+	position: absolute;
+	font-size: 13pt;
+	color: red;
+	font-weight: bold;
+	text-align: center;
+	margin-left: 175px;
+	margin-top: 245px;
+	width: 50px;
+	height: 25px;
+}
+
+#work .ep {
+	position: absolute;
+	font-size: 13pt;
+	color: green;
+	font-weight: bold;
+	text-align: center;
+	margin-left: 175px;
+	margin-top: 275px;
+	width: 50px;
+	height: 25px;
+}
+
+#train {
+	direction: ltr;
+	background: url('images/train-bg.gif') no-repeat;
+	font-family: Arial;
+	font-size: 11pt;
+	color: #333;
+	padding: 10px;
+	width: 570px;
+	height: 350px;
+}
+
+#train div {
+	overflow: hidden;
+}
+
+#train .strenght {
+	position: absolute;
+	font-size: 18pt;
+	font-weight: bold;
+	color: white;
+	text-align: center;
+	margin-left: 310px;
+	margin-top: 220px;
+	width: 60px;
+	height: 30px;
+}
+
+#train .skill {
+	position: absolute;
+	font-size: 14pt;
+	font-weight: bold;
+	color: green;
+	text-align: center;
+	margin-left: 170px;
+	margin-top: 160px;
+	width: 50px;
+	height: 30px;
+}
+
+#train .wellness {
+	position: absolute;
+	font-size: 14pt;
+	font-weight: bold;
+	color: red;
+	text-align: center;
+	margin-left: 170px;
+	margin-top: 220px;
+	width: 50px;
+	height: 30px;
+}
+
+#train .ep {
+	position: absolute;
+	font-size: 14pt;
+	font-weight: bold;
+	color: green;
+	text-align: center;
+	margin-left: 170px;
+	margin-top: 270px;
+	width: 50px;
+	height: 30px;
+}
+
+#train .armymsg {
+	position: absolute;
+	font-size: 10pt;
+	font-weight: bold;
+	color: green;
+	text-align: center;
+	margin-left: 240px;
+	margin-top: 20px;
+	width: 295px;
+	padding-top: 25px;
+	height: 63px;
+}
+
+.cmdRemove {
+	height: 25px;
+	font-size: 12pt;
+	font-family: "Arial Narrow", Arial;
+	border: 0px black dotted;
+	color: #333;
+	font-weight: bold;
+	text-align: center;
+	background: #c9dfcc url('images/button-red.gif') repeat-X;
+	vertical-align: middle;
+	padding: 0px;
+	padding-right: 5px;
+	padding-left: 5px;
+}
+
+.smiley {
+	padding: 1px;
+}
+
+#tblRanksFLT {
+	display: block;
+	background: #b9ee5d;
+	padding: 5px;
+	height: 80px;
+	float: left;
+	font-weight: bold;
+	overflow-Y: hidden;
+	margin-right: 10px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	behaviour: ('inclide/lib/PIE.htc');
+}
+
+#tblRanksFLT .info {
+	padding: 2px;
+	font-family: Arial;
+	font-size: 11pt;
+	color: black;
+	background: #d2f98e;
+	width: 48px;
+	height: 75px;
+	float: left;
+	text-align: center;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	behaviour: ('inclide/lib/PIE.htc');
+}
+
+#tblRanksFLT .info-body {
+	#position: absolute;
+	#top: 50%;
+	display: table-cell;
+	vertical-align: middle;
+	text-align: center;
+	width: 100%;
+	
+}
+
+#tblRanksFLT .what {
+	padding: 2px;
+	width: 48px;
+	height: 75px;
+	float: left;
+	background: #b9ee5d;
+}
+
+#tblRanksFLT .what-head {
+	height: 17px;
+	color: black;
+	font-family: Arial;
+	font-size: 9pt;
+	background: white url('images/game/filters/what-head.gif');
+	text-align: center;
+}
+
+#tblRanksFLT .what-body {
+	height: 48px;
+	background: white;
+	text-align: center;
+}
+
+#tblRanksFLT .what-foot {
+	height: 10px;
+	text-align: center;
+}
+
+.whatIMG {
+	width: 48px;
+	height: 48px;
+	padding-bottom: 0px;
+	display: inline;
+	border: 0;
+}
+
+#tblRanksFLT .starIMG {
+	width: 64px;
+	padding-bottom: 0px;
+	display: inline;
+	border: 0;
+}
+
+#tblRanksFLT .spacer {
+	padding: 2px;
+	float: left;
+	
+}
+
+#tblRanksFLT .select {
+	width: 100%;
+	background: #80d282;
+	color: white;
+	font-weight: bold;
+	font-family: "Comic Sans Ms";
+	font-size: 9pt;
+}
+
+#tblRanksFLT .selectIMG {
+	border: 0;
+	height: 10px;
+	padding-top: 0px;
+}
+
+.rankBox {
+	border: 1px solid #333;
+	width: 80%;
+	padding: 2px;
+	padding-top: 0;
+	display: none;
+}
+
+.rankBox td {
+	font-family: "Arial Narrow", Arial;
+	font-size: 12pt;
+	padding-right: 40px;
+}
+
+.rankBox .whatIMG {
+	width: 64px;
+	height: 64px;
+	padding-bottom: 0px;
+	display: inline;
+	border: 0;
+}
+
+/* BOXES */
+.box {
+	width: 600px;
+	border: 1px solid #333;
+	padding: 5px;
+	display: none;
+}
+
+.box td {
+	width:200px;
+}
+
+/* FLAG */
+.Flag-xl {
+	display: inline;
+	border: 0;
+	width: 100px;
+	height: 100px;
+	padding: 2px;
+}
+
+.Flag-l {
+	display: inline;
+	border: 0;
+	width: 70px;
+	height: 70px;
+	padding: 2px;
+}
+
+.Flags {
+	display: inline;
+	border: 0;
+	width: 50px;
+	height: 50px;
+	padding-right: 2px;
+}
+
+.Flag-s {
+	display: inline;
+	border: 0;
+	width: 40px;
+	height: 40px;
+	padding-right: 2px;
+}
+
+.Flag-ms {
+	display: inline;
+	border: 0;
+	width: 35px;
+	height: 40px;
+	padding-right: 2px;
+}
+
+.Flag-xs {
+	display: inline;
+	border: 0;
+	width: 25px;
+	height: 25px;
+	padding: 2px 5px 2px 2px;
+}
+
+#button a:hover{
+	height: 30px;
+	font-size: 16pt;
+	font-family: "Arial Narrow", Arial;
+	border: 0px black dotted;
+	color: #333;
+	font-weight: bold;
+	text-align: center;
+	background: #c9dfcc url('images/button-h.gif') repeat-X;
+	vertical-align: middle;
+	padding: 0px;
+	padding-right: 25px;
+	padding-left: 25px;
+}
+
+#eVote img {
+	border: 0;
+}
+
+a#eVote, input#eVote {
+	border: 0;
+	background: transparent url('images/vote.gif');
+	width: 30px;
+	height: 30px;
+	padding: 15px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	cursor: pointer;
+}
+
+a:hover#eVote, input:hover#eVote {
+	border: 0;
+	background: transparent url('images/vote-h.gif');
+	width: 30px;
+	height: 30px;
+	padding: 15px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+.artPic {
+	width: 100px;
+	height: 100px;
+	border: 2px black solid;
+	padding: 5px;
+}
+
+#law {
+	width: 315px;
+}
+
+#law .law {
+	width: 100px;
+	float: left;
+	font-family: Verdana;
+	font-size: 11pt;
+	padding-right: 5px;
+}
+
+.law-new-title {
+	width: 120px;
+	padding-right: 10px;
+	float: left;
+}
+
+.law-new-content {
+	width: 190px;
+	padding-right: 10px;
+	float: left;
+}
+
+.law-reminder {
+	padding: 10px;
+	float: right;
+	width: 125px;
+	border: 1px red dashed;
+}
+
+.law-timer {
+	text-align: center;
+	width: 200px;
+	border: 1px solid;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	-webkit-box-shadow: #666 0px 2px 3px;
+	-moz-box-shadow: #666 0px 2px 3px;
+	box-shadow: #666 0px 2px 3px;
+}
+
+.law-voting {
+	text-align: center;
+	width: 170px;
+	display: inline-block;
+	border: 1px solid;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	-webkit-box-shadow: #666 0px 2px 3px;
+	-moz-box-shadow: #666 0px 2px 3px;
+	box-shadow: #666 0px 2px 3px;
+}
+
+a:active
+{
+outline: none;
+}
+
+a:focus
+{
+outline: none;
+}
+
+.selectbox {
+	border: 1px solid #333;
+	width: 630px;
+	padding: 5px;
+	display: none;
+}
+
+.box-element {
+	width: 205px;
+	height: 45px;
+	overflow: hidden;
+	border-bottom: 1px solid;
+	float: left;
+	font-family: "Arial Narrow", Tahoma;
+	font-size: 8.5pt;
+	margin-right: 5px;
+}
+
+.box-element-long {
+	width: 150px;
+	height: 50px;
+	overflow: hidden;
+	border-bottom: 1px solid;
+	float: left;
+	font-family: "Arial Narrow", Tahoma;
+	font-size: 9pt;
+	margin-right: 5px;
+}
+
+.box-element-s {
+	width: 120px;
+	height: 30px;
+	overflow: hidden;
+	border-bottom: 1px solid;
+	float: left;
+	font-family: "Arial Narrow", Tahoma;
+	font-size: 9pt;
+	margin-right: 5px;
+}
+
+/******* Laws Table *******/
+#laws-table {
+	width: 650px;
+}
+
+.laws-type {
+	float: left;
+	padding-right: 15px;
+	width: 175px;
+	font-family: Arial;
+	font-size: 11pt;
+	text-align: center;
+	padding-top: 5px;
+}
+
+.laws-by {
+	float: left;
+	padding-right: 15px;
+	width: 150px;
+	font-family: Arial;
+	font-size: 11pt;
+	text-align: center;
+	padding-top: 5px;
+}
+
+.laws-time {
+	float: left;
+	padding-right: 15px;
+	width: 180px;
+	font-family: Arial;
+	font-size: 11pt;
+	text-align: center;
+	padding-top: 5px;
+}
+
+.laws-stat {
+	float: left;
+	padding-right: 0;
+	width: 100px;
+	font-family: Arial;
+	font-size: 11pt;
+	text-align: center;
+	padding-top: 5px;
+}
+
+.newline {
+	clear: both;
+	height: 7px;
+	font-size: 3pt;
+}
+
+.oper_icons {
+	border: 0;
+	width: 32px;
+	height: 32px;
+}
+
+#warview {
+	width: 330px;
+	float: left;
+//	border: 1px dotted;
+	text-align: center
+}
+
+#warview .title {
+	width: 330px;
+	font-weight: bold;
+	color: white
+}
+
+#warview .herobox {
+	width: 94px;
+	height: 320px;
+	margin-right: 5px;
+	padding-top: 5px;
+	text-align: center;
+	font-size: 14pt;
+}
+
+#warview .herobox img.hero1 {
+	width: 70px;
+	height: 70px;
+}
+
+#warview .herobox img.hero2 {
+	width: 60px;
+	height: 60px;
+}
+
+#warview .herobox img.hero3 {
+	width: 50px;
+	height: 50px;
+}
+
+/****** FIGHT ******/
+#fight {
+	background: url('images/fight-bg.gif') no-repeat;
+	font-family: Arial;
+	font-size: 11pt;
+	color: #333;
+	padding: 10px;
+	padding-bottom: 0px;
+	width: 570px;
+	height: 350px;
+}
+
+#fight div {
+	overflow: hidden;
+//	border: 1px solid;
+}
+
+#fight .advance {
+	position: absolute;
+	font-family: "Hillock BRK", Tahoma;
+	font-size: 16pt;
+	font-weight: bold;
+	text-align: center;
+	color: #11130E;
+	margin-left: 390px;
+	margin-top: 215px;
+	width: 130px;
+	height: 30px;
+}
+
+#fight .skill {
+	position: absolute;
+	font-size: 14pt;
+	font-weight: bold;
+	text-align: center;
+	margin-left: 178px;
+	margin-top: 155px;
+	width: 50px;
+	height: 25px;
+}
+
+#fight .well-inf {
+	position: absolute;
+	font-size: 14pt;
+	font-weight: bold;
+	text-align: center;
+	color: green;
+	margin-left: 178px;
+	margin-top: 180px;
+	width: 50px;
+	height: 25px;
+}
+
+#fight .well {
+	position: absolute;
+	font-size: 14pt;
+	font-weight: bold;
+	text-align: center;
+	color: red;
+	margin-left: 178px;
+	margin-top: 205px;
+	width: 50px;
+	height: 25px;
+}
+
+#fight .weapon {
+	position: absolute;
+	font-size: 14pt;
+	font-weight: bold;
+	text-align: center;
+	color: red;
+	margin-left: 148px;
+	margin-top: 230px;
+	width: 80px;
+	height: 25px;
+}
+
+#fight .mrank {
+	position: absolute;
+	font-size: 14pt;
+	font-weight: bold;
+	text-align: center;
+	color: red;
+	margin-left: 148px;
+	margin-top: 280px;
+	width: 80px;
+	height: 25px;
+}
+
+#fight .ep {
+	position: absolute;
+	font-size: 14pt;
+	color: green;
+	font-weight: bold;
+	text-align: center;
+	margin-left: 178px;
+	margin-top: 255px;
+	width: 50px;
+	height: 25px;
+}
+
+#fight .totforce {
+	position: absolute;
+	font-size: 17pt;
+	color: green;
+	font-weight: bold;
+	text-align: center;
+	margin-left: 240px;
+	margin-top: 20px;
+	width: 290px;
+	height: 55px;
+	padding-top: 30px;
+}
+
+#wardet {
+	padding-left: 30px;
+	width: 520px;
+	text-align: justify;
+}
+
+#war-log {
+	width: 500px;
+	font-family: Arial;
+	font-size: 11pt;
+	font-weight: bold;
+	text-align: justify;
+}
+
+#war-log .country-flag {
+	float: left;
+	width: 50px;
+}
+
+#war-log .country-name {
+	float: left;
+	width: 170px;
+	padding-top: 15px;
+}
+
+#war-log .country-fights {
+	float: left;
+	width: 120px;
+	padding-top: 15px;
+}
+
+#war-log .country-forces {
+	float: left;
+	width: 120px;
+	padding-top: 15px;
+}
+
+.fightlog-att {
+	width: 580px;
+	margin-left: 25px;
+	margin-right: 25px;
+	background: #fee;
+}
+
+.fightlog-def {
+	width: 580px;
+	margin-left: 25px;
+	margin-right: 25px;
+	background: #efe;
+}
+
+.fightlog-att-h {
+	width: 580px;
+	margin-left: 25px;
+	margin-right: 25px;
+	background: #fee;
+}
+
+.fightlog-def-h {
+	width: 580px;
+	margin-left: 25px;
+	margin-right: 25px;
+	background: #efe;
+}
+
+.fightlog div {
+	overflow: hidden;
+	padding-right: 10px;
+}
+
+.fightlog {
+	padding-top: 5px;
+    padding-bottom: 3px;
+    border-bottom: 1px solid
+}
+
+.fightlog .no {
+	float: left;
+	width: 30px;
+	padding-right: 10px;
+}
+
+.fightlog .fighter-name {
+	float: left;
+	width: 160px;
+	font-size: 11pt;
+}
+
+.fightlog .fighter-fights {
+	float: left;
+	width: 100px;
+	font-size: 11pt;
+}
+
+.fightlog .fighter-force {
+	float: left;
+	width: 120px;
+	font-size: 11pt;
+}
+
+.fightlog .fighter-average {
+	float: left;
+	width: 110px;
+	padding-right: 0;
+	font-size: 11pt;
+}
+
+#media-list {
+	width: 670px;
+	font-weight: bold;
+	font-family: "Arial Narrow";
+	font-size: 11pt;
+}
+
+#media-list .media-votes {
+	float: left;
+	width: 50px;
+	text-align: center;
+}
+
+#media-list .media-type {
+	float: left;
+	width: 50px;
+	text-align: center;
+}
+
+#media-list .media-type img {
+	width: 40px;
+	padding: 5px;
+	text-align: center;
+}
+
+#media-list .media-votebox {
+	background: transparent url('images/game/points-bg.gif') no-repeat;
+	width: 40px;
+	height: 45px;
+	text-align: center;
+	vertical-align: middle;
+	font-family: "Comic sans ms";
+	font-size: 14pt;
+	color: white;
+	overflow: hidden;
+	display: block;
+	padding-top: 15px;
+	float: left;
+	margin-top: 2px;
+	margin-bottom: 2px
+}
+
+#media-list .media-title {
+	float: left;
+	width: 330px;
+	text-align: center;
+	padding-top: 15px;
+}
+
+#media-list .media-created {
+	float: left;
+	width: 120px;
+	text-align: center;
+	padding-top: 15px;
+}
+
+#media-list .media-np {
+	float: left;
+	width: 150px;
+	text-align: center;
+	padding-top: 15px;
+}
+
+#media-list .media-desc {
+	float: left;
+	width: 500px;
+	text-align: justify;
+	padding-top: 15px;
+}
+
+.td-title {
+	width: 110px;
+	float: left;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+
+.td-content {
+	width: 190px;
+	float: left;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+.info-box {
+	position: absolute;
+	border: 1px lime solid;
+	font-size: 8pt;
+	background: white;
+	display: none;
+}
+
+/* Upgrade Account */
+#happyTime {
+    text-align: center;
+	background: -webkit-gradient(linear, 0 0, 0 bottom, from(#EAF5FF), to(#8FC9FE));
+	background: -moz-linear-gradient(#EAF5FF, #8FC9FE);
+	background: linear-gradient(#EAF5FF, #8FC9FE);
+	-pie-background: linear-gradient(#EAF5FF, #8FC9FE);
+    margin: 2px;
+    border-radius: 5px;
+    color: black
+}
+
+#happyTime #htDue {
+    font-size: 24pt;
+    color: green;
+}
+
+#upgacc {
+    text-align: center
+}
+
+#upgacc div {
+	border: 1px solid;
+	padding: 4px;
+	margin: 1px;
+    display: inline-block;
+    vertical-align: top;
+    border-radius: 3px
+}
+
+#upgacc .feature {
+	width: 130px;
+}
+
+#upgacc .free {
+	width: 90px;
+	text-align: center;
+}
+
+#upgacc .pro {
+	width: 250px;
+	text-align: center;
+	background: GoldenRod;
+	font-weight: bold;
+	border: 1px black solid;
+	color: white;
+}
+
+#upgacc .pro .buy {
+    width: 60px;
+}
+
+#payments-box {
+    width: 655px
+}
+
+#payments-box div {
+    border: 1px solid;
+    display: inline-block;
+    font-size: 9pt;
+    border-radius: 2px;
+    text-align: center;
+    padding: 2px;
+    margin: 1px
+}
+
+#payments-box .no {
+    width: 38px
+}
+
+#payments-box .number, #payments-box .price, #payments-box .stat {
+    width: 75px
+}
+
+#payments-box .title {
+    width: 174px
+}
+
+#payments-box .time {
+    width: 150px
+}
+.Store-Tala {
+	display: inline-block;
+	width: 150px;
+	text-align: center;
+}
+
+.info-div {
+	width: 65px;
+	height: 65px;
+	margin: 1px;
+	padding: 1px;
+	background: url('images/game/info-box.gif') no-repeat;
+	text-align: center;
+	float: left;
+	font-size: 9pt;
+}
+
+.info-div .info-details {
+	font-size: 24px;
+}
+
+.info-div .info-title {
+	font-size: 9pt;
+	position: absolute;
+	margin-top: 50px;
+	padding-right: 2px;
+	padding-left: 2px;
+	width: 61px;
+	text-align: center;
+}
+
+input {
+	font-family: tahoma;
+	font-size: 9pt;
+}
+
+#trainbuts {
+	width: 145px;
+	height: 181px;
+	padding-top: 120px;
+	border: 0;
+	cursor: pointer;
+}
+
+#trainbuts:hover {
+	border: 2px white solid;
+}
+
+#trainbuts:active {
+	border: 0;
+}
+
+.normaltrain {
+	background: url('images/game/train/normal.gif');
+}
+
+.extratrain {
+	background: url('images/game/train/extra.gif');
+}
+
+.supertrain {
+	background: url('images/game/train/super.gif');
+}
+
+.taskbuts {
+	width: 120px;
+	height: 141px;
+    margin: 0 10px;
+	padding-top: 30px;
+	background: #1E5A84;
+    color: white;
+	border: 3px solid #67BBF6;
+    border-radius: 7.5px;
+	background: -webkit-gradient(radial, 0 0, 0 bottom, from(#67BBF6), to(#1E5A84));
+	background: -moz-radial-gradient(center, ellipse, #67BBF6, #1E5A84);
+	cursor: pointer;
+    display: inline-block;
+	-webkit-transition: all 200ms linear
+}
+
+.taskbuts label {
+    width: 120px
+}
+
+.taskbuts:hover {
+	border: 3px solid #1E5A84;
+	background: #3387C1;
+	background: -webkit-gradient(radial, 0 0, 0 bottom, from(#67BBF6), to(#3387C1));
+	background: -moz-radial-gradient(center, ellipse, #67BBF6, #3387C1);
+}
+
+.taskbuts:active {
+	border: 3px solid #1E5A64;
+	background: #3387A1;
+	background: -webkit-gradient(radial, 0 0, 0 bottom, from(#67BBD6), to(#3387A1));
+	background: -moz-radial-gradient(center, ellipse, #67BBD6, #3387A1);
+}
+
+.normalwork {
+	background: url('images/game/work/normal.gif');
+}
+
+.extrawork {
+	background: url('images/game/work/extra.gif');
+}
+
+.hardwork {
+	background: url('images/game/work/hard.gif');
+}
+
+.clear {
+	float: none;
+	clear: both;
+}
+
+.form-title {
+	float: left;
+	width: 170px;
+	padding-top: 2px;
+	padding-bottom: 2px
+}
+
+.form-content {
+	float: left;
+	width: 530px;
+	padding-top: 2px;
+	padding-bottom: 2px
+}
+
+/***** CG Election *****/
+.cg-party {
+	width: 120px;
+/*	height: 800px; */
+	border: 1px solid aliceBlue;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	behaviour: ('inclide/lib/PIE.htc');
+	display: inline-block;
+	vertical-align: top;
+	padding: 4px
+}
+
+.cg-party .party-avatar {
+	text-align: center
+}
+
+.cg-party .party-name {
+	font-size: 8pt;
+	text-align: center;
+	height: 25px
+}
+
+.cg-party .candidate-avatar {
+	text-align: center
+}
+
+.cg-party .candidate-name {
+	font-size: 7.5pt;
+	text-align: center
+}
+
+.cg-party .candidate-vote {
+	font-size: 7.5pt;
+	text-align: center
+}
+
+.cg-result-head {
+	border: 1px solid aliceBlue;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	behaviour: ('inclide/lib/PIE.htc');
+	padding: 4px;
+	margin-top: 5px;
+	text-align: center
+}
+
+.buttons {
+	background:none repeat scroll 0 0 #2ae;
+	color:#FFFFFF;
+	cursor:pointer;
+	display:block;
+	margin:0 auto;
+	padding:5px;
+	position:relative;
+	text-align:center;
+	text-decoration:none;
+	float: left
+}
+
+.mini-login, .mini-welcome, .mini-register {
+	width: 355px;
+	padding: 5px;
+	display: inline-block;
+	vertical-align: top;
+	height: 126px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border: 1px solid #EAF5FF;
+	background: -moz-linear-gradient(#8FC9FE, #EAF5FF);
+	behavior: url(/PIE.htc);
+	color: black;
+	overflow: hidden
+}
+
+.mini-login, .mini-register {
+	width: 250px;
+	border: 1px solid #EAF5FF;
+	background: -webkit-gradient(linear, 0 0, 0 bottom, from(#EAF5FF), to(#8FC9FE));
+	background: -moz-linear-gradient(#EAF5FF, #8FC9FE);
+	background: linear-gradient(#EAF5FF, #8FC9FE);
+	-pie-background: linear-gradient(#EAF5FF, #8FC9FE);
+}
+
+.login-table td {
+	text-align: justify
+}
+
+.puberty-e {
+	position: relative;
+	border: 1px solid;
+	border-radius: 3px;
+	width: 140px;
+	height: 5px;
+	display: inline-block
+}
+
+.puberty-f {
+	position: absolute;
+	height: 5px
+}
+
+.puberty-u {
+	position: absolute;
+	background: url('images/theme/pub-bg-small.png') repeat-X;
+	width: 140px;
+	height: 5px
+}
+
+.pub-e {
+	position: relative;
+	border: 1px solid;
+	border-radius: 3px;
+	width: 205px;
+	height: 10px;
+	display: inline-block
+}
+
+.pub-f {
+	position: absolute;
+	height: 10px
+}
+
+.pub-u {
+	position: absolute;
+	background: url('images/theme/pub-bg.png') repeat-X;
+	width: 205px;
+	height: 10px
+}
+
+.indicator-e {
+	position: absolute;
+	border: 1px solid;
+	-moz-border-radius: 2px;
+	width: 205px;
+	height: 5px
+}
+
+.indicator-f {
+	position: absolute;
+	height: 5px
+}
+
+.indicator-u {
+	position: absolute;
+	background: url('images/indicator-bg.png') repeat-X;
+	width: 205px;
+	height: 5px
+}
+
+.holder-indicator {
+	width: 545px;
+	padding: 5px;
+}
+
+.holder-indicator .title {
+	vertical-align: middle;
+	width: 100px;
+	display: inline-block;
+}
+
+.holder-indicator .ind {
+	vertical-align: top;
+	width: 400px;
+	height: 16px;
+	padding-top: 9px;
+	display: inline-block;
+}
+
+.holder-indicator .ind-smaller {
+	vertical-align: top;
+	width: 375px;
+	height: 18px;
+	padding-top: 7px;
+	display: inline-block;
+}
+
+.holder-indicator .desc {
+	vertical-align: middle;
+	width: 25px;
+	height: 21px;
+	padding-top: 4px;
+	background: RoyalBlue;
+	color: white;
+	text-align: center;
+	display: inline-block;
+	border: 1px blue solid;
+	-moz-border-radius: 3px
+}
+
+.holder-indicator .desc-double-e {
+	vertical-align: middle;
+	width: 50px;
+	text-align: center;
+	display: inline-block;
+}
+
+.task-stats {
+	width: 100%
+}
+
+.task-stats td, .task-stats th {
+	width: 25%
+}
+
+.tooltip {
+    position:  absolute;
+    color: black;
+    background: wheat;
+	width: 150px;
+	display: none;
+    padding: 2px;
+    border: 1px solid gold;
+    border-radius: 2px;
+	font-size: 7pt
+}
+
+.buttons:hover { background: #5df }
+.buttons * { font-style: normal; background-image: url('images/btn2.png'); background-repeat: no-repeat; display: block; position: relative; }
+.buttons i { background-position: top left; position: absolute; margin-bottom: -5px; top: 0; left: 0; width: 5px; height: 5px; }
+.buttons span { background-position: bottom left; left: -5px; padding: 0 0 5px 10px; margin-bottom: -5px; }
+.buttons span i { background-position: bottom right; margin-bottom: 0; position: absolute; left: 100%; width: 10px; height: 100%; top: 0; }
+.buttons span span { background-position: top right; position: absolute; right: -10px; margin-left: 10px; top: -5px; height: 0; }
+.buttons.blue { background: #2ae; }
+.buttons.green { background: #6c0; }
+.buttons.pink { background: #c0c; }
+.buttons.red { background: #c00; }
+.buttons:hover { background-color: #a00; }
+.buttons:active { background-color: #444; }
+.buttons[class] {  background-image: url(images/shade.png); background-position: bottom; }
+.buttons img { background: none; border: none; display: inline; }

@@ -1,0 +1,245 @@
+.forum {
+	width: 670px;
+}
+
+.cat {
+	background: black;
+	color: white;
+	padding: 3px;
+	text-align: center;
+	font-family: Verdana;
+	font-size: 11pt;
+	font-weight: bold;
+}
+
+.cat a {
+	color: white;
+}
+
+.empty-notify {
+	width: 662px;
+	border: 1px black solid;
+	padding: 3px;
+	text-align: center;
+}
+
+.board-img {
+	padding: 3px;
+	margin: 3px;
+	width: 38px;
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+	border-left: 1px solid black;
+	border-right: 1px dashed black;
+	float: left;
+	height: 60px;
+	-moz-border-radius: 5px 0 0 5px;
+}
+
+.board-title {
+	padding: 3px;
+	width: 260px;
+	margin: 3px;
+	padding-left: 10px;
+	text-align: justify;
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+	border-left: 1px dashed black;
+	border-right: 1px dashed black;
+	float: left;
+	height: 60px;
+	font-size: 8pt;
+}
+
+.board-count {
+	width: 40px;
+	padding: 3px;
+	padding-top: 23px;
+	margin: 3px;
+	text-align: justify;
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+	border-left: 1px dashed black;
+	border-right: 1px dashed black;
+	text-align: center;
+	float: left;
+	height: 40px;
+}
+
+.board-last {
+	width: 210px;
+	padding: 3px;
+	padding-left: 8px;
+	margin: 3px;
+	text-align: justify;
+	font-size: 8pt;
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+	border-left: 1px dashed black;
+	border-right: 1px solid black;
+	float: left;
+	height: 60px;
+	-moz-border-radius: 0 5px 5px 0;
+}
+
+.board-head-title {
+	width: 319px;
+	text-align: center;
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+	border-left: 1px solid black;
+	border-right: 1px dashed black;
+	float: left;
+	padding: 3px;
+	padding-top: 10px;
+	margin: 3px;
+	height: 25px;
+	-moz-border-radius: 5px 0 0 0;
+}
+
+.board-head-count {
+	width: 40px;
+	text-align: center;
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+	border-left: 1px dashed black;
+	border-right: 1px dashed black;
+	text-align: center;
+	float: left;
+	padding: 3px;
+	padding-top: 10px;
+	margin: 3px;
+	height: 25px;
+}
+
+.board-head-last {
+	width: 215px;
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+	border-left: 1px dashed black;
+	border-right: 1px solid black;
+	float: left;
+	text-align: center;
+	padding: 3px;
+	padding-top: 10px;
+	margin: 3px;
+	height: 25px;
+	-moz-border-radius: 0 5px 0 0;
+}
+
+.post-handle {
+	border: 1px black solid;
+	margin-top: 2px;
+	overflow: hidden;
+}
+
+.post-poster {
+	text-align: center;
+	padding: 5px;
+	width: 90px;
+	height: 100%;
+	float: left;
+	margin-right: 3px;
+	overflow-X: hidden;
+	border-right: 1px dashed black;
+	padding-bottom: 800em;
+	margin-bottom: -800em;
+}
+
+.post-content {
+	width: 555px;
+	float: left;
+	border-left: 1px black dashed;
+	padding-left: 3px;
+	font-size: 9pt;
+	padding-bottom: 800em;
+	margin-bottom: -800em;
+}
+
+.post-content-half {
+	width: 215px;
+	float: left;
+	border: 1px black dashed;
+	margin: 1px;
+	padding: 2px;
+	font-size: 9pt;
+	padding-bottom: 800em;
+	margin-bottom: -800em;
+}
+
+.post-body {
+	padding: 3px;
+	padding-left: 10px;
+	text-align: justify;
+	border: 1px solid black;
+	margin-top: 2px;
+	clear: both
+}
+
+.modbut {
+	width: 24px;
+	height: 24px;
+	border: 0px;
+}
+
+a.forum {
+	font-family: Verdana;
+	font-size: 11pt;
+}
+
+a.Button {
+	background: black;
+	color: white;
+	font-family: verdana;
+	font-size: 10pt;
+	padding: 1px;
+	padding-right: 20px;
+	padding-left: 20px;
+}
+
+a:hover.Button {
+	background: #444;
+	color: white;
+	font-family: verdana;
+	font-size: 10pt;
+	padding: 1px;
+	padding-right: 20px;
+	padding-left: 20px;
+}
+
+.page-nav {
+	padding-right: 3px;
+	padding-left: 3px;
+	margin-right: 2px;
+	width: 10px;
+	height: 16px;
+	color: black;
+	text-align: center;
+	border: 1px black solid;
+	float: left;
+	margin-bottom: 5px
+}
+
+.page-sel {
+	padding-right: 3px;
+	padding-left: 3px;
+	margin-right: 2px;
+	width: 10px;
+	height: 16px;
+	color: white;
+	background: black;
+	text-align: center;
+	border: 1px black solid;
+	float: left;
+}
+
+.page-etc {
+	padding-right: 3px;
+	padding-left: 3px;
+	margin-right: 2px;
+	width: 12px;
+	height: 18px;
+	color: black;
+	text-align: center;
+	float: left;
+}

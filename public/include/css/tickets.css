@@ -1,0 +1,103 @@
+#tickets {
+	width: 715px;
+	font-family: Verdana;
+	font-size: 8pt;
+	text-align: center;
+}
+
+#tickets div {
+	border: 1px solid;
+	padding: 1px;
+	margin: 1px;
+	height: 25px;
+}
+
+.cat {
+	background: black;
+	color: white;
+	padding: 3px;
+	text-align: center;
+	font-family: Verdana;
+	font-size: 11pt;
+	font-weight: bold;
+}
+
+.cat2 {
+	background: black;
+	color: white;
+	padding: 3px;
+	text-align: center;
+	font-family: Verdana;
+	font-size: 11pt;
+	font-weight: bold;
+}
+
+.cat a, .cat2 a {
+	color: white;
+}
+
+#tickets .ticket-subject {
+	float: left;
+	width: 249px;
+}
+
+#tickets .ticket-reason {
+	float: left;
+	width: 159px;
+}
+
+#tickets .ticket-started {
+	float: left;
+	width: 59px;
+}
+
+#tickets .ticket-last {
+	float: left;
+	width: 119px;
+}
+
+#tickets .ticket-status {
+	float: left;
+	width: 99px;
+}
+
+#ticket-view {
+	width: 714px;
+	font-family: Verdana;
+	font-size: 8pt;
+	text-align: center;
+}
+
+#ticket-view .ticket-info {
+	background: #98c2ff;
+	color: black;
+	padding: 3px;
+	text-align: justify;
+}
+
+#ticket-view .ticket-head {
+	background: black;
+	color: white;
+	font-weight: bold;
+	padding: 3px;
+	padding-left: 20px;
+    height: 17px;
+	text-align: justify
+}
+
+#ticket-view .ticket-head a, #ticket-view .ticket-head a:visited {
+	color: white;
+	font-weight: bold;
+}
+
+#ticket-view .ticket-rate, #ticket-view .ticket-post {
+    float: right;
+	padding: 0 2px
+}    
+
+#ticket-view .ticket-body {
+	padding: 3px;
+	border: 1px black solid;
+	margin-top: 2px;
+	text-align: justify;
+}

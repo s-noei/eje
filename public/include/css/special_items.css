@@ -1,0 +1,409 @@
+
+.ItemContainerRow {
+    display: block;
+    position: relative;
+    margin: 5px auto;
+    width: 710px;
+}
+
+.ItemContainerCell {
+	padding: 10px 0px 16px 0px;
+	text-align: center;
+	float: left;
+	cursor: pointer;
+	position: relative;
+}
+
+.ItemContainerCellLarge {
+	width: 215px;
+	min-height: 260px;
+}
+
+.Item {
+	float: left;
+	margin: 2px;
+	border-style: solid;
+	border-width: 1px;
+	border-color:#E0E0E0;
+	background-image:url('../../images/special-items/bg.jpg');
+	background-repeat:repeat-y;
+	opacity:0.7;
+}
+
+.Item:hover {
+	float: left;
+	margin: 2px;
+	border-style: solid;
+	border-width: 1px;
+	border-color:#E0E0E0;
+	background-image:url('../../images/special-items/bg.jpg');
+	background-repeat:repeat-y;
+	opacity:1;
+}
+
+.ItemContainerRow .ItemDetailsMiniPopupBorderInactive {
+    border-style: none;
+    margin: 2px;
+}
+
+.ItemContainerRow .ItemDetailsMiniPopupBorderInactive:hover {
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 3px 3px 3px 3px;
+    margin: 0px;
+    border-color: rgb(136, 71, 255);
+}
+
+.ItemContainerCell .ItemImage {
+	margin-bottom: 10px;
+}
+
+.ItemContainerCell .ItemImage img {
+	opacity: 0;
+}
+
+.ItemContainerCell .ItemImage .TagContainer {
+	color: #bcbcbc;
+	padding: 2px;
+	top: 0px;
+	left: 0px;
+	position: absolute;
+	font-size: 12px;
+	text-align: center;
+	display: block;
+}
+
+.ItemContainerCell .ItemImage .TagContainer .Discount {
+	background-color: #4c6b22;
+	color: #bcbcbc;
+	position: relative;
+	padding: 0 4px;
+	font-size: 12px;
+	text-align: center;
+	display: block;
+	margin-top: 3px;
+}
+
+.ItemContainerCell .ItemImage .TagContainer .New {
+	background-color: #963222;
+	color: #bcbcbc;
+	position: relative;
+	padding: 0 5px;
+	font-size: 12px;
+	text-align: center;
+	display: block;
+	margin-top: 3px;
+}
+
+.NoSelect {
+	-moz-user-select: none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	user-select: none;
+}
+
+.ItemContainerCell .ItemImageLarge img {
+	width: 64px;
+	height: 64px;
+	box-shadow: 0px 0px 5px #000;
+}
+
+.ItemContainerRowLarge {
+    height: 280px;
+}
+
+.ItemText {
+	display: inline-block;
+	width: 130px;
+	text-align: center;
+	font-size: 18px;
+	padding: 0;
+	line-height: 16px;
+}
+
+.ItemText .Name {
+	display: block;
+	color: #000000;
+	text-align: center;
+	font-family:arial;
+	-webkit-font-smoothing: antialiased;
+	-moz-font-smoothing: antialiased;
+	font-smoothing: antialiased;
+	line-height: 18px;
+}
+
+.ItemText .Rarity {
+	display: block;
+	font-family:arial;
+	font-size: 12px;
+	-webkit-font-smoothing: antialiased;
+	-moz-font-smoothing: antialiased;
+	font-smoothing: antialiased;
+	color: #686868;
+}
+
+.ItemText .PlayerClass {
+	display: block;
+	color: #686868;
+	font-family:arial;
+	font-size: 12px;
+	-webkit-font-smoothing: antialiased;
+	-moz-font-smoothing: antialiased;
+	font-smoothing: antialiased;
+}
+
+.ItemText .Price {
+	display: inline-block;
+	color: #948c88;
+	font-family:arial;
+	font-size: 12px;
+	-webkit-font-smoothing: antialiased;
+	-moz-font-smoothing: antialiased;
+	font-smoothing: antialiased;
+}
+
+.ItemText .DiscountedPrice {
+	display: inline-block;
+}
+
+.ItemText .OriginalPrice {
+	color: #686868;
+	text-decoration: line-through;
+	display: inline-block;
+}
+
+.ItemContainerCell .AddToCartButtonContainer {
+	position: absolute;
+	bottom: -1px;
+	width: 100%;
+	min-height: 40px;
+	z-index: 1;
+	cursor: default;
+}
+
+.ItemContainerCell .AddToCartButtonContainer .Spinner {
+	display: none;
+	position: relative;
+	top: 8px;
+	left: 0;
+}
+
+.ItemContainerCell .AddToCartButtonContainer .Spinner {
+	display: none;
+	position: relative;
+	top: 8px;
+	left: 0;
+}
+
+.GenericGreenButton {
+	display:block;
+	position:relative;
+	height:25px;
+	padding:0 15px;
+	font-size:12px;
+	color:#FFF;
+	text-shadow: 1px 1px 1px #2a2d31;
+	background-repeat:repeat-x;
+	text-align:center;
+	line-height:24px;
+	background-image:url('../../images/special-items/btn_green.png');
+	cursor: pointer;
+}
+
+.GenericGreenButton .LeftCap, .GenericGreenButton .RightCap {
+	background-image:url('../../images/special-items/btn_green_sides.png');
+	cursor: pointer;
+}
+
+.GenericGreenButton:hover {
+	background-position:bottom;
+}
+
+.GenericGreenButton:hover .LeftCap {
+	background-position:bottom left;
+}
+
+.GenericGreenButton:hover .RightCap {
+	background-position:bottom right;
+}
+
+.HoverAddToCartButton {
+
+	margin: 0 auto;
+	top: 5px;
+}
+
+.LeftCap, .RightCap {
+	position:absolute;
+	top:0;
+	height:25px;
+	width:3px;
+}
+.LeftCap {
+	background-position:top left;
+	left:-3px;
+}
+.RightCap {
+	background-position:top right;
+	right:-3px;
+}
+
+.GenericGreenButton:hover {
+	background-position:bottom;
+}
+.GenericGreenButton:hover .LeftCap {
+	background-position:bottom left;
+}
+.GenericGreenButton:hover .RightCap {
+	background-position:bottom right;
+}
+
+.GenericGrayButton:hover {
+	background-position:bottom;
+}
+.GenericGrayButton:hover .LeftCap {
+	background-position:bottom left;
+}
+.GenericGrayButton:hover .RightCap {
+	background-position:bottom right;
+}
+
+.LargeGreenButton:hover {
+	background-position:bottom;
+	height:31px;
+}
+.LargeGreenButton:hover .LeftCap {
+	background-position:bottom left;
+	height:35px;
+}
+.LargeGreenButton:hover .RightCap {
+	background-position:bottom right;
+	height:35px;
+}
+
+.LargeGrayButton:hover {
+	background-position:bottom;
+	height:31px;
+}
+.LargeGrayButton:hover .LeftCap {
+	background-position:bottom left;
+	height:35px;
+}
+.LargeGrayButton:hover .RightCap {
+	background-position:bottom right;
+	height:35px;
+}
+
+.ItemContainerRow .ItemDetailsMiniPopupBorderActive {
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 3px 3px 3px 3px;
+    margin: 0px;
+}
+
+
+
+.ItemContainerCell .AddToCartButtonContainer {
+    cursor: default;
+}
+.ItemContainerCell {
+    text-align: center;
+    cursor: pointer;
+}
+
+
+.LeftCap {
+    background-position: left top;
+    left: -3px;
+}
+
+.GenericGreenButton .LeftCap, .GenericGreenButton .RightCap {
+    background-image: url('../../images/special-items/btn_green_sides.png');
+    cursor: pointer;
+}
+.RightCap {
+    background-position: right top;
+    right: -3px;
+}
+.LeftCap, .RightCap {
+    position: absolute;
+    top: 0px;
+    height: 25px;
+    width: 3px;
+}
+
+.GenericGreenButton {
+    font-size: 12px;
+    color: rgb(255, 255, 255);
+    text-shadow: 1px 1px 1px rgb(42, 45, 49);
+    text-align: center;
+    line-height: 24px;
+    cursor: pointer;
+}
+
+.BuyItems {
+	width: 100px; 
+	background-color: transparent; 
+	border-style: none; 
+	font-family: Arial;
+	font-size: 12px;
+	color: rgb(255, 255, 255); 
+	text-shadow: 1px 1px 1px rgb(42, 45, 49); 
+	text-align: center;
+	line-height: 24px;
+	cursor: pointer;
+}
+
+.BuyItems:hover {
+	width: 100px; 
+	background-color: transparent; 
+	border-style: none; 
+	font-family: Arial;
+	font-size: 12px;
+	color: #F0F0F0; 
+	text-shadow: 1px 1px 1px rgb(42, 45, 49); 
+	text-align: center;
+	line-height: 24px;
+	cursor: pointer;
+	font-weight: bold;
+	letter-spacing: 5px;
+}
+
+
+.vs200 { clear:both;margin:0px auto;position:relative;width:704px;margin-top:0px;background-image:url('../../images/special-items/pixel.png');opacity:0.8; }
+.vs200 .heading,.vs200 .vs201,.vs200 .vs202 { width:100%;height:5px; }
+.vs200 .vs201 { background-image:url('../../images/special-items/top.png');background-repeat:no-repeat; background-color:#fff; }
+.vs200 .vs202 { background-image:url('../../images/special-items/bottom.png');background-repeat:no-repeat;background-color:#fff;position:absolute;bottom:-1px; }
+.vs200 .vs203 { margin:7px auto 10px;width:680px; }
+.vs200 .holder.vs203 { float:none;display:inline;display:block; }
+.vs200 .vs204 { clear:both;background-image:url('../../images/special-items/special_items.png');background-repeat:no-repeat;width:680px;height:58px;margin:7px auto 10px auto; }
+.vs200 .vs204 h2 { color:#4d4d4d;font-weight:bold;font-size:18px;padding-top:20px;padding-left:16px; }
+.vs200 .vs205 { width:175px;height:226px;float:left;display:inline;margin-bottom:12px;margin-left:12px; }
+.clear { clear:both; }
+.vs200 .vs205 p { margin:0px;font-size:14px;font-weight:bold;margin-top:20px;text-align:center;color:#5a6e78;}
+
+.vs225{width:80px;height:26px;border:0;background:#fff url('../../images/special-items/icon-button-buy.jpg') right -0px no-repeat;line-height:25px;color:#3c8fa7;float:left;font-size:15px
+font-family: Trebuchet MS, Myriad Pro, Arial, sans-serif;font-weight:bold;text-shadow:0 1px 0 #fff;}
+.vs225:hover{background-position:right -25px;color:#fff;text-shadow:0 -1px 0 #60a9c1;border:0;}
+.vs225:active {line-height:26px;color:#ebf6fb;border:0;}
+
+.vs227{width:80px;height:26px;border:0;background:#fff url('../../images/special-items/icon-button.jpg') right -0px no-repeat;line-height:25px;color:#3c8fa7;float:left;font-size:15px
+font-family: Trebuchet MS, Myriad Pro, Arial, sans-serif;font-weight:bold;text-shadow:0 1px 0 #fff;}
+.vs227:hover{background-position:right -25px;color:#fff;text-shadow:0 -1px 0 #60a9c1;border:0;}
+.vs227:active {line-height:26px;color:#ebf6fb;border:0;}
+
+.vs228 {font-family: Trebuchet MS, Myriad Pro, Arial, sans-serif;font-size:11px;font-weight:bold;color:#707070;text-align:left;padding-left:10px;}
+.vs229 {background:#F8F8F8;border-bottom:1px solid #F0F0F0;}
+.vs221{background-color:#f2fcff;background-position:7px 6px;border:1px solid #c5e4fe !important;}
+.vs230 {background:#F2FFEE;border-bottom:1px solid #F0F0F0;}
+.vs226{background-color:#fff2f2;background-position:7px 6px;border:1px solid #ffc4c4 !important;}
+
+
+
+
+
+
+
+
+
+

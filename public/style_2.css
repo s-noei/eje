@@ -1,0 +1,2849 @@
+body {
+	font-family: Tahoma;
+	font-size: 10pt;
+	background: #fdfdfd;
+	vertical-align: middle;
+	text-align: center;
+	color: #6e6f6c;
+	padding: 20px;
+	padding-bottom: 10px;
+}
+
+
+.main-top {
+	background: #eee url('images/main-top.gif') repeat-X scroll bottom;
+	font-size: 5px
+}
+
+.main-bottom {
+	background: #fdfdfd url('images/main-bottom.gif') no-repeat scroll bottom;
+	font-size: 5px
+}
+
+.pmBody {
+	border: 0;
+	color: black;
+	padding: 5px;
+	width: 530px;
+	overflow-X: auto;
+}
+
+.pmBody p {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+.pmBody blockquote {
+	border: 1px solid #d0f497;
+	padding: 2px;
+	font-style: italic;
+	background: #e7ffc2;
+	margin-top: 0;
+	margin-bottom: 0;
+	margin-left: 5px;
+	margin-right: 5px;
+}
+
+.articleBody {
+	border: 0;
+	width: 100%;
+	height: 400px;
+}
+
+.body {
+	font-family: Tahoma;
+	font-size: 10pt;
+	background: #fdfdfd;
+	vertical-align: middle;
+	text-align: center;
+	color: #575855;
+}
+
+#article_operations {
+	float: left;
+	width: 50px;
+	text-align: center;
+	padding-right: 5px;
+	margin-right: 5px;
+}
+
+#article_operations .cmdRemove {
+	font-size: 10.5pt;
+	padding-right: 5px;
+	padding-left: 5px;
+	width: 50px;
+}
+
+#article_operations .cmdEdit {
+	font-size: 11pt;
+	padding-right: 5px;
+	padding-left: 5px;
+	width: 50px;
+}
+
+#article_contents {
+	width: 480px;
+	padding-left: 5px;
+	margin-left: 5px;
+	overflow: hidden;
+	float: left;
+	padding: 5px;
+	display: block;
+	font-size: 9pt;
+}
+
+#article_contents p {
+	margin-top: 0.1em;
+	margin-bottom: 0.1em;
+}
+
+#mailbar {
+	text-align: center;
+	background: #DDF9EB;
+	color: black;
+	font-weight: bold;
+	width: 550px;
+	padding: 5px
+}
+
+.message-table {
+	background: #f8feff;
+	font-size: 10pt;
+	width: 558px;
+	padding-bottom: 4px;
+	border: 1px solid;
+}
+
+.message-header {
+	background: black;
+	font-size: 10pt;
+	width: 558px;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	text-align: center;
+	color: white;
+	font-weight: bold;
+}
+
+.message-ind {
+	width: 57px;
+	padding: 2px;
+	float: left;
+	text-align: center;
+}
+
+.message-from {
+	width: 100px;
+	padding: 4px;
+	float: left;
+	text-align: center;
+}
+
+.message-subject {
+	width: 200px;
+	padding: 4px;
+	float: left;
+}
+
+.message-date {
+	width: 100px;
+	padding: 4px;
+	float: left;
+	text-align: center;
+}
+
+.message-oper {
+	width: 57px;
+	padding: 4px;
+	float: left;
+	text-align: center;
+}
+
+.note-subject {
+	width: 370px;
+	padding: 4px;
+	float: left;
+}
+
+.note-date {
+	width: 100px;
+	padding: 4px;
+	float: left;
+	text-align: center;
+}
+
+.note-oper {
+	width: 57px;
+	padding: 4px;
+	float: left;
+	text-align: center;
+}
+
+#tblMessage a {
+	color: #3EA481;
+}
+
+#fundNum {
+	padding-left: 40px;
+	left: 65px;
+	width: 100%;
+	height: 100%;
+}
+
+.page {
+	width:95%;
+	height:95%;
+	text-align:center;
+	background: white;
+}
+
+.logo {
+	width:100px;
+	height:100px;
+	background: #ACE157 url('images/menu-bg.gif') repeat-X bottom;
+	padding: 0;
+}
+
+.menubar {
+	text-align: center;
+	background: #c3f7ae url('images/menu-bg.gif') repeat-X bottom;
+	font-family: "Hobo std", "Comic sans ms", "Monotype Corsiva" , "Arial Narrow", Tahoma;
+	font-size: 12pt;
+	color: black;
+}
+
+.sidebar {
+	text-align: center;
+	vertical-align: top;
+}
+
+.column {
+	display:block;
+	float:left;
+	padding-right:25px;
+	width:233px;
+	display: block;
+}
+
+#newsaTitle {
+	font-family: "Arial Narrow";
+	font-size: 14pt;
+	padding-right: 15px;
+	padding-left: 5px;
+}
+
+#newstTitle {
+	background: #e7f9ff url('images/game/newstab-right.gif') no-repeat 100% 0;
+	height: 25px;
+	font-family: "Arial Narrow";
+	font-size: 16pt;
+	padding-right: 15px;
+	padding-left: 5px;
+}
+
+#newstab {
+	background: #e7f9ff url('images/game/newstab-right.gif') no-repeat 100% 0;
+	padding: 5px;
+	width: 270px;
+	overflow: hidden;
+}
+
+#newsHandle {
+	background: transparent url('images/game/news-bg.gif') no-repeat;
+	height: 60px;
+	width: 280px;
+	padding: 0;
+	margin-bottom: 3px;
+}
+
+#newsHandle .votes {
+	float: left;
+	background: transparent url('images/game/votes-bg.gif') no-repeat;
+	float: left;
+	width: 50px;
+	height: 50px;
+	text-align: center;
+	vertical-align: middle;
+	font-family: "Comic sans ms";
+	font-size: 16pt;
+	color: #37c;
+	overflow: hidden;
+	display: block;
+	padding-top: 8px;
+}
+
+.votes {
+	background: transparent url('images/game/votes-bg.gif') no-repeat;
+	width: 50px;
+	height: 70px;
+	text-align: center;
+	vertical-align: middle;
+	font-family: "Comic sans ms";
+	font-size: 16pt;
+	color: #37c;
+	overflow: hidden;
+	display: block;
+	padding-top: 5px;
+}
+
+#Vote {
+	background: transparent url('images/game/artvote-bg.gif');
+	width: 50px;
+	height: 17px;
+	text-align: center;
+	vertical-align: top;
+	font-family: "Comic sans ms";
+	font-size: 9pt;
+	font-weight: bold;
+	color: white;
+	overflow: hidden;
+	display: block;
+	padding-top: 0;
+	float: left;
+}
+
+#Vote a {
+	color: white;
+	cursor:pointer;
+}
+
+#voteit {
+	cursor:pointer;
+}
+
+#newsHandle .nContent {
+	float: left;
+	width: 220px;
+	height: 50px;
+	text-align: left;
+	vertical-align: top;
+	font-family: "Arial Narrow";
+	font-size: 11pt;
+	line-height:14px;
+	padding-left: 2px;
+	margin: 0;
+}
+
+#newsHandle .nTitle {
+	height: 40px;
+	width: 220px;
+	text-align: left;
+	vertical-align: top;
+	font-family: "Arial";
+	font-size: 10pt;
+	line-height:15px;
+	overflow: hidden;
+}
+
+#newsHandle .nDate {
+	height: 20px;
+	width: 220px;
+	text-align: left;
+	vertical-align: top;
+	font-family: "Arial Narrow";
+	font-size: 8pt;
+	overflow: hidden;
+	line-height:12px;
+	display: block;
+}
+
+#newsHandle span {
+	line-height:11px;
+}
+
+.sidebox {
+	background: #f8f8f8;
+	text-align: center;
+	vertical-align: top;
+	font-size: 10pt;
+}
+
+.sidebox img {
+	border: 0px;
+}
+
+#msgbox {
+	background: #f8f8f8;
+	text-align: left;
+	vertical-align: top;
+	font-size: 10pt;
+	padding: 5px 6px;
+}
+
+.msgbox {
+	background: #f8f8f8;
+	text-align: left;
+	vertical-align: top;
+	font-size: 10pt;
+	padding: 5px 6px;
+}
+
+#fundsbox {
+	background: #f8f8f8;
+	text-align: left;
+	vertical-align: top;
+	font-size: 10pt;
+	padding: 5px 6px;
+}
+
+#fundsbox img {
+	display: inline;
+	padding: 2px 5px 0 0;
+}
+
+#wellnessmeter {
+	background:transparent url('images/welind.gif') no-repeat scroll 3px top;
+	clear:none;
+	display:block;
+	float:left;
+	padding-bottom:13px;
+	padding-top:0px;
+	width:90px;
+	height:130px;
+	overflow:hidden;
+}
+
+#wellnessmeter .meter {
+	display:block;
+	overflow:hidden;
+	padding-left:3px;
+}
+
+#wellnessind {
+	background:#628F4C none repeat scroll 0 0;
+	border-top:3px solid #467531;
+	display:block;
+	font-weight:bold;
+	font-size:10pt;
+	color: white;
+	padding-top:0px;
+	width:90px;
+	overflow:hidden;
+}
+
+.ajaxholder {
+	background: #fefefe;
+	display: none;
+	font-weight:bold;
+	font-size:10pt;
+	font-weight: bold;
+	width:250px;
+	height:20px;
+	padding: 2px 2px 2px 2px;
+}
+
+.ajaxholder2 {
+	font-weight:bold;
+	font-size:10pt;
+}
+
+#contents {
+	text-align: justify;
+	overflow: hidden;
+	padding: 2px 2px 2px 2px;
+	font-size:9pt;
+	background: url('images/corner-bg.gif') no-repeat;
+	display: block;
+}
+
+#adside {
+	text-align: center;
+	width: 100px fixed;
+	overflow: hidden;
+}
+
+#regions {
+	height: 30px;
+	overflow: hidden;
+	padding: 10px 10px 2px 50px;
+	font-family: Arial;
+	font-size: 14pt;
+	font-weight: none;
+}
+
+#regions a, #regions a:visited, #regions a:hover {
+	color: #676865;
+}
+
+#sResults {
+	height: 80px;
+	overflow: hidden;
+	padding: 5px 5px 2px 50px;
+	font-family: Arial;
+	font-size: 14pt;
+	font-weight: none;
+}
+
+#sResults a, #regions a:visited, #regions a:hover {
+	color: #676865;
+}
+
+.post-comment {
+	background: #c2f5ad;
+	font-family: "Hobo std", "Arial Narrow", Tahoma;
+}
+
+#comments {
+	width: 490px;
+	overflow-X: hidden;
+	margin: 30px;
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+#comment-head {
+	float: left;
+	width: 125px;
+	height: 100%;
+	padding: 5px;
+	padding-left: 10px;
+}
+
+#comment-body {
+	float: left;
+	padding: 5px;
+	font-size: 9pt;
+	width: 340px;
+	overflow-X:hidden;
+}
+
+.smileys {
+	float: left;
+	height: 100%;
+	width: 80px;
+	padding: 5px;
+	text-align: center;
+}
+
+.comment-area {
+	float: left;
+	height: 100%;
+	width: 390px;
+	padding: 5px;
+	text-align: center;
+}
+
+#articles {
+	overflow-X: hidden;
+	padding: 10px 10px 2px 30px;
+	font-family: Arial;
+	font-size: 13pt;
+	font-weight: none;
+}
+
+#articles .votes {
+	float: left;
+	background: transparent url('images/game/votes-bg.gif') no-repeat;
+	float: left;
+	width: 50px;
+	height: 50px;
+	text-align: center;
+	vertical-align: middle;
+	font-family: "Comic sans ms";
+	font-size: 16pt;
+	color: #37c;
+	overflow: hidden;
+	display: block;
+	padding-top: 8px;
+}
+
+#licenses {
+	height: 50px;
+	width: 430px;
+	overflow: hidden;
+	padding: 5px 5px 2px 20px;
+	font-family: "Arial Narrow", Arial;
+	font-size: 11pt;
+	font-weight: none;
+	background: #f9fffc;
+/*	border: 1px solid #f00; */
+}
+
+#licenses .licCountry {
+	float: left;
+	width: 50px;
+	height: 40px;
+/*	border: 1px solid #0f0; */
+}
+
+#licenses .licAmount {
+	float: left;
+	width: 100px;
+	height: 40px;
+/*	border: 1px solid #00f; */
+}
+
+#licenses .licPrice {
+	float: left;
+	width: 110px;
+	height: 40px;
+/*	border: 1px solid #ff0; */
+}
+
+#licenses .licOPrice {
+	float: left;
+	width: 50px;
+	height: 40px;
+	font-size:12pt;
+	font-family: "Comic sans ms", "Arial Narrow";
+/*	border: 1px solid #0ff; */
+}
+
+#licenses .licSubmit {
+	float: left;
+	width: 100px;
+	height: 40px;
+/*	border: 1px solid #f0f; */
+}
+
+#licenses .licMarket {
+	float: left;
+	width: 50px;
+	height: 40px;
+/*	border: 1px solid #888; */
+}
+
+#companies {
+	height: 70px;
+	width: 450px;
+	overflow: hidden;
+	padding: 10px 10px 2px 50px;
+	font-family: Arial;
+	font-size: 14pt;
+	font-weight: none;
+}
+
+#companies .industry {
+	height: 55px;
+	width: 55px;
+	border: 0;
+	float: right;
+}
+
+#companies img {
+	border: 0px;
+	padding-right: 2px;
+}
+
+#tblCompany {
+	width: 100%;
+	overflow-X:hidden;
+}
+
+#tblCompany td {
+	vertical-align: top;
+}
+
+#tblCompany td .Icons {
+	width: 20px;
+	overflow: hide;
+	display: block;
+	text-align: right;
+}
+
+#tblCompany td .Cont {
+	width: 200px;
+	overflow: hide;
+	display: block;
+	text-align: right;
+}
+
+.style {
+	font-family: tahoma;
+	font-size: 10pt;
+	padding: 3px;
+}
+
+.style .td {
+	font-family: tahoma;
+	font-size: 10pt;
+	padding: 3px;
+	text-align: center;
+	display: block;
+}
+
+.tdstyle {
+	font-family: tahoma;
+	font-size: 10pt;
+	padding: 3px;
+	display: block;
+/*	width: 100% */
+}
+
+.menubar a, .menubar a:visited, .menubar a:hover {
+	color: black;
+}
+.actbar {
+	height: 50px;
+	text-align: center;
+	background: #ACE157;
+	color: black;
+	text-align: left;
+	font-size: 18pt;
+	display: block;
+}
+
+.cmdEdit {
+	background: #41a1df;
+	text-decoration: none;
+	color: white
+}
+.cmdAdd {
+	border: 1px Black solid;
+	background: white;
+	font-family: tahoma;
+}
+.pageTable {
+	border: 0px;
+	width: 100%;
+	height: 100%
+}
+.footer {
+	text-align: center
+}
+
+.inlineIMGs {
+	display: inline;
+	border: 0;
+	padding: 2px 5px 2px 2px;
+}
+
+.smiley {
+	display: inline;
+	border: 0;
+	padding: 1px;
+	width: 15px;
+}
+
+.Avatars {
+	display: inline;
+	border: 0;
+	width: 70px;
+	height: 70px;
+	padding: 2px;
+}
+
+.Avatar-l {
+	display: inline;
+	border: 0;
+	width: 80px;
+	height: 80px;
+	padding: 2px;
+}
+
+.Avatar-s {
+	display: inline;
+	border: 0;
+	width: 60px;
+	height: 60px;
+	padding: 2px;
+}
+
+.Avatar-xs {
+	display: inline;
+	border: 0;
+	width: 50px;
+	height: 50px;
+	padding: 2px;
+}
+
+.inputs {
+	height: 30px;
+	font-size: 12pt;
+	font-family: "Comic sans ms", "Arial Narrow";
+	border: 1px black dotted;
+	text-align: center;
+	background: transparent;
+}
+
+#submits {
+	height: 30px;
+	font-size: 12pt;
+	font-family: "Arial Narrow", Arial;
+	border: 0px black dotted;
+	color: #333;
+	font-weight: bold;
+	text-align: center;
+	background: #c9dfcc url('images/button.gif') repeat-X;
+	vertical-align: middle;
+	padding: 0px;
+	padding-right: 10px;
+	padding-left: 10px;
+}
+
+#btnSearch {
+	height: 20px;
+	font-size: 11pt;
+	font-family: "Arial Narrow", Arial;
+	border: 0px black dotted;
+	color: black;
+	font-weight: bold;
+	text-align: center;
+	background: #b0df9d;
+	vertical-align: middle;
+}
+
+#forms {
+	background: #f0fff0;
+	padding: 10px;
+	padding-left: 45px;
+}
+
+#forms h3 {
+}
+
+#forms .text {
+	font-family: "Comic sans ms", Arial;
+	border: 1px #939393 solid;
+	font-size: 14pt;
+}
+
+#forms .submit {
+	font-family: "Comic sans ms", Arial;
+	border: 1px #939393 solid;
+	font-size: 14pt;
+}
+
+ul.pMenu {
+	width: 183px;
+	display: block;
+	border: 1px #c9dfcc solid;
+}
+
+ul.pMeny li {
+	width: 183px;
+	border: 1px #c9dfcc solid;
+	padding-left: 0;
+}
+
+ul.pMenu li a, ul.pMenu li a:visited {
+	height: 30px;
+	width: 180px;
+	font-size: 11pt;
+	font-family: "Arial Narrow", Arial;
+	color: white;
+	font-weight: bold;
+	text-align: center;
+	background: #c9dfcc;
+	vertical-align: middle;
+	padding: 5px;
+	padding-right: 25px;
+	padding-left: 25px;
+}
+
+ul.pMenu li a:hover {
+	background: #d9efdc;
+}
+
+#buttons, a#buttons {
+	height: 20px;
+	font-size: 12pt;
+	font-family: "Arial Narrow", Arial;
+	border: 0px black dotted;
+	color: #333;
+	font-weight: bold;
+	text-align: center;
+	background: #c9dfcc url('images/button.gif') repeat-X;
+	vertical-align: middle;
+	padding: 0px;
+	padding-right: 15px;
+	padding-left: 15px;
+}
+
+#buttons-fix {
+	font-size: 12pt;
+	font-family: "Arial Narrow", Arial;
+	border: 0px black dotted;
+	color: #333;
+	font-weight: bold;
+	text-align: center;
+	background: #c9dfcc url('images/button.gif') repeat-X;
+	vertical-align: middle;
+	padding: 0px;
+	padding-right: 15px;
+	padding-left: 15px;
+	width: 250px;
+}
+
+a#buttons-fix {
+	background: transparent;
+}
+
+a:hover#buttons {
+	height: 20px;
+	font-size: 12pt;
+	font-family: "Arial Narrow", Arial;
+	border: 0px black dotted;
+	color: #333;
+	font-weight: bold;
+	text-align: center;
+	background: #c9dfcc url('images/button-h.gif') repeat-X;
+	vertical-align: middle;
+	padding: 0px;
+	padding-right: 15px;
+	padding-left: 15px;
+}
+
+.nButtons {
+	font-size: 10pt;
+	font-family: "Arial Narrow", Arial;
+	border: 0px black dotted;
+	color: #333;
+	font-weight: bold;
+	text-align: center;
+	background: #c9dfcc url('images/button.gif') repeat-X;
+	vertical-align: middle;
+	padding: 0px;
+	padding-right: 10px;
+	padding-left: 10px;
+}
+
+#todo-title {
+	font-size: 14pt;
+	font-family: "Arial Narrow", Arial;
+	border: 0px black dotted;
+	color: #333;
+	font-weight: bold;
+	text-align: center;
+	background: url('images/todo-bg.gif') no-repeat;
+	vertical-align: middle;
+	padding: 0px;
+	width: 280px;
+}
+
+#todo-body {
+	font-family: "Arial Narrow", Arial;
+	border: 1px #bbb dotted;
+	border-top: 0;
+	color: #333;
+	font-weight: bold;
+	background: #c9dfcc url('images/button.gif') repeat-X;
+	vertical-align: middle;
+	padding: 0px;
+	padding-bottom: 10px;
+	width: 278px;
+}
+
+#todo-item {
+	font-size: 13pt;
+	padding-top: 10px;
+	padding-left: 40px;
+	background: url('images/game/todo.gif') no-repeat 2% 60%
+}
+
+#todo-desc {
+	font-size: 8pt;
+	font-family: Arial;
+	font-weight: normal;
+}
+
+#mili-title {
+	font-size: 14pt;
+	font-family: "Arial Narrow", Arial;
+	border: 0px black dotted;
+	color: #333;
+	font-weight: bold;
+	text-align: center;
+	background: url('images/todo-bg.gif') no-repeat;
+	vertical-align: middle;
+	padding: 0px;
+	width: 280px;
+}
+
+#mili-body {
+	font-family: "Arial Narrow", Arial;
+	border: 1px #bbb dotted;
+	border-top: 0;
+	color: #333;
+	font-weight: bold;
+	background: #c9dfcc url('images/button.gif') repeat-X;
+	vertical-align: middle;
+	padding: 0px;
+	padding-bottom: 10px;
+	width: 278px;
+}
+
+#mili-item {
+	font-size: 10pt;
+	padding-top: 10px;
+	padding-left: 40px;
+}
+
+#mili-desc {
+	font-size: 7pt;
+	font-family: Arial;
+	font-weight: normal;
+}
+
+#buttons .a a:hover {
+	background: #e9ffec;
+}
+
+.search{
+	border: 1px #447132 solid;
+	background: #b0df9d;
+	color: #666;
+}
+
+/***** Market *****/
+#market {
+	width: 550px;
+	font-weight: bold;
+}
+
+#market .provider {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	text-align: left;
+	float: left;
+	width: 155px;
+	padding-right: 20px;
+	overflow: hidden;
+}
+
+#market .stars {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	text-align: left;
+	float: left;
+	width: 80px;
+	padding-right: 20px;
+	overflow: hidden;
+}
+
+#market .stock {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	text-align: left;
+	float: left;
+	width: 40px;
+	padding-right: 20px;
+	overflow: hidden;
+}
+
+#market .price {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	text-align: left;
+	float: left;
+	width: 55px;
+	padding-right: 5px;
+	overflow: hidden;
+}
+
+#market .buy {
+	font-family: Arial, Tahoma;
+	font-size: 12pt;
+	text-align: left;
+	float: left;
+	width: 155px;
+	padding-right: 0px;
+	overflow: hidden;
+}
+
+
+/***** Monetary Market *****/
+#mmarket {
+	width: 550px;
+	font-weight: bold;
+}
+
+#mmarket .provider {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	text-align: left;
+	float: left;
+	width: 170px;
+	padding-right: 20px;
+	overflow: hidden;
+}
+
+#mmarket .amount {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	text-align: left;
+	float: left;
+	width: 65px;
+	padding-right: 20px;
+	overflow: hidden;
+}
+
+#mmarket .erate {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	text-align: left;
+	float: left;
+	width: 100px;
+	padding-right: 20px;
+	overflow: hidden;
+}
+
+#mmarket .buy {
+	font-family: Arial, Tahoma;
+	font-size: 12pt;
+	text-align: left;
+	float: left;
+	width: 155px;
+	padding-right: 0px;
+	overflow: hidden;
+}
+
+#mmarket .my-sell {
+	font-family: Arial, Tahoma;
+	font-size: 11pt;
+	text-align: left;
+	float: left;
+	width: 70px;
+	padding-right: 20px;
+	overflow: hidden;
+}
+
+#mmarket .my-buy {
+	font-family: Arial, Tahoma;
+	font-size: 11pt;
+	text-align: left;
+	float: left;
+	width: 70px;
+	padding-right: 20px;
+	overflow: hidden;
+}
+
+#mmarket .my-amount {
+	font-family: Arial, Tahoma;
+	font-size: 11pt;
+	text-align: left;
+	float: left;
+	width: 90px;
+	padding-right: 20px;
+	overflow: hidden;
+}
+
+#mmarket .my-erate {
+	font-family: Arial, Tahoma;
+	font-size: 11pt;
+	text-align: left;
+	float: left;
+	width: 130px;
+	padding-right: 20px;
+	overflow: hidden;
+}
+
+#mmarket .my-oper {
+	font-family: Arial, Tahoma;
+	font-size: 11pt;
+	text-align: left;
+	float: left;
+	width: 110px;
+	padding-right: 0px;
+	overflow: hidden;
+}
+
+/***** Company Market *****/
+#cmarket {
+	width: 550px;
+	font-weight: bold;
+}
+
+#cmarket .company {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	text-align: left;
+	float: left;
+	width: 155px;
+	padding-right: 20px;
+	overflow: hidden;
+}
+
+#cmarket .industry {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	text-align: left;
+	float: left;
+	width: 40px;
+	padding-right: 20px;
+	overflow: hidden;
+}
+
+#cmarket .stars {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	text-align: left;
+	float: left;
+	width: 80px;
+	padding-right: 20px;
+	overflow: hidden;
+}
+
+#cmarket .price {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	text-align: left;
+	float: left;
+	width: 55px;
+	padding-right: 20px;
+	overflow: hidden;
+}
+
+#cmarket .buy {
+	font-family: Arial, Tahoma;
+	font-size: 12pt;
+	text-align: left;
+	float: left;
+	width: 90px;
+	padding-right: 20px;
+	overflow: hidden;
+}
+
+/***** Job Offers *****/
+#jobs {
+	width: 550px;
+	font-weight: bold;
+}
+
+#jobs div {
+	border: 0px solid;
+}
+
+#jobs .company {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	text-align: left;
+	float: left;
+	width: 180px;
+	padding-right: 20px;
+	overflow: hidden;
+}
+
+#jobs .cAvatar {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	text-align: left;
+	float: left;
+	width: 50px;
+	padding-right: 5px;
+	overflow: hidden;
+}
+
+#jobs .cName {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	text-align: left;
+	float: left;
+	width: 125px;
+	padding-right: 20px;
+	overflow: hidden;
+}
+
+#jobs .skill {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	text-align: left;
+	float: left;
+	width: 90px;
+	padding-right: 20px;
+	overflow: hidden;
+}
+
+#jobs .salary {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	text-align: left;
+	float: left;
+	width: 100px;
+	padding-right: 20px;
+	overflow: hidden;
+}
+
+#jobs .apply {
+	font-family: Arial, Tahoma;
+	font-size: 12pt;
+	text-align: left;
+	float: left;
+	width: 100px;
+	padding-right: 0px;
+	overflow: hidden;
+}
+
+/***** Finance *****/
+.finance {
+	width: 550px;
+	overflow-X: hidden;
+	text-align: center;
+}
+
+.finance-cur {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	width: 70px;
+	text-align: center;
+	padding-right: 15px;
+	float: left;
+}
+
+.finance-your {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	width: 110px;
+	text-align: center;
+	padding-right: 15px;
+	float: left;
+}
+
+.finance-comp {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	width: 120px;
+	text-align: center;
+	padding-right: 15px;
+	float: left;
+}
+
+.finance-amount {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	width: 75px;
+	text-align: center;
+	padding-right: 15px;
+	float: left;
+}
+
+.finance-oper {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	width: 100px;
+	text-align: center;
+	padding-right: 0;
+	float: left;
+}
+
+/***** Workers *****/
+.workers {
+	width: 550px;
+	overflow-X: hidden;
+	text-align: center;
+}
+
+.workers-no {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	width: 30px;
+	text-align: center;
+	padding-right: 15px;
+	float: left;
+}
+
+.workers-name {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	width: 100px;
+	text-align: center;
+	padding-right: 15px;
+	float: left;
+}
+
+.workers-skill {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	width: 60px;
+	text-align: center;
+	padding-right: 15px;
+	float: left;
+}
+
+.workers-wellness {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	width: 50px;
+	text-align: center;
+	padding-right: 15px;
+	float: left;
+}
+
+.workers-salary {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	width: 60px;
+	text-align: center;
+	padding-right: 15px;
+	float: left;
+}
+
+.workers-last {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	width: 80px;
+	text-align: center;
+	padding-right: 15px;
+	float: left;
+}
+
+.workers-oper {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	width: 60px;
+	text-align: center;
+	float: left;
+}
+
+.workers-text {
+	border: 1px dotted;
+	background: transparent;
+	font-size: 14pt;
+	font-family: Verdana, Arial, Tahoma;
+	font-weight: bold;
+	text-align: center;
+}
+
+/***** Party Members *****/
+#pMembers {
+	width: 550px;
+	padding-right: 5px;
+	padding-left: 5px;
+	overflow-X: hidden;
+}
+
+.pmember-no {
+	padding-right: 15px;
+	padding-left: 5px;
+	width: 40px;
+	overflow-X: hidden;
+	float: left;
+}
+
+.pmember-name {
+	padding-right: 20px;
+	padding-left: 5px;
+	width: 100px;
+	overflow-X: hidden;
+	text-align: center;
+	float: left;
+}
+
+.pmember-posts {
+	padding-right: 20px;
+	padding-left: 5px;
+	width: 140px;
+	overflow-X: hidden;
+	float: left;
+}
+
+.pmember-propose {
+	padding-right: 20px;
+	padding-left: 5px;
+	width: 175px;
+	overflow-X: hidden;
+	float: left;
+}
+
+#pMembers .td {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	text-align: left;
+	padding-right: 40px;
+	padding-left: 20px;
+}
+
+#pMembers .text {
+	border: 1px dotted;
+	background: transparent;
+	font-size: 14pt;
+	font-family: Verdana, Arial, Tahoma;
+	font-weight: bold;
+	text-align: center;
+}
+
+#pMembers hr {
+	width: 95%;
+}
+
+/***** Elections table *****/
+#electable {
+	width: 550px;
+}
+
+.et-no {
+	font-family: Arial, Tahoma;
+	font-size: 12pt;
+	text-align: center;
+	padding-right: 20px;
+	float: left;
+	width: 60px;
+}
+
+.et-name {
+	font-family: Arial, Tahoma;
+	font-size: 12pt;
+	text-align: left;
+	padding-right: 20px;
+	float: left;
+	width: 390px;
+}
+
+.et-name2 {
+	font-family: Arial, Tahoma;
+	font-size: 12pt;
+	text-align: left;
+	padding-right: 20px;
+	float: left;
+	width: 160px;
+}
+
+.et-party {
+	font-family: Arial, Tahoma;
+	font-size: 12pt;
+	text-align: left;
+	padding-right: 20px;
+	float: left;
+	width: 160px;
+}
+
+.et-votes {
+	font-family: Arial, Tahoma;
+	font-size: 12pt;
+	text-align: center;
+	float: left;
+	width: 60px;
+}
+
+/***** Battles Table *****/
+#battlestable {
+	width: 500px;
+	margin-left: 25px;
+	margin-right: 25px;
+}
+
+#battlestable .region {
+	width: 500px;
+	padding-top: 5px;
+	font-weight: bold;
+	clear: both;
+}
+
+#battlestable .time {
+	font-family: Arial, Tahoma;
+	font-size: 14pt;
+	text-align: center;
+	float: left;
+	padding: 5px;
+	width: 90px;
+	color: #89be2d;
+}
+
+#battlestable .force {
+	font-family: Arial, Tahoma;
+	font-size: 14pt;
+	text-align: center;
+	float: left;
+	padding: 5px;
+	width: 150px;
+	color: #89be2d;
+}
+
+#battlestable .buts {
+	font-family: Arial, Tahoma;
+	font-size: 14pt;
+	text-align: center;
+	float: left;
+	padding: 5px;
+	margin-left: 30px;
+	width: 190px;
+	color: white;
+}
+
+/***** Battle *****/
+.battle-timer {
+	text-align: center;
+	font-family: Verdana, Arial;
+	font-size: 20pt;
+}
+
+.battle-field {
+	width: 530px;
+	height: 100px;
+	border: 1px solid;
+	overflow: hidden;
+	padding: 0;
+	background: url('images/game/war/field.gif');
+}
+
+.battle-occupied {
+	height: 100px;
+	overflow: hidden;
+	padding: 0;
+	float: left;
+	background: url('images/game/war/field-ucc.gif');
+}
+
+.battle-ind {
+	background: black;
+	color: white;
+	text-align: center;
+}
+
+/***** Wars Table *****/
+#warstable {
+	width: 550px;
+}
+
+#warstable .flag-att {
+	font-family: Arial, Tahoma;
+	font-size: 12pt;
+	text-align: left;
+	float: left;
+	padding-left: 10px;
+	width: 60px;
+}
+
+#warstable .flag-def {
+	font-family: Arial, Tahoma;
+	font-size: 12pt;
+	text-align: left;
+	float: left;
+	padding-right: 10px;
+	width: 60px;
+}
+
+#warstable .name-att {
+	font-family: Arial, Tahoma;
+	font-size: 12pt;
+	text-align: left;
+	padding-right: 20px;
+	padding-top: 13px;
+	padding-left: 5px;
+	float: left;
+	width: 95px;
+}
+
+#warstable .name-def {
+	font-family: Arial, Tahoma;
+	font-size: 12pt;
+	text-align: right;
+	padding-right: 5px;
+	padding-top: 13px;
+	padding-left: 20px;
+	float: left;
+	width: 95px;
+}
+
+#warstable .versus {
+	font-family: Arial, Tahoma;
+	font-size: 12pt;
+	text-align: center;
+	padding-right: 20px;
+	padding-left: 20px;
+	float: left;
+	width: 130px;
+}
+
+
+/***** Wars Table Smaller *****/
+#warstable-s {
+	width: 370px;
+}
+
+#warstable-s .flag-att {
+	font-family: Arial, Tahoma;
+	font-size: 12pt;
+	text-align: left;
+	float: left;
+	padding-left: 10px;
+	width: 50px;
+}
+
+#warstable-s .flag-def {
+	font-family: Arial, Tahoma;
+	font-size: 12pt;
+	text-align: left;
+	float: left;
+	padding-right: 10px;
+	width: 50px;
+}
+
+#warstable-s .name-att {
+	font-family: Arial, Tahoma;
+	font-size: 11pt;
+	text-align: left;
+	padding-right: 0px;
+	padding-top: 13px;
+	padding-left: 5px;
+	float: left;
+	width: 75px;
+}
+
+#warstable-s .name-def {
+	font-family: Arial, Tahoma;
+	font-size: 11pt;
+	text-align: right;
+	padding-right: 5px;
+	padding-top: 13px;
+	padding-left: 0px;
+	float: left;
+	width: 75px;
+}
+
+#warstable-s .versus {
+	font-family: Arial, Tahoma;
+	font-size: 12pt;
+	text-align: center;
+	padding-right: 5px;
+	padding-left: 5px;
+	float: left;
+}
+
+/***** Rankings *****/
+#rankings {
+	width: 550px;
+}
+
+.rank-no {
+	font-family: Arial, Tahoma;
+	font-size: 12pt;
+	text-align: center;
+	padding-right: 20px;
+	float: left;
+	width: 50px;
+}
+
+.rank-name {
+	font-family: Arial, Tahoma;
+	font-size: 12pt;
+	text-align: left;
+	padding-right: 20px;
+	float: left;
+	width: 280px;
+}
+
+.rank-country {
+	font-family: Arial, Tahoma;
+	font-size: 12pt;
+	text-align: center;
+	padding-right: 20px;
+	float: left;
+	width: 70px;
+}
+
+.rank-ep {
+	font-family: Arial, Tahoma;
+	font-size: 12pt;
+	text-align: center;
+	padding-right: 20px;
+	font-weight: bold;
+	float: left;
+	width: 70px;
+}
+
+.rank-avgep {
+	font-family: Arial, Tahoma;
+	font-size: 12pt;
+	text-align: center;
+	padding-right: 20px;
+	font-weight: bold;
+	float: left;
+	width: 70px;
+}
+
+.rank-pop {
+	font-family: Arial, Tahoma;
+	font-size: 12pt;
+	text-align: center;
+	padding-right: 20px;
+	font-weight: bold;
+	float: left;
+	width: 160px;
+}
+
+#rankings .text {
+	border: 1px dotted;
+	background: transparent;
+	font-size: 14pt;
+	font-family: Verdana, Arial, Tahoma;
+	font-weight: bold;
+	text-align: center;
+}
+
+/***** Donations *****/
+#donations .table {
+	width: 550px;
+}
+
+#donations .td {
+	font-family: Arial, Tahoma;
+	font-size: 11pt;
+	text-align: center;
+	padding-right: 45px;
+}
+
+#donations .text {
+	border: 1px dotted;
+	background: transparent;
+	font-size: 14pt;
+	font-family: Verdana, Arial, Tahoma;
+	font-weight: bold;
+	text-align: center;
+}
+
+.npHead {
+	font-size: 9pt;
+}
+
+.inventory {
+	width: 40px;
+	height: 15px;
+	overflow: hidden;
+	vertical-align: bottom;
+	float: left;
+	padding-top: 25px;
+	border: 1px solid;
+}
+
+a, a:hover, a:visited {
+	text-decoration: none;
+	color: #305252;
+}
+
+.textarea {
+	background: transparent;
+	border: 1px solid;
+	overflow: auto;
+	scrollbar-face-color: #c2f5ad;
+	scrollbar-arrow-color: green;
+	scrollbar-shadow-color: transparent;
+	scrollbar-darkshadow-color: transparent;
+	scrollbar-3dlight-color: transparent;
+}
+
+.cm-textarea {
+	background: transparent url('images/game/textarea.gif') no-repeat;
+	border: 1px solid;
+	overflow: auto;
+	scrollbar-face-color: #c2f5ad;
+	scrollbar-arrow-color: green;
+	scrollbar-shadow-color: transparent;
+	scrollbar-darkshadow-color: transparent;
+	scrollbar-3dlight-color: transparent;
+}
+
+.addCM {
+	padding-right: 10px;
+}
+
+.cmdEdit {
+	height: 25px;
+	font-size: 12pt;
+	font-family: "Arial Narrow", Arial;
+	border: 0px black dotted;
+	color: #333;
+	font-weight: bold;
+	text-align: center;
+	background: #41a1df url('images/button-blue.gif') repeat-X;
+	vertical-align: middle;
+	padding: 0px;
+	padding-right: 5px;
+	padding-left: 5px;
+}
+
+a.cmdEdit, a:visited.cmdEdit {
+	height: 30px;
+	font-size: 12pt;
+	font-family: "Arial Narrow", Arial;
+	border: 0px black dotted;
+	color: #333;
+	font-weight: bold;
+	text-align: center;
+	background: #41a1df url('images/button-blue.gif') repeat-X;
+	vertical-align: middle;
+	padding: 0px;
+	padding-right: 15px;
+	padding-left: 15px;
+}
+
+a:hover.cmdEdit {
+	height: 30px;
+	font-size: 12pt;
+	font-family: "Arial Narrow", Arial;
+	border: 0px black dotted;
+	color: #333;
+	font-weight: bold;
+	text-align: center;
+	background: #41a1df url('images/button-blue-h.gif') repeat-X;
+	vertical-align: middle;
+	padding: 0px;
+	padding-right: 15px;
+	padding-left: 15px;
+}
+
+a.cmdRemove, a:visited.cmdRemove {
+	height: 30px;
+	font-size: 12pt;
+	font-family: "Arial Narrow", Arial;
+	border: 0px black dotted;
+	color: #333;
+	font-weight: bold;
+	text-align: center;
+	background: #c9dfcc url('images/button-red.gif') repeat-X;
+	vertical-align: middle;
+	padding: 0px;
+	padding-right: 15px;
+	padding-left: 15px;
+}
+
+a:hover.cmdRemove {
+	height: 30px;
+	font-size: 12pt;
+	font-family: "Arial Narrow", Arial;
+	border: 0px black dotted;
+	color: #333;
+	font-weight: bold;
+	text-align: center;
+	background: #c9dfcc url('images/button-red-h.gif') repeat-X;
+	vertical-align: middle;
+	padding: 0px;
+	padding-right: 15px;
+	padding-left: 15px;
+}
+
+.errHandle, h3.infHandle {
+	background: url('images/game/icon_error.gif') no-repeat 0 25%;
+	font-size: 13pt;
+	font-family: Arial, Tahoma;
+	padding: 5px;
+	padding-left: 50px;
+	height: 50px;
+}
+
+.infHandle, h3.infHandle {
+	background: url('images/game/icon_ok.gif') no-repeat 0 25%;
+	font-size: 13pt;
+	font-family: Arial, Tahoma;
+	padding: 5px;
+	padding-left: 50px;
+	height: 50px;
+}
+
+#work {
+	background: url('images/work-bg.gif') no-repeat;
+	font-family: Arial;
+	font-size: 11pt;
+	color: #333;
+	padding: 10px;
+	width: 570px;
+	height: 350px;
+}
+
+#work div {
+	overflow: hidden;
+}
+
+#work .product {
+	position: absolute;
+	font-size: 17pt;
+	font-weight: bold;
+	text-align: center;
+	margin-left: 136px;
+	margin-top: 56px;
+	width: 60px;
+	height: 30px;
+}
+
+#work .compmsg {
+	position: absolute;
+	font-size: 11pt;
+	font-weight: bold;
+	text-align: center;
+	margin-left: 225px;
+	margin-top: 20px;
+	width: 265px;
+	height: 135px;
+	padding: 7.5px;
+	padding-top: 25px;
+	padding-bottom: 0;
+}
+
+#work .complogo {
+	text-align: center;
+	float: left;
+	width: 50px;
+	height: 50px;
+	margin-right: 2px;
+	margin-bottom: 2px;
+}
+
+#work .complogo img {
+	width: 50px;
+	height: 50px;
+}
+
+#work .skill {
+	position: absolute;
+	font-size: 14pt;
+	font-weight: bold;
+	color: green;
+	text-align: center;
+	margin-left: 240px;
+	margin-top: 219px;
+	width: 50px;
+	height: 30px;
+}
+
+#work .stars {
+	position: absolute;
+	font-size: 13pt;
+	font-weight: bold;
+	text-align: center;
+	margin-left: 240px;
+	margin-top: 258px;
+	width: 50px;
+	height: 25px;
+}
+
+#work .wellness {
+	position: absolute;
+	font-size: 14pt;
+	color: red;
+	font-weight: bold;
+	text-align: center;
+	margin-left: 465px;
+	margin-top: 219px;
+	width: 50px;
+	height: 30px;
+}
+
+#work .ep {
+	position: absolute;
+	font-size: 14pt;
+	color: green;
+	font-weight: bold;
+	text-align: center;
+	margin-left: 465px;
+	margin-top: 258px;
+	width: 50px;
+	height: 30px;
+}
+
+#train {
+	background: url('images/train-bg.gif') no-repeat;
+	font-family: Arial;
+	font-size: 11pt;
+	color: #333;
+	padding: 10px;
+	width: 570px;
+	height: 350px;
+}
+
+#train div {
+	overflow: hidden;
+}
+
+#train .strenght {
+	position: absolute;
+	font-size: 18pt;
+	font-weight: bold;
+	color: white;
+	text-align: center;
+	margin-left: 100px;
+	margin-top: 100px;
+	width: 60px;
+	height: 30px;
+}
+
+#train .skill {
+	position: absolute;
+	font-size: 14pt;
+	font-weight: bold;
+	color: green;
+	text-align: center;
+	margin-left: 440px;
+	margin-top: 44px;
+	width: 50px;
+	height: 30px;
+}
+
+#train .wellness {
+	position: absolute;
+	font-size: 14pt;
+	font-weight: bold;
+	color: red;
+	text-align: center;
+	margin-left: 440px;
+	margin-top: 86px;
+	width: 50px;
+	height: 30px;
+}
+
+#train .ep {
+	position: absolute;
+	font-size: 14pt;
+	font-weight: bold;
+	color: green;
+	text-align: center;
+	margin-left: 440px;
+	margin-top: 128px;
+	width: 50px;
+	height: 30px;
+}
+
+#train .armymsg {
+	position: absolute;
+	font-size: 14pt;
+	font-weight: bold;
+	color: green;
+	text-align: center;
+	margin-left: 43px;
+	margin-top: 196px;
+	width: 466px;
+	padding-top: 25px;
+	height: 88px;
+}
+
+.cmdRemove {
+	height: 25px;
+	font-size: 12pt;
+	font-family: "Arial Narrow", Arial;
+	border: 0px black dotted;
+	color: #333;
+	font-weight: bold;
+	text-align: center;
+	background: #c9dfcc url('images/button-red.gif') repeat-X;
+	vertical-align: middle;
+	padding: 0px;
+	padding-right: 5px;
+	padding-left: 5px;
+}
+
+.smiley {
+	padding: 1px;
+}
+
+#tblRanksFLT {
+	display: block;
+	background: #b9ee5d;
+	padding: 5px;
+	height: 80px;
+	float: left;
+	font-weight: bold;
+	overflow-Y: hidden;
+	margin-right: 10px;
+}
+
+#tblRanksFLT .info {
+	padding: 2px;
+	font-family: Arial;
+	font-size: 11pt;
+	color: black;
+	background: #d2f98e;
+	width: 48px;
+	height: 75px;
+	float: left;
+	text-align: center;
+}
+
+#tblRanksFLT .info-body {
+	#position: absolute;
+	#top: 50%;
+	display: table-cell;
+	vertical-align: middle;
+	text-align: center;
+	width: 100%;
+	
+}
+
+#tblRanksFLT .what {
+	padding: 2px;
+	width: 48px;
+	height: 75px;
+	float: left;
+	background: #b9ee5d;
+}
+
+#tblRanksFLT .what-head {
+	height: 17px;
+	color: black;
+	font-family: Arial;
+	font-size: 9pt;
+	background: white url('images/game/filters/what-head.gif');
+	text-align: center;
+}
+
+#tblRanksFLT .what-body {
+	height: 48px;
+	background: white;
+	text-align: center;
+}
+
+#tblRanksFLT .what-foot {
+	height: 10px;
+	text-align: center;
+}
+
+.whatIMG {
+	width: 48px;
+	height: 48px;
+	padding-bottom: 0px;
+	display: inline;
+	border: 0;
+}
+
+#tblRanksFLT .starIMG {
+	width: 64px;
+	padding-bottom: 0px;
+	display: inline;
+	border: 0;
+}
+
+#tblRanksFLT .spacer {
+	padding: 2px;
+	float: left;
+	
+}
+
+#tblRanksFLT .select {
+	width: 100%;
+	background: #80d282;
+	color: white;
+	font-weight: bold;
+	font-family: "Comic Sans Ms";
+	font-size: 9pt;
+}
+
+#tblRanksFLT .selectIMG {
+	border: 0;
+	height: 10px;
+	padding-top: 0px;
+}
+
+.rankBox {
+	border: 1px solid #333;
+	width: 80%;
+	padding: 2px;
+	padding-top: 0;
+	display: none;
+}
+
+.rankBox td {
+	font-family: "Arial Narrow", Arial;
+	font-size: 12pt;
+	padding-right: 40px;
+}
+
+.rankBox .whatIMG {
+	width: 64px;
+	height: 64px;
+	padding-bottom: 0px;
+	display: inline;
+	border: 0;
+}
+
+/* BOXES */
+.box {
+	width: 600px;
+	border: 1px solid #333;
+	padding: 5px;
+	display: none;
+}
+
+.box td {
+	width:200px;
+}
+
+/* FLAG */
+.Flag-xl {
+	display: inline;
+	border: 0;
+	width: 90px;
+	height: 90px;
+	padding: 2px;
+}
+
+.Flag-l {
+	display: inline;
+	border: 0;
+	width: 70px;
+	height: 70px;
+	padding: 2px;
+}
+
+.Flags {
+	display: inline;
+	border: 0;
+	width: 50px;
+	height: 50px;
+	padding-right: 2px;
+}
+
+.Flag-s {
+	display: inline;
+	border: 0;
+	width: 40px;
+	height: 40px;
+	padding-right: 2px;
+}
+
+.Flag-ms {
+	display: inline;
+	border: 0;
+	width: 35px;
+	height: 40px;
+	padding-right: 2px;
+}
+
+.Flag-xs {
+	display: inline;
+	border: 0;
+	width: 25px;
+	height: 25px;
+	padding: 2px 5px 2px 2px;
+}
+
+#button a:hover{
+	height: 30px;
+	font-size: 16pt;
+	font-family: "Arial Narrow", Arial;
+	border: 0px black dotted;
+	color: #333;
+	font-weight: bold;
+	text-align: center;
+	background: #c9dfcc url('images/button-h.gif') repeat-X;
+	vertical-align: middle;
+	padding: 0px;
+	padding-right: 25px;
+	padding-left: 25px;
+}
+
+#eVote img {
+	border: 0;
+}
+
+a#eVote, input#eVote {
+	border: 0;
+	background: transparent url('images/vote.gif');
+	width: 50px;
+	height: 50px;
+	padding: 25px;
+	padding-top: 15px;
+	padding-bottom: 15px;
+}
+
+a:hover#eVote {
+	border: 0;
+	background: transparent url('images/vote-h.gif');
+	width: 50px;
+	height: 50px;
+	padding: 25px;
+	padding-top: 15px;
+	padding-bottom: 15px;
+}
+
+.artPic {
+	width: 100px;
+	height: 100px;
+	border: 2px black solid;
+	padding: 5px;
+}
+
+#law {
+	width: 315px;
+}
+
+#law .law {
+	width: 100px;
+	float: left;
+	font-family: Verdana;
+	font-size: 11pt;
+	padding-right: 5px;
+}
+
+.law-new-title {
+	width: 120px;
+	padding-right: 10px;
+	float: left;
+}
+
+.law-new-content {
+	width: 190px;
+	padding-right: 10px;
+	float: left;
+}
+
+.law-reminder {
+	padding: 10px;
+	float: right;
+	width: 125px;
+	border: 1px red dashed;
+}
+
+a:active
+{
+outline: none;
+}
+
+a:focus
+{
+-moz-outline-style: none;
+}
+
+.selectbox {
+	border: 1px solid #333;
+	width: 500px;
+	padding: 5px;
+	display: none;
+}
+
+.box-element {
+	width: 120px;
+	height: 50px;
+	overflow: hidden;
+	border-bottom: 1px solid;
+	float: left;
+	font-family: "Arial Narrow", Tahoma;
+	font-size: 9pt;
+	margin-right: 5px;
+}
+
+.box-element-long {
+	width: 150px;
+	height: 50px;
+	overflow: hidden;
+	border-bottom: 1px solid;
+	float: left;
+	font-family: "Arial Narrow", Tahoma;
+	font-size: 9pt;
+	margin-right: 5px;
+}
+
+.box-element-s {
+	width: 120px;
+	height: 30px;
+	overflow: hidden;
+	border-bottom: 1px solid;
+	float: left;
+	font-family: "Arial Narrow", Tahoma;
+	font-size: 9pt;
+	margin-right: 5px;
+}
+
+/******* Laws Table *******/
+#laws-table {
+	width: 550px;
+}
+
+.laws-type {
+	float: left;
+	padding-right: 15px;
+	width: 150px;
+	font-family: Arial;
+	font-size: 11pt;
+	text-align: center;
+	padding-top: 5px;
+}
+
+.laws-by {
+	float: left;
+	padding-right: 15px;
+	width: 120px;
+	font-family: Arial;
+	font-size: 11pt;
+	text-align: center;
+	padding-top: 5px;
+}
+
+.laws-time {
+	float: left;
+	padding-right: 15px;
+	width: 150px;
+	font-family: Arial;
+	font-size: 11pt;
+	text-align: center;
+	padding-top: 5px;
+}
+
+.laws-stat {
+	float: left;
+	padding-right: 0;
+	width: 85px;
+	font-family: Arial;
+	font-size: 11pt;
+	text-align: center;
+	padding-top: 5px;
+}
+
+.newline {
+	clear: both;
+	height: 7px;
+	font-size: 3pt;
+}
+
+.oper_icons {
+	border: 0;
+	width: 32px;
+	height: 32px;
+}
+
+#warview {
+	width: 245px;
+	float: left;
+	border: 1px dotted;
+	text-align: center
+}
+
+#warview .title {
+	width: 245px;
+	font-weight: bold;
+	color: white
+}
+
+#warview .herobox {
+	width: 84px;
+	height: 150px;
+	margin-right: 5px;
+	padding-top: 5px;
+	text-align: center;
+	font-size: 14pt;
+}
+
+#warview .herobox img {
+	width: 70px;
+	height: 70px;
+}
+
+#fighters-att {
+	float: left;
+	width: 140px;
+	height: 190px;
+	padding: 5px;
+	color: white;
+	border-left: 1px solid black;
+}
+
+#fighters-def {
+	float: right;
+	width: 140px;
+	height: 190px;
+	padding: 5px;
+	border-right: 1px solid black;
+	text-align: center;
+	color: white;
+}
+
+#warview .fighter-hold {
+	width: 140px;
+	height: 35px;
+	padding: 0;
+	margin-top: 4px;
+}
+
+#warview .fighter-att {
+	width: 140px;
+	height: 35px;
+	background: red;
+}
+
+#warview .fighter-def {
+	width: 140px;
+	height: 35px;
+	background: green;
+}
+
+#warview .fighter-img {
+	width: 35px;
+	height: 35px;
+	margin-right: 2px;
+	float: left;
+}
+
+#warview .fighter-img img {
+	width: 35px;
+	height: 35px;
+}
+
+#warview .fighter-name {
+	width: 95px;
+	height: 15px;
+	margin-right: 2px;
+	float: left;
+}
+
+#warview .fighter-force {
+	width: 95px;
+	height: 15px;
+	margin-right: 2px;
+	float: left;
+}
+
+/****** FIGHT ******/
+#fight {
+	background: url('images/fight-bg.gif') no-repeat;
+	font-family: Arial;
+	font-size: 11pt;
+	color: #333;
+	padding: 10px;
+	padding-bottom: 0px;
+	width: 570px;
+	height: 350px;
+}
+
+#fight div {
+	overflow: hidden;
+}
+
+#fight .advance {
+	position: absolute;
+	font-family: "Hillock BRK", Tahoma;
+	font-size: 14pt;
+	text-align: center;
+	color: #11130E;
+	margin-left: 167px;
+	margin-top: 94px;
+	width: 60px;
+	height: 30px;
+}
+
+#fight .skill {
+	position: absolute;
+	font-size: 14pt;
+	font-weight: bold;
+	text-align: center;
+	margin-left: 470px;
+	margin-top: 90px;
+	width: 50px;
+	height: 30px;
+}
+
+#fight .well-inf {
+	position: absolute;
+	font-size: 14pt;
+	font-weight: bold;
+	text-align: center;
+	color: green;
+	margin-left: 470px;
+	margin-top: 124px;
+	width: 50px;
+	height: 30px;
+}
+
+#fight .well {
+	position: absolute;
+	font-size: 14pt;
+	font-weight: bold;
+	text-align: center;
+	color: red;
+	margin-left: 470px;
+	margin-top: 157px;
+	width: 50px;
+	height: 30px;
+}
+
+#fight .weapon {
+	position: absolute;
+	font-size: 14pt;
+	font-weight: bold;
+	text-align: center;
+	color: red;
+	margin-left: 440px;
+	margin-top: 195px;
+	width: 80px;
+	height: 30px;
+}
+
+#fight .mrank {
+	position: absolute;
+	font-size: 14pt;
+	font-weight: bold;
+	text-align: center;
+	color: red;
+	margin-left: 440px;
+	margin-top: 227px;
+	width: 80px;
+	height: 30px;
+}
+
+#fight .ep {
+	position: absolute;
+	font-size: 14pt;
+	color: green;
+	font-weight: bold;
+	text-align: center;
+	margin-left: 465px;
+	margin-top: 258px;
+	width: 50px;
+	height: 30px;
+}
+
+#fight .totforce {
+	position: absolute;
+	font-size: 17pt;
+	color: green;
+	font-weight: bold;
+	text-align: center;
+	margin-left: 30px;
+	margin-top: 230px;
+	width: 210px;
+	height: 50px;
+}
+
+#wardet {
+	padding-left: 30px;
+	width: 520px;
+	text-align: justify;
+}
+
+#war-log {
+	width: 500px;
+	font-family: Arial;
+	font-size: 11pt;
+	font-weight: bold;
+	text-align: justify;
+}
+
+#war-log .country-flag {
+	float: left;
+	width: 50px;
+}
+
+#war-log .country-name {
+	float: left;
+	width: 170px;
+	padding-top: 15px;
+}
+
+#war-log .country-fights {
+	float: left;
+	width: 120px;
+	padding-top: 15px;
+}
+
+#war-log .country-forces {
+	float: left;
+	width: 120px;
+	padding-top: 15px;
+}
+
+#fightlog {
+	width: 500px;
+	margin-left: 25px;
+	margin-right: 25px;
+}
+
+#fightlog div {
+	overflow: hidden;
+}
+
+#fightlog .fighter-avatar {
+	float: left;
+	width: 60px;
+	padding-right: 10px;
+}
+
+#fightlog .fighter-name {
+	float: left;
+	width: 120px;
+	padding-right: 20px;
+	padding-top: 20px;
+	font-family: verdana, arial, tahoma;
+	font-size: 11pt;
+	font-weight: bold;
+}
+
+#fightlog .fighter-force {
+	float: left;
+	width: 100px;
+	padding-right: 20px;
+	padding-top: 20px;
+	font-family: verdana, arial, tahoma;
+	font-size: 11pt;
+	font-weight: bold;
+}
+
+#fightlog .fighter-time {
+	float: left;
+	width: 170px;
+	padding-top: 20px;
+	font-family: verdana, arial, tahoma;
+	font-size: 11pt;
+	font-weight: bold;
+}
+
+#media-list {
+	width: 550px;
+	font-weight: bold;
+	font-family: "Arial Narrow";
+	font-size: 11pt;
+}
+
+#media-list .media-votes {
+	float: left;
+	width: 50px;
+	text-align: center;
+}
+
+#media-list .media-type {
+	float: left;
+	width: 50px;
+	text-align: center;
+}
+
+#media-list .media-type img {
+	width: 40px;
+	padding: 5px;
+	text-align: center;
+}
+
+#media-list .media-votebox {
+	float: left;
+	background: transparent url('images/game/votes-bg.gif') no-repeat;
+	float: left;
+	width: 50px;
+	height: 50px;
+	text-align: center;
+	vertical-align: middle;
+	font-family: "Comic sans ms";
+	font-size: 16pt;
+	color: #37c;
+	overflow: hidden;
+	display: block;
+	padding-top: 8px;
+}
+
+#media-list .media-title {
+	float: left;
+	width: 280px;
+	text-align: center;
+	padding-top: 15px;
+}
+
+#media-list .media-created {
+	float: left;
+	width: 100px;
+	text-align: center;
+	padding-top: 15px;
+}
+
+#media-list .media-np {
+	float: left;
+	width: 120px;
+	text-align: center;
+	padding-top: 15px;
+}
+
+#media-list .media-desc {
+	float: left;
+	width: 400px;
+	text-align: justify;
+	padding-top: 15px;
+}
+
+.td-title {
+	width: 120px;
+	float: left;
+	overflow-X: hidden;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+
+.td-content {
+	width: 430px;
+	float: left;
+	overflow-X: hidden;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}

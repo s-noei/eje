@@ -1,0 +1,1333 @@
+.clear {font-size: 1px; height: 10px}
+
+.clear-r {font-size: 1px; height: 10px; float: right}
+
+#header {
+	width: 950px;
+	height: 105px;
+/*	background: url('../../images/theme/header-bg.png') no-repeat; */
+	overflow: hidden;
+	padding-right: 25px;
+	padding-left: 25px;
+	padding-top: 25px;
+}
+
+.languages {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 24px;
+	background: black;
+	filter: alpha (opacity=20);
+	opacity: 0.2;
+}
+
+#logo {
+	width: 190px;
+	height: 100px;
+	float: left;
+	padding-top: 5px;
+	margin-left: 30px;
+	overflow: hidden;
+}
+
+#header #time {
+	position: absolute;
+	margin-top: 55px;
+	margin-left: 850px;
+	text-align: left;
+	padding-left: 40px;
+	padding-top: 10px;
+	width: 106px;
+	height: 26px;
+    color: white
+}
+
+#header #date {
+	position: absolute;
+	margin-top: 22px;
+	margin-left: 830px;
+	text-align: left;
+	padding-left: 40px;
+	padding-top: 10px;
+	width: 106px;
+	height: 25px;
+	font-size: 9pt;
+    color: white
+}
+
+#header #search {
+	position: absolute;
+	margin-left: 250px;
+	float: left;
+	text-align: left;
+	width: 175px;
+	height: 80px;
+	margin-top: 22px;
+	margin-bottom: 10px;
+    color: white
+}
+
+#header #search .search {
+	position: absolute;
+	margin-top: 5px;
+	margin-left: 10px;
+	height: 22px;
+	width: 150px;
+	padding-left: 2px;
+	padding-right: 2px;
+	border: 1px solid #EDEDED;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+}
+
+.background {
+	background: black;
+	opacity: 0.9;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 15000;
+	display: none
+}
+
+div.topbar {
+    position: fixed;
+	z-index: 999000;
+	opacity: 0.5;
+    top: 0px;
+    left: 0px;
+	width: 100%;
+    color: #E8E8E8;
+	text-align: center;
+	-webkit-transition: all 200ms linear;
+	-moz-transition: all 200ms linear;
+	-o-transition: all 200ms linear;
+}
+
+div.topbar:hover {
+	opacity: 1;
+}
+
+div.topbar div.citInfo, div.topbar div.login {
+    padding: 5px;
+    background: url('../../images/main-out/bg-dot.png');
+    border-radius: 0 0 5px 5px;
+	display: inline-block;
+	vertical-align: top;
+}
+
+div.topbar div.citInfo a {
+	color: white
+}
+
+div.topbar div.citInfo {
+	height: 50px;
+	color: white;
+}
+
+div.topbar div.allround:hover {
+	border: 1px solid white
+}
+
+div.topbar div.allround {
+    padding: 2px;
+    background: url('../../images/main-out/bg-dot.png');
+    border-radius: 5px;
+    border: 1px solid black;
+	display: inline-block;
+	vertical-align: top;
+	height: 45px;	-webkit-transition: all 300ms linear;
+	-moz-transition: all 300ms linear;
+	-o-transition: all 300ms linear;
+}
+
+div.topbar div.noround {
+    padding: 2px;
+	display: inline-block;	background: transparent;
+	vertical-align: top
+}
+
+div.topbar div.citInfo div#avatar img {
+	width: 55px;
+	height: 55px
+}
+
+div.topbar div.citInfo div#name, div.topbar div.citInfo div#ep {
+	width: 190px;
+	height: 17px;
+	text-align: justify
+}
+
+div.topbar div.citInfo div.money-additional, div.topbar div.citInfo div#money-tala, div.topbar div.citInfo div#money-local, div.topbar div.citInfo div#wellness-ind, div.topbar div.citInfo div#wellness-imp {
+	width: 120px;
+	height: 17px;
+	text-align: justify
+}
+
+div.topbar div.citInfo div#name-ep {
+	width: 200px;
+	height: 45px;
+	z-index: 942000;
+	font-size: 9pt
+}
+
+div.topbar div.citInfo div#wellness-holder, div.topbar div.citInfo div#money-holder, div.topbar div.citInfo div#notes-holder {
+	width: 120px;
+	z-index: 942000;
+	font-size: 9pt;
+}
+
+div#money-holder {
+	overflow: hidden
+}
+
+div.topbar div.citInfo div#backtoold {
+	width: 160px;
+	height: 45px;
+	z-index: 942000;
+	font-size: 9pt
+}
+
+div.topbar div.citInfo div#wellness-hummy {
+	position: absolute;
+	margin-top: -3px;
+	z-index: 999000
+}
+
+div.topbar div.citInfo div#wellness-bar {
+	width: 110px;
+	height: 17px;
+	border: 1px solid black;
+	border-radius: 3px;
+	background: url('../../images/theme/welempty.gif');
+	overflow: hidden;
+	clear:none;
+	display:block
+}
+
+div.topbar div.citInfo div#wellness-view {
+	height: 17px;
+	float: left;
+	overflow: hidden;
+	background: url('../../images/theme/welshow.gif');
+	clear:none;
+	display:block;
+	padding-left: 3px;
+	border-radius: 2px
+}
+
+div.topbar div.citInfo div#wellness-cap {
+	width: 110px;
+	height: 17px;
+	color: #222;
+	font-size: 7pt;
+	padding-top: 3px;
+	position: absolute;
+	overflow: hidden;
+	text-align: center;
+	display:block;
+}
+
+div.topbar div.citInfo div#wellness-imp {
+	margin-left: 20px
+}
+
+div.topbar div.citInfo div#wellness-but {
+	width: 90px
+}
+
+div.topbar div.citInfo div#avatar {
+	width: 55px;
+	height: 55px;
+	padding: 5px;
+	position: inherit;
+	background: #222637
+}
+
+div.topbar div.citInfo div#money-holder img.curIco {
+	width: 18px;
+	height: 16px;
+	padding: 1px;
+	padding-right: 15px
+}
+
+div.topbar div.citInfo div#notes-holder .verbox {
+	display: inline-block;
+	text-align: center;
+	background: transparent;
+	height: 35px;
+	width: 25px
+}
+
+div.topbar div.citInfo div#notes-holder img.msgIco {
+	width: 20px;
+	height: 17px;
+	padding: 1px;
+	border: 0
+}
+
+div.topbar div.citInfo div#notes-holder .verbox .msg-in-box {
+	width: 180px;
+	border: 1px solid;
+	position: absolute;
+	background: white;
+	z-index: 99999;
+	text-align: justify;
+	padding: 2px;
+	display: none
+}
+
+div.topbar div.citInfo div#languages {
+	padding: 1px 3px;
+	width: 90px;
+	height: 48px;
+	line-height: 1em
+}
+
+div.topbar div.citInfo div#languages img {
+	width: 13px
+}
+
+#window {
+	background: white url('../../images/theme/window-bg.jpg') repeat-X;
+	width: 0px;
+	height: 0px;
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	opacity: 1;
+	z-index: 15001;
+	display: none
+}
+
+#window  #X{
+	float: right;
+	display: none
+}
+
+#searchfields {
+	position: absolute;
+	width: 100px;
+	margin-top: 30px;
+	margin-left: 10px;
+	font-size: 10pt;
+	text-align: justify
+}
+
+#btnSearch {
+	position: absolute;
+	margin-top: 44px;
+	margin-left: 135px;
+	height: 22px;
+	width: 30px;
+	background: url('images/game/find.gif') no-repeat;
+	background-position: 5px 0px;
+	border: 1px solid #EDEDED;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+}
+
+#top-ad {
+	position: absolute;
+	display: none;
+	margin-top: 30px;
+	margin-left: 600px;
+	padding: 7px 18px;
+	float: left;
+	text-align: left;
+	width: 288px;
+	height: 66px;
+	margin-top: 22px;
+	margin-bottom: 10px;
+    color: white
+}
+
+#top-ad img {
+    border: 0;
+    border-radius: 5px;
+    width: 288px;
+    height: 66px
+}
+
+#occ-stat #occstat {
+	text-align: center;
+	font-size: 18pt;
+}
+
+#occ-stat #occdesc {
+	text-align: center;
+	font-size: 8pt;
+}
+
+#topbar {
+	width: 600px;
+	height: 50px;
+	overflow: hidden;
+}
+
+/************************** Citizen Info **************************/
+#citInfo {
+	width: 950px;
+	height: 85px;
+	float: left;
+	color: black;
+	overflow: hidden;
+	background: url('../../images/theme/info-bg.png') no-repeat;
+	padding-right: 25px;
+	padding-left: 25px
+}
+
+#citInfo .head-right {
+	float: right;
+	width: 300px
+}
+
+#citInfo .head-left {
+	float: left;
+	width: 650px
+}
+
+#citInfo .avatar {
+	width: 100px;
+	height: 80px;
+	float: left;
+	overflow: hidden;
+	font-size: 9pt;
+	margin-top: 2px;
+	margin-bottom: 2px;
+	padding-left: 29px
+}
+
+#citInfo img.avatar {
+	border: 0;
+	width: 70px;
+	height: 70px;
+	padding: 2px;
+	float: none;
+}
+
+#citInfo #citname {
+	width: 210px;
+	height: 55px;
+	float: left;
+	overflow: hidden;
+	padding-left: 3px;
+	font-size: 14pt;
+	margin-top: 12px;
+	margin-bottom: 5px;
+	margin-right: 2px;
+	margin-left: -7px;
+	text-align: justify
+}
+
+#citInfo .citEP {
+	width: 210px;
+	height: 55px;
+	float: left;
+	overflow: hidden;
+	font-size: 9pt;
+	margin-top: 15px;
+	margin-bottom: 5px;
+	margin-right: 5px;
+	text-align: justify
+}
+
+#citInfo .details {
+	width: 600px;
+	height: 85px;
+	overflow: hidden;
+	font-size: 9pt;
+	padding: 3px;
+}
+
+#citInfo .title {
+	width: 695px;
+	height: 16px;
+	overflow: hidden;
+	font-size: 9pt;
+	padding: 1px;
+	padding-top: 0px;
+}
+
+#wellness {
+	float: left;
+	height: 55px;
+	width: 90px;
+	display: table-cell;
+	vertical-align: middle;
+	text-align: justify;
+	overflow: hidden;
+	margin-right: 2px;
+	margin-top: 9px;
+	margin-bottom: 5px;
+}
+
+#wnmeter {
+	width: 30px;
+	height: 67px;
+	float: left;
+	overflow: hidden;
+	clear:none;
+	display:block;
+	padding-left: 3px;
+	margin-top: -3px
+}
+
+#wnmeter .meter {
+	float: left;
+	display:block;
+	overflow:hidden;
+}
+
+#wncaption {
+	float: left;
+	display:block;
+	overflow:hidden;
+	padding-left:3px;
+	padding-top: 5px;
+	font-size: 14pt;
+    width: 50px
+}
+
+#wnbutton {
+	float: left;
+	display:block;
+	overflow:hidden;
+	padding-left:3px;
+	font-size: 10pt;
+    width: 50px
+}
+
+#accounts {
+	float: left;
+	height: 55px;
+	width: 110px;
+	display: table-cell;
+	vertical-align: middle;
+	margin-top: 9px;
+	margin-bottom: 5px;
+	margin-right: 2px;
+	padding-left: 2px;
+	padding-right: 5px;
+	text-align: justify;
+	font-size: 10pt;
+	overflow: hidden;
+}
+
+#accounts img.curIco {
+	width: 24px;
+	height: 24px;
+	padding: 1px;
+	padding-right: 15px
+}
+
+#messages {
+	float: left;
+	height: 50px;
+	width: 105px;
+	display: table-cell;
+	vertical-align: middle;
+	padding: 5px 5px 0 2px;
+	text-align: center;
+	margin-top: 9px;
+	overflow: hidden;
+	margin-right: 2px;
+}
+
+#messages a {
+	color: black
+}
+
+#messages .verbox {
+	display: inline-block;
+	text-align: center;
+	height: 50px;
+	width: 33px
+}
+
+#messages img.msgIco {
+	width: 26px;
+	height: 22px;
+	padding: 1px;
+	border: 0
+}
+
+#citInfo #citCountry {
+	float: left;
+	height: 55px;
+	margin-top: 9px;
+	margin-bottom: 9px;
+	margin-right: 2px;
+	width: 165px;
+	display: table-cell;
+	vertical-align: middle;
+	padding-bottom: 0;
+	padding-right: 5px;
+	padding-left: 2px;
+	text-align: justify;
+	overflow: hidden;
+}
+
+#citInfo .logout {
+	float: left;
+	height: 55px;
+	width: 60px;
+	text-align: center;
+	font-size: 11pt;
+	font-weight: 700;
+	display: table-cell;
+	vertical-align: middle;
+	padding-bottom: 0;
+	padding-right: 5px;
+	padding-left: 2px;
+	padding-top: 8px;
+	margin-top: 6px;
+	overflow: hidden;
+}
+
+#citInfo .logout a {
+	color: #FFF;
+	text-shadow: 0px 1px 5px #000;
+}
+
+#citInfo .infobox {
+	border: 1px solid rgba(255, 255, 255, 0.25);
+    background: url('../../images/game/bg-dot.png');
+	border-radius: 5px;
+}
+
+.c-name {
+	float: left;
+	font-weight: bold;
+	padding: 10px 2px 5px;
+}
+
+.c-flag {
+	float: left;
+	padding-top: 5px
+}
+
+#citInfo img.flag {
+	border: 0;
+	width: 64px;
+	height: 64px;
+}
+
+#detAds {
+	float: left;
+	height: 85px;
+	width: 225px;
+	display: table-cell;
+	vertical-align: middle;
+	padding: 1px;
+	padding-left: 5px;
+	padding-right: 70px;
+	text-align: justify;
+	overflow: hidden;
+	background: url('../../images/hummy/detad.png');
+}
+
+#detAds img.ad {
+	width: 300px;
+	height: 75px;
+	padding: 0;
+}
+
+#indmeter {
+	width: 39px;
+	height: 60px;
+	float: left;
+	overflow: hidden;
+	clear:none;
+	display:block;
+	padding-bottom:0px;
+	padding-top:0px;
+}
+
+#indmeter .meter {
+	display:block;
+	overflow:hidden;
+	padding-left:3px;
+}
+
+#wntitle {
+	width: 53px;
+	text-align: center;
+	font-weight: bold;
+	font-size: 8pt;
+	position:absolute;
+	border-top:2px green solid; 
+	margin-top: 60px;
+}
+
+#wnind {
+	background:#628F4C none repeat scroll 0 0;
+	border-top:3px solid #467531;
+	display:block;
+	font-weight:bold;
+	font-size:8pt;
+	color: black;
+	padding-top:0px;
+	text-align: center;
+	width:42px;
+	overflow:hidden;
+}
+
+#upmenubar {
+	width: 997px;
+	height: 50px;
+	background: #CBEDFE; /* url('../../images/theme/menu-bg.png') no-repeat; */
+	border: 1px dashed;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	margin-bottom: 10px;
+	padding-top: 5px
+}
+
+#menubar {
+	height: 41px;
+	width: 980px;
+	margin-left: 10px;
+	cursor: pointer;
+	background: url('../../images/theme/menu-back.png') repeat-X;
+	border-radius: 3px;
+	opacity: 0.5;
+	-webkit-transition : all 200ms linear;
+	-moz-transition : all 200ms linear;
+	-o-transition : all 200ms linear
+
+}
+
+#menubar:hover {
+	opacity: 1
+}
+
+#menubar div{
+	border-radius: 1px;
+	border-left: 1px solid white
+}
+
+#menubar div:hover {
+	background: url('../../images/theme/menu-back-h.png') repeat-X;
+	cursor: pointer;
+}
+
+#menubar div {
+	display: block;
+	float: left;
+	height: 40px;
+//	border: 1px solid
+}
+
+#menubar div a {
+	height: 33px;
+	display: block;
+	color: white;
+	font-size: 13pt;
+	text-align: justify;
+	padding-left: 5px;
+	padding-top: 8px
+}
+
+#menubar .home {
+	border: 0;
+}
+
+#menubar .home a, #menubar .home a:hover {
+	width: 150px;
+}
+
+#menubar .myplaces a, #menubar .myplaces a:hover {
+	width: 160px;
+}
+
+#menubar .economy a, #menubar .economy a:hover {
+	width: 160px;
+}
+
+#menubar .ranking a, #menubar .ranking a:hover {
+	width: 160px;
+}
+
+#menubar .info a, #menubar .info a:hover {
+	width: 160px;
+}
+
+#menubar .extra a, #menubar .extra a:hover {
+	width: 155px;
+}
+
+#submenubar {
+	height: 85px;
+	margin-top: -20px;
+}
+
+#dock div {
+//	display: none;
+}
+
+#game-body{
+	width: 950px;
+	background: url('../../images/game/bg-dot-2.png');
+	padding-left: 25px;
+	padding-right: 25px;
+    padding-top: 5px;
+	border-radius: 5px 5px 0 0;
+}
+
+#game-body .adbar {
+	width: 120px;
+	float: left;
+	padding-left: 3px;
+	padding-right: 3px;
+	font-size: 9pt;
+	color: black;
+	overflow-X: hidden;
+}
+
+#game-body hr.sidebar {
+	width: 90%;
+	height: 1px;
+	color: black;
+}
+
+#game-body .sidebar {
+	width: 100px;
+	padding-left: 5px;
+	float: right;
+	text-align: justify;
+	overflow-X: hidden;
+}
+
+#game-body .contents {
+	width: 710px;
+	text-align: justify;
+	overflow-X: hidden;
+	padding: 4px;
+	padding-top: 0;
+}
+
+a, a:visited {
+	text-decoration: none;
+}
+
+a span {
+	display: none;
+}
+
+.column-left {
+	float: left;
+	width: 350px;
+	margin-right: 5px;
+	overflow-X: hidden;
+}
+
+.column-right {
+	float: right;
+	width: 350px;
+	margin-left: 5px;
+	overflow-X: hidden;
+}
+
+.column-double {
+	width: 710px;
+	margin-left: 5px;
+	margin-right: 5px;
+	display: block;
+	position: relative;
+}
+
+.column-headcol {
+	width: 110px;
+	overflow-X: hidden;
+	float: left;
+	padding: 2px;
+	text-align: center;
+	font-size: 12pt;
+	font-weight: bold;
+	display: block;
+}
+
+.column-rank {
+	width: 90px;
+	overflow-X: hidden;
+	float: left;
+	padding: 2px;
+	text-align: justify;
+	font-size: 8.5pt;
+	font-weight: normal;
+	display: block;
+}
+
+.column-infrigments {
+	padding: 3px;
+	padding-left: 5px;
+	margin-bottom: 2px;
+	text-align: justify;
+	font-size: 8.5pt;
+	text-decoration: blink;
+	font-style:italic;
+	background:#FF5353;
+	color: white;
+	display: block;
+}
+
+.column-viopoints {
+	padding: 3px;
+	padding-left: 5px;
+	margin-bottom: 2px;
+	text-align: justify;
+	font-size: 8.5pt;
+	font-style:italic;
+	border:1px #FF5353 solid;
+	color:#FF5353;
+	display: block;
+}
+
+.column-details {
+	width: 590px;
+	overflow-X: hidden;
+	float: right;
+	padding: 2px;
+	display: block;
+}
+
+.column-details-left {
+	width: 225px;
+	overflow-X: hidden;
+	float: left;
+	padding: 2px;
+	display: block;
+}
+
+.column-details-right {
+	width: 225px;
+	overflow-X: hidden;
+	float: right;
+	padding: 2px;
+	display: block;
+}
+
+.profile-details {
+	width: 190px;
+	float: left;
+	padding: 5px;
+	overflow-X: hidden;
+}
+
+.profile-details2 {
+	width: 240px;
+	float: left;
+	padding: 5px;
+	overflow-X: hidden;
+}
+
+.profile-name {
+	padding-left: 5px;
+	font-size: 14pt;
+	overflow-X: hidden;
+}
+
+.column-name {
+	padding-left: 5px;
+	font-size: 14pt;
+	overflow-X: hidden;
+}
+
+.company-name {
+	padding-left: 5px;
+	font-size: 14pt;
+	overflow-X: hidden;
+}
+
+.company-name sup {
+	font-family: Verdana;
+	font-size: 8pt;
+	font-weight: bold;
+}
+
+.company-message {
+	font-size: 8pt;
+}
+
+.profile-aboutme {
+	width: 175px;
+	height: 65px;
+	padding-top: 3px;
+	padding-bottom: 13px;
+	padding-left: 7px;
+	padding-right: 8px;
+	color: white;
+	font-size: 9pt;
+	overflow-Y: hidden;
+	background: url('../../images/game/profile/aboutme-bg.gif') no-repeat;
+}
+
+.profile-forfeits {
+	height: 60px;
+	padding-left: 5px;
+	font-size: 10pt;
+	color: maroon;
+	font-size: 8pt;
+	overflow: hidden;
+}
+
+#trophy {
+	text-align: center;
+	margin-left: 35px;
+	margin-right: 35px;
+}
+
+#trophy .trophy-holder {
+	display: inline-block;
+	width: 110px;
+	text-align: center 
+}
+
+#trophy .trophy-det {
+	width: 64px;
+	height: 10px;
+	display: inline-block;
+	padding-top: 58px;
+	font-weight: bold;
+	font-family: Verdana, Tahoma;
+	font-size: 8pt;
+}
+	
+.txtAmount-4 {
+	border: 0;
+	width: 50px;
+	height: 22px;
+	background: url('../../images/game/textboxes/txtbox-4.gif');
+	text-align: center;
+	font-size: 14pt;
+	font-family: Verdana, Tahoma;
+	padding: 2px;
+}
+
+.txtAmount {
+	border: 1px solid;
+	width: 50px;
+	height: 22px;
+	text-align: center;
+	background: transparent;
+	font-size: 14pt;
+	font-family: Verdana, Tahoma;
+	padding: 2px;
+	border-radius: 3px;
+	-webkit-transition : all 200ms linear;
+	-moz-transition : all 200ms linear;
+	-o-transition : all 200ms linear
+}
+
+.txtAmount:hover {
+	background: white
+}
+
+#invite-head {
+	width: 320px;
+	background: #ffffff url('../../images/invite-bg.jpg') 100% 0% no-repeat;
+	padding-right: 270px;
+}
+
+#invite-head .title {
+	font-size: 20pt;
+	padding-top: 50px;
+	padding-bottom: 20px;
+	padding-left: 25px;
+}
+
+#security-head {
+	width: 420px;
+	background: #ffffff url('../../images/hummy/security-q.gif') 100% 0% no-repeat;
+	padding: 5px;
+	padding-right: 270px;
+	border: 2px solid black;
+	border-radius: 5px
+}
+
+#security-head .title {
+	font-size: 20pt;
+	padding-top: 50px;
+	padding-bottom: 20px;
+	padding-left: 25px;
+}
+
+#loading-div {
+	position: absolute;
+	background: black;
+	height: 100%;
+	font-size: 14pt;
+	color: white;
+	filter: alpha (opacity=50);
+	opacity: 0.5;
+}
+
+#loading-div .loader1 {
+	top: 50%;
+	display: table;
+	vertical-align: middle;
+}
+
+#loading-div .loader2 {
+	position: absolute;
+	top: 50%;
+	width: 100%;
+	display: table-cell;
+	vertical-align: middle;
+}
+
+.send-pm {
+	text-align: center;
+	padding-top: 10px;
+}
+
+#chat-msg {
+	display: none;
+	text-align: center
+}
+
+.chat-sender {
+	float: left;
+	width: 20px;
+	padding: 1px;
+	text-align: center;
+}
+
+.chat-avatar {
+	width: 18px;
+	height: 18px;
+	padding: 1px;
+}
+
+.chat-name {
+	width: 20px;
+	padding: 0px;
+	text-align: center;
+}
+
+.chat-message {
+	float: left;
+	width: 280px;
+	padding: 3px;
+	text-align: justify;
+}
+
+#chatters-hold, #chatters-hold a, #chatters-hold a:visited {
+    color: black
+}
+
+#chatters-hold{
+	overflow-Y: auto;
+	height: 650px;
+    background: #C2E0FE;
+    background: -moz-radial-gradient(center, ellipse, #C2E0FE, #70BAEC);
+}
+
+/* Ads */
+.citAd {
+    border-radius: 5px;
+	width: 96px;
+	padding-left: 2px;
+	padding-right: 2px;
+	margin-top: 5px;
+	overflow: hidden
+}
+
+.citAd div {
+	overflow-X: hidden
+}
+
+.citAd .ad-img {
+	width: 70px;
+	height: 70px;
+	margin-top: 13px;
+	margin-left: 11px;
+    padding: 2px;
+    border: 1px solid;
+    border-radius: 5px;
+	overflow-Y: hidden
+}
+
+.citAd .ad-img img {
+	width: 70px;
+	height: 70px;
+    border-radius: 5px
+}
+
+.citAd .ad-title {
+	padding-top: 2px;
+	color: navy;
+    text-align: center
+}
+
+.citAd .ad-content {
+	padding-top: 5px;
+	font-size: 8pt;
+	text-align: justify
+}
+
+.countryinfo-title {
+	font-size: 15pt;
+	font-weight: bold;
+	text-align: center;
+	margin-bottom: 5px
+}
+
+.holder-title-1 {
+	font-size: 16pt;
+	color: #767f8f
+}
+
+.holder-title-2 {
+	font-size: 14pt;
+	border: 0;
+	color: #767f8f
+}
+
+.holder-title-3 {
+	font-size: 14pt;
+	border: 0;
+	color: white;
+	background: DimGray;
+	border-radius: 3px 3px 0 0;
+	text-align: center;
+	padding: 2px 0
+}
+
+label {
+	cursor: pointer;
+}
+
+.msg-in-box {
+	width: 180px;
+	border: 1px solid;
+	position: absolute;
+	background: white;
+	z-index: 99999;
+	text-align: justify;
+	padding: 2px;
+	display: none
+}
+
+.fri-wait {
+    position: absolute;
+    display: none;
+    height: 40px;
+    width: 178px;
+    text-align: center;
+    padding-top: 20px;
+    background: white
+}
+
+.fri-avatar {
+	width: 60px;
+	height: 60px;
+	float: left
+}
+
+.fri-avatar img {
+	width: 60px;
+	height: 60px
+}
+
+.fri-name {
+	width: 115px;
+	padding-left: 5px;
+	float: right;
+	text-align: center
+}
+
+.fri-opers {
+	width: 115px;
+	padding-left: 5px;
+	float: right;
+	text-align: center
+}
+
+.info-holder {
+	width: 550px;
+	border: 1px solid transparent;
+	padding: 2px;
+	background: -moz-radial-gradient(center, ellipse, #67BBF6, #1E5A84);
+	border-radius: 5px;
+	background: -webkit-gradient(radial, center center, 300, center center, 60, from(#67BBF6), to(#1E5A84));
+	margin: 5px 0;
+	text-align: center;
+}
+
+.info-holder a {
+	color: white
+}
+
+.info-holder .holder-title {
+	text-align: center;
+	color: white;
+	padding-bottom: 2px;
+	margin: 0 5px;
+	margin-bottom: 2px;
+	border-bottom: 1px solid white
+}
+
+.info-holder .holder-body {
+	text-align: center;
+	color: white;
+	padding: 5px;
+	margin-bottom: 5px;
+}
+
+.box-info, .box-button {
+	width: 75px;
+	height: 70px;
+	padding: 2px;
+	background: -moz-radial-gradient(center, ellipse, #579BF6, #0E5A74);
+	border: 1px solid transparent;
+	border-radius: 5px;
+	background: -webkit-gradient(radial, center center, 0, center center, 60, from(#579BF6), to(#0E5A74));
+	margin: 2px;
+	display: inline-block;
+	vertical-align: top
+}
+
+.box-button {
+	cursor: pointer
+}
+
+.box-button:hover {
+	border: 1px solid #0E5A74;
+}
+
+.box-info .title, .box-button .title {
+	text-align: center;
+	color: white;
+	height: 20px;
+	padding: 5px 0
+}
+
+.box-info .content, .box-button .content {
+	text-align: center;
+	color: white;
+	height: 36px;
+	font-size: 14pt;
+	padding: 2px 0;
+	line-height: 12pt
+}
+
+/**** Chat bar ****/
+.chatbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 20px;
+    background: white;
+    z-index: 9000;
+    border: 1px solid;
+    text-align: justify
+}

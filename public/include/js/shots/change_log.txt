@@ -1,0 +1,2 @@
+Change Log
+*3.0 New release. Images cross fade. Included a couple different layouts with the zip. Images are from http://www.flickr.com/photos/detroitderek

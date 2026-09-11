@@ -1,0 +1,252 @@
+﻿/***** Market *****/
+#market {
+	width: 670px;
+	font-weight: bold;
+}
+
+#market .provider {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	text-align: left;
+	float: left;
+	width: 210px;
+	padding-right: 20px;
+	overflow: hidden;
+}
+
+#market .stars {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	text-align: center;
+	float: left;
+	width: 80px;
+	padding-right: 20px;
+	overflow: hidden;
+}
+
+#market .stock {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	text-align: center;
+	float: left;
+	width: 40px;
+	padding-right: 20px;
+	overflow: hidden;
+}
+
+#market .price {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	text-align: center;
+	float: left;
+	width: 75px;
+	padding-right: 5px;
+	overflow: hidden;
+}
+
+#market .buy {
+	font-family: Arial, Tahoma;
+	font-size: 12pt;
+	text-align: left;
+	float: left;
+	width: 200px;
+	padding-right: 0px;
+	overflow: hidden;
+}
+
+
+/***** Monetary Market *****/
+#mmarket {
+	width: 670px;
+	font-weight: bold;
+}
+
+#mmarket .provider {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	text-align: left;
+	float: left;
+	width: 190px;
+	padding-right: 20px;
+	overflow: hidden;
+}
+
+#mmarket .amount {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	text-align: center;
+	float: left;
+	width: 85px;
+	padding-right: 20px;
+	overflow: hidden;
+}
+
+#mmarket .erate {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	text-align: center;
+	float: left;
+	width: 140px;
+	padding-right: 20px;
+	overflow: hidden;
+}
+
+#mmarket .buy {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	text-align: left;
+	float: left;
+	width: 195px;
+	padding-right: 0px;
+	overflow: hidden;
+}
+
+#mmarket .my-sell {
+	font-family: Arial, Tahoma;
+	font-size: 11pt;
+	text-align: left;
+	float: left;
+	width: 70px;
+	padding-right: 20px;
+	overflow: hidden;
+}
+
+#mmarket .my-buy {
+	font-family: Arial, Tahoma;
+	font-size: 11pt;
+	text-align: left;
+	float: left;
+	width: 70px;
+	padding-right: 20px;
+	overflow: hidden;
+}
+
+#mmarket .my-amount {
+	font-family: Arial, Tahoma;
+	font-size: 11pt;
+	text-align: left;
+	float: left;
+	width: 90px;
+	padding-right: 20px;
+	overflow: hidden;
+}
+
+#mmarket .my-erate {
+	font-family: Arial, Tahoma;
+	font-size: 11pt;
+	text-align: left;
+	float: left;
+	width: 130px;
+	padding-right: 20px;
+	overflow: hidden;
+}
+
+#mmarket .my-oper {
+	font-family: Arial, Tahoma;
+	font-size: 11pt;
+	text-align: left;
+	float: left;
+	width: 110px;
+	padding-right: 0px;
+	overflow: hidden;
+}
+
+/***** Company Market *****/
+#cmarket {
+	width: 550px;
+	font-weight: bold;
+}
+
+#cmarket div {
+	font-size: 9pt;
+	padding-right: 10px;
+	overflow: hidden;
+	font-family: Arial, Tahoma;
+	text-align: left;
+}
+
+#cmarket .avatar {
+	width: 30px;
+	float: left;
+}
+
+#cmarket .company {
+	width: 215px;
+	float: left;
+}
+
+#cmarket .price {
+	width: 75px;
+	float: left;
+}
+
+#cmarket .bid {
+	width: 70px;
+	float: left;
+}
+
+#cmarket .buy {
+	width: 70px;
+	padding-right: 0px;
+	float: left;
+}
+
+/***** Job Offers *****/
+#jobs {
+	width: 550px;
+	font-weight: bold;
+}
+
+#jobs div {
+	border: 0px solid;
+}
+
+#jobs .company {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	text-align: left;
+	float: left;
+	width: 260px;
+	padding-right: 20px;
+	overflow: hidden;
+}
+
+#jobs .cAvatar {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	text-align: left;
+	float: left;
+	width: 50px;
+	padding-right: 5px;
+	overflow: hidden;
+}
+
+#jobs .cName {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	text-align: left;
+	float: left;
+	width: 205px;
+	padding-right: 20px;
+	overflow: hidden;
+}
+
+#jobs .salary {
+	font-family: Arial, Tahoma;
+	font-size: 10pt;
+	text-align: left;
+	float: left;
+	width: 130px;
+	padding-right: 20px;
+	overflow: hidden;
+}
+
+#jobs .apply {
+	font-family: Arial, Tahoma;
+	font-size: 12pt;
+	text-align: left;
+	float: left;
+	width: 100px;
+	padding-right: 0px;
+	overflow: hidden;
+}

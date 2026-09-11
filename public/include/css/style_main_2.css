@@ -1,0 +1,573 @@
+
+.blg1 {background: url(../../images/boxes/bl-green1.gif) 0 100% no-repeat #CDF7B5; width: 270px}
+.blg2 {background: url(../../images/boxes/bl-green1.gif) 0 100% no-repeat #CDF7B5; width: 510px}
+.brg {background: url(../../images/boxes/br-green1.gif) 100% 100% no-repeat}
+.tlg {background: url(../../images/boxes/tl-green1.gif) 0 0 no-repeat}
+.trg {background: url(../../images/boxes/tr-green1.gif) 100% 0 no-repeat; padding:10px}
+
+.blb1 {background: url(../../images/boxes/bl-blue1.gif) 0 100% no-repeat #B5E8F7; width: 270px}
+.blb2 {background: url(../../images/boxes/bl-blue1.gif) 0 100% no-repeat #B5E8F7; width: 510px}
+.brb {background: url(../../images/boxes/br-blue1.gif) 100% 100% no-repeat}
+.tlb {background: url(../../images/boxes/tl-blue1.gif) 0 0 no-repeat}
+.trb {background: url(../../images/boxes/tr-blue1.gif) 100% 0 no-repeat; padding:10px}
+
+.clear {font-size: 1px; height: 10px}
+
+.clear-r {font-size: 1px; height: 10px; float: right}
+
+.blb21 {background: url(../../images/boxes/bl-blue2.gif) 0 100% no-repeat #B5E8F7; width: 270px; float: right; font-size: 14pt; text-align: center}
+.blb22 {background: url(../../images/boxes/bl-blue2.gif) 0 100% no-repeat #B5E8F7; width: 510px}
+.blb23 {background: url(../../images/boxes/bl-blue2.gif) 0 100% no-repeat #B5E8F7; width: 190px; float: right; font-size: 9pt; text-align: center}
+.brb2 {background: url(../../images/boxes/br-blue2.gif) 100% 100% no-repeat}
+.tlb2 {background: url(../../images/boxes/tl-blue2.gif) 0 0 no-repeat}
+.trb2 {background: url(../../images/boxes/tr-blue2.gif) 100% 0 no-repeat; padding:10px}
+
+.blg21 {background: url(../../images/boxes/bl-green2.gif) 0 100% no-repeat #CDF7B5; width: 270px; float: right; font-size: 14pt; text-align: center}
+.blg22 {background: url(../../images/boxes/bl-green2.gif) 0 100% no-repeat #CDF7B5; width: 510px}
+.blg23 {background: url(../../images/boxes/bl-green2.gif) 0 100% no-repeat #CDF7B5; width: 190px; float: right; font-size: 9pt; text-align: center}
+.brg2 {background: url(../../images/boxes/br-green2.gif) 100% 100% no-repeat}
+.tlg2 {background: url(../../images/boxes/tl-green2.gif) 0 0 no-repeat}
+.trg2 {background: url(../../images/boxes/tr-green2.gif) 100% 0 no-repeat; padding:10px}
+
+#header {
+		width: 800px;
+		height: 100px;
+		overflow: hidden;
+	}
+
+#logo {
+		width: 100px;
+		height: 100px;
+		float: left;
+		overflow: hidden;
+	}
+
+#top-ad {
+		width: 600px;
+		height: 50px;
+		overflow: hidden;
+		display: table-cell;
+		vertical-align: middle;
+	}
+
+#topbar {
+		width: 600px;
+		height: 50px;
+		overflow: hidden;
+	}
+
+#citInfo {
+		width: 800px;
+		height: 110px;
+		float: left;
+		overflow: hidden;
+	}
+
+#citInfo .avatar {
+		width: 100px;
+		height: 110px;
+		float: left;
+		overflow: hidden;
+		font-size: 9pt;
+		margin-top: 4px;
+		margin-bottom: 2px;
+	}
+
+#citInfo img.avatar {
+		border: 0;
+		width: 72px;
+		height: 72px;
+		padding: 1px;
+		float: none;
+	}
+
+#citInfo .details {
+		width: 592px;
+		height: 85px;
+		overflow: hidden;
+		font-size: 9pt;
+		padding: 3px;
+	}
+
+#citInfo .title {
+		width: 695px;
+		height: 16px;
+		overflow: hidden;
+		font-size: 9pt;
+		padding: 1px;
+		padding-top: 0px;
+	}
+
+#citInfo .country {
+		width: 97px;
+		height: 85px;
+		float: right;
+		text-align: center;
+		padding-left: 3px;
+		overflow: hidden;
+		font-size: 9pt;
+		padding-top: 1px;
+	}
+
+#citInfo img.flag {
+		border: 0;
+		width: 85px;
+		height: 65px;
+		float: none;
+	}
+
+#wellness {
+		float: left;
+		height: 67px;
+		width: 50px;
+		display: table-cell;
+		vertical-align: middle;
+		padding: 5px;
+		text-align: justify;
+		overflow: hidden;
+	}
+
+#accounts {
+		float: left;
+		height: 67px;
+		width: 75px;
+		display: table-cell;
+		vertical-align: middle;
+		padding-top: 10px;
+		padding-bottom: 0;
+		padding-right: 20px;
+		padding-left: 20px;
+		text-align: justify;
+		overflow: hidden;
+	}
+
+#accounts img.curIco {
+		width: 24px;
+		height: 24px;
+		padding: 1px;
+	}
+
+#messages {
+		float: left;
+		height: 65px;
+		width: 71px;
+		display: table-cell;
+		vertical-align: middle;
+		padding-top: 10px;
+		padding-bottom: 0;
+		padding-right: 20px;
+		padding-left: 20px;
+		text-align: justify;
+		margin: 2px;
+		margin-top: 0;
+		overflow: hidden;
+	}
+
+#messages img.msgIco {
+		width: 26px;
+		height: 22px;
+		padding: 0 5px 5px 0;
+	}
+
+#detAds {
+		float: left;
+		height: 85px;
+		width: 225px;
+		display: table-cell;
+		vertical-align: middle;
+		padding: 1px;
+		padding-left: 5px;
+		padding-right: 70px;
+		text-align: justify;
+		overflow: hidden;
+		background: url('../../images/oman/detad.png');
+	}
+
+#detAds img.ad {
+		width: 300px;
+		height: 75px;
+		padding: 0;
+	}
+
+#wnmeter {
+		width: 42px;
+		height: 50px;
+		float: left;
+		overflow: hidden;
+		clear:none;
+		display:block;
+		padding-bottom:13px;
+		padding-top:0px;
+}
+
+#wnmeter .meter {
+	display:block;
+	overflow:hidden;
+	padding-left:3px;
+}
+
+#wnind {
+	background:#628F4C none repeat scroll 0 0;
+	border-top:3px solid #467531;
+	display:block;
+	font-weight:bold;
+	font-size:8pt;
+	color: black;
+	padding-top:0px;
+	text-align: center;
+	width:42px;
+	overflow:hidden;
+}
+
+#game-body {
+		width: 800px;
+		overflow-X: hidden;
+		border-top: 1px solid;
+	}
+
+#game-body .sidebar {
+		width: 115px;
+		float: left;
+		text-align: justify;
+		padding-left: 5px;
+		padding-top: 2px;
+		font-size: 9pt;
+		color: black;
+		overflow-X: hidden;
+	}
+
+#game-body hr.sidebar {
+		width: 90%;
+		height: 1px;
+		color: black;
+	}
+
+.menu-cat {
+		font-weight: bold;
+		text-align: center;
+		width: 106px;
+		height: 15px;
+		overflow: hidden;
+		color: black;
+		padding: 2px;
+		border: 1px black solid;
+		border-bottom: 0;
+		cursor: pointer;
+	}
+
+.spacer {
+		font-size: 1px;
+	}
+
+.submenus {
+		border: 1px black solid;
+		border-top: 0;
+		width: 106px;
+		overflow-X: hidden;
+		padding: 2px;
+	}
+
+.menu-sub {
+		padding: 2px;
+		padding-left: 10px;
+	}
+
+#game-body .adbar {
+		width: 100px;
+		float: right;
+		overflow-X: hidden;
+	}
+
+#game-body .contents {
+		width: 570px;
+		border-right: 1px gray dashed;
+		border-left: 1px gray dashed;
+		text-align: justify;
+		overflow-X: hidden;
+		padding: 4px;
+	}
+
+#footer {
+		width: 800px;
+		background: #ffffff;
+		overflow-X: hidden;
+		border-top: 1px black solid;
+	}
+
+a, a:visited {
+		text-decoration: none;
+	}
+
+a span {
+	display: none;
+}
+
+a:hover {
+	position: relative;
+	text-decoration: none;
+}
+
+a:hover span {
+	display: block;
+   	position: absolute;
+}
+
+a:hover span {
+	top: 10px; left: 0;
+}
+
+.column-left {
+		float: left;
+		width: 280px;
+		margin-right: 5px;
+		overflow-X: hidden;
+	}
+
+.column-right {
+		float: right;
+		width: 280px;
+		margin-left: 5px;
+		overflow-X: hidden;
+	}
+
+.column-double {
+		width: 560px;
+		margin-left: 5px;
+		margin-right: 5px;
+		display: block;
+		position: relative;
+	}
+
+.column-headcol {
+		width: 90px;
+		overflow-X: hidden;
+		float: left;
+		padding: 2px;
+		text-align: center;
+		font-size: 12pt;
+		font-weight: bold;
+		display: block;
+	}
+
+.column-details {
+		width: 458px;
+		overflow-X: hidden;
+		float: right;
+		padding: 2px;
+		display: block;
+	}
+
+.column-details-left {
+		width: 225px;
+		overflow-X: hidden;
+		float: left;
+		padding: 2px;
+		display: block;
+	}
+
+.column-details-right {
+		width: 225px;
+		overflow-X: hidden;
+		float: right;
+		padding: 2px;
+		display: block;
+	}
+
+.profile-details {
+		width: 190px;
+		float: left;
+		padding: 5px;
+		overflow-X: hidden;
+	}
+
+.profile-details2 {
+		width: 240px;
+		float: left;
+		padding: 5px;
+		overflow-X: hidden;
+	}
+
+.profile-name {
+		padding-left: 5px;
+		font-size: 14pt;
+		overflow-X: hidden;
+	}
+
+.column-name {
+		padding-left: 5px;
+		font-size: 14pt;
+		overflow-X: hidden;
+	}
+
+.company-name {
+		padding-left: 5px;
+		font-size: 14pt;
+		overflow-X: hidden;
+	}
+
+.company-name sup {
+		font-family: Verdana;
+		font-size: 8pt;
+		font-weight: bold;
+	}
+
+.company-message {
+		font-size: 8pt;
+	}
+
+.profile-aboutme {
+		width: 175px;
+		height: 65px;
+		padding-top: 3px;
+		padding-bottom: 13px;
+		padding-left: 7px;
+		padding-right: 8px;
+		color: white;
+		font-size: 9pt;
+		overflow-Y: hidden;
+		background: url('../../../images/game/profile/aboutme-bg.gif') no-repeat;
+	}
+
+.profile-forfeits {
+		height: 60px;
+		padding-left: 5px;
+		font-size: 10pt;
+		color: maroon;
+		font-size: 8pt;
+		overflow: hidden;
+	}
+
+.profile-living {
+		height: 70px;
+		padding-left: 5px;
+		font-size: 10pt;
+		overflow: hidden;
+	}
+
+.profile-box {
+		float: left;
+		text-align: center;
+		margin-right: 10px;
+	}
+
+#trophy {
+		text-align: center;
+		margin-left: 35px;
+		margin-right: 35px;
+	}
+
+#trophy .trophy-det {
+		width: 64px;
+		height: 28px;
+		float: left;
+		padding-top: 36px;
+		color: white;
+		font-weight: bold;
+		font-family: Verdana, Tahoma;
+		font-size: 8pt;
+	}
+	
+.txtAmount-4 {
+	border: 0;
+	width: 50px;
+	height: 22px;
+	background: url('../../images/game/textboxes/txtbox-4.gif');
+	text-align: center;
+	font-size: 14pt;
+	font-family: Verdana, Tahoma;
+	padding: 2px;
+	}
+
+#invite-head {
+		width: 320px;
+		background: #ffffff url('../../images/invite-bg.jpg') 100% 0% no-repeat;
+		padding-right: 270px;
+	}
+
+#invite-head .title {
+		font-size: 20pt;
+		padding-top: 50px;
+		padding-bottom: 20px;
+		padding-left: 25px;
+	}
+
+#security-head {
+		width: 320px;
+		background: #ffffff url('../../images/invite-bg.jpg') 100% 0% no-repeat;
+		padding-right: 270px;
+	}
+
+#security-head .title {
+		font-size: 20pt;
+		padding-top: 50px;
+		padding-bottom: 20px;
+		padding-left: 25px;
+	}
+
+#loading-div {
+		position: fixed;
+		background: black;
+		top: 0px;
+		left: 0px;
+		width: 100%;
+		height: 100%;
+		font-size: 14pt;
+		color: white;
+		filter: alpha (opacity=50);
+		opacity: 0.5;
+	}
+
+#loading-div .loader1 {
+		top: 50%;
+		display: table;
+		vertical-align: middle;
+	}
+
+#loading-div .loader2 {
+		position: absolute;
+		top: 50%;
+		width: 100%;
+		display: table-cell;
+		vertical-align: middle;
+	}
+
+.send-pm {
+		text-align: center;
+		padding-top: 10px;
+	}
+
+#chat-msg {
+		display: none;
+		text-align: center
+	}
+
+.chat-sender {
+		float: left;
+		width: 20px;
+		padding: 1px;
+		text-align: center;
+	}
+
+.chat-avatar {
+		width: 18px;
+		height: 18px;
+		padding: 1px;
+	}
+
+.chat-name {
+		width: 20px;
+		padding: 0px;
+		text-align: center;
+	}
+
+.chat-message {
+		float: left;
+		width: 220px;
+		padding: 3px;
+		text-align: justify;
+	}
+
+#chatters-hold {
+		overflow-Y: auto;
+		height: 250px;
+	}
