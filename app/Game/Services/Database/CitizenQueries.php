@@ -520,14 +520,18 @@ trait CitizenQueries
         return ['Dur' => "$A", 'WInf' => "$B", 'Well' => "$B2", 'EP' => "$EP", 'Random' => "$C", 'Advance' => "$advance", 'Msg' => "$msg"];
     }
 
+    /**
+     * One training session per day: weights (+1 strength) or cardio (+1 stamina), 0..SHAPE_MAX.
+     * Missed days are decayed by the daily cron. Legacy skill points keep accumulating in the
+     * background (rankings, IS trophy) but no longer affect damage.
+     */
     public function doTrain(array $cit, int $ttype, array $foods): array
     {
         $citID = $cit['CitizenID'];
-        $A = $cit['mSkill'];
-        $C2 = $this->getChangedSkill($cit, $ttype, 1);
-        $A2 = $C2;
+        $ttype = $ttype === Constants::TRAIN_CARDIO ? Constants::TRAIN_CARDIO : Constants::TRAIN_WEIGHTS;
+        $A2 = $this->getChangedSkill($cit, 1, 1);
 
-        $wChange = pow(4, $ttype - 1);
+        $wChange = Constants::TRAIN_WELLNESS[$ttype];
         $gl = min((int) ($cit['gd_life'] ?? 0), 9);
         $gdpercs = [0, 0.1, 0.14, 0.17, 0.2, 0.21, 0.22, 0.23, 0.24, 0.25];
         $wChange -= abs(round($wChange * $gdpercs[$gl]));
@@ -536,17 +540,22 @@ trait CitizenQueries
         if ($wChange < $sum) {
             $sum = $wChange;
         }
-        $B2 = $cit['wellness'] - $wChange + $sum;
-        if ($B2 < 0) {
-            $B2 = 0;
-        }
+        $B2 = max(0, $cit['wellness'] - $wChange + $sum);
         $EP2 = $cit['ep'] + 1;
+
+        $streak = ((int) $cit['LastTrained'] === $this->today - 1) ? (int) $cit['train_streak'] + 1 : 1;
+        $strength = (int) ($cit['strength'] ?? 0);
+        $stamina = (int) ($cit['stamina'] ?? 0);
+        if ($ttype === Constants::TRAIN_WEIGHTS) {
+            $strength = min(Constants::SHAPE_MAX, $strength + 1);
+        } else {
+            $stamina = min(Constants::SHAPE_MAX, $stamina + 1);
+        }
 
         $this->updateUserFieldID($citID, 'LastTrained', $this->today);
         $gl = min((int) ($cit['gd_love'] ?? 0), 10);
         $gdmin = [1, 0.95, 0.9, 0.85, 0.8, 0.75, 0.7, 0.65, 0.6, 0.55, 0.5];
-        $baseTime = $ttype < 3 ? $ttype * 90 : 300;
-        $this->addOcc($citID, $baseTime * $gdmin[$gl]);
+        $this->addOcc($citID, ($ttype === Constants::TRAIN_WEIGHTS ? 120 : 90) * $gdmin[$gl]);
 
         $this->addEP($citID, 1, 'Training');
 
@@ -556,20 +565,25 @@ trait CitizenQueries
             $this->addMedal($citID, 'is');
             $this->sendNote($citID, 'medal_is', '');
         }
-
         $mSP = $cit['mSP'] + $A2;
-        $mSkill = $cit['mSkill'];
-        $newSkill = $mSkill;
-        if (($this->spCheckpoint($mSkill + 1)) < $mSP) {
+        $newSkill = (int) $cit['mSkill'];
+        if (($this->spCheckpoint($newSkill + 1)) < $mSP) {
             $newSkill++;
         }
-        $this->exec('UPDATE citizens SET mSP = ?, mSkill = ? WHERE CitizenID = ?', [$mSP, $newSkill, $citID]);
-        $this->updateUserFieldID($citID, 'wellness', round($B2));
+        $this->exec('UPDATE citizens SET mSP = ?, mSkill = ?, strength = ?, stamina = ?, train_streak = ?, wellness = ? WHERE CitizenID = ?',
+            [$mSP, $newSkill, $strength, $stamina, $streak, round($B2), $citID]);
 
         $this->exec('INSERT INTO log_training (CitizenID, Day, timestamp, type, wellness, skill, ep, received) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-            [$citID, $this->today, time(), (string) $ttype, "{$cit['wellness']}|{$wChange}|{$sum}", "{$mSkill}|{$mSP}|{$A2}", $cit['ep'], $A2]);
+            [$citID, $this->today, time(), (string) $ttype, "{$cit['wellness']}|{$wChange}|{$sum}", "{$strength}|{$stamina}|{$streak}", $cit['ep'], $ttype === Constants::TRAIN_WEIGHTS ? $strength : $stamina]);
 
-        return ['Skill' => "$A2", 'Well' => "$B2", 'EP' => "$EP2", 'Strenght' => "$C2"];
+        return ['Type' => $ttype, 'Strength' => $strength, 'Stamina' => $stamina, 'Streak' => $streak, 'Well' => "$B2", 'EP' => "$EP2"];
+    }
+
+    /** Daily cron: a missed training day costs one stage of strength and stamina and breaks the streak. */
+    public function decayBodyShape(int $today): int
+    {
+        return $this->exec("UPDATE citizens SET strength = GREATEST(0, strength - 1), stamina = GREATEST(0, stamina - 1), train_streak = 0
+            WHERE LastTrained < ? AND accType = 'citizen' AND (strength > 0 OR stamina > 0 OR train_streak > 0)", [$today - 1]);
     }
 
     private function spCheckpoint(int $skill): int

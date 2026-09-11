@@ -79,6 +79,7 @@ class _BattleState extends ConsumerState<BattleScreen> {
       final r = await ref.read(apiProvider).post('battles/${widget.id}/fight', {'weapon': _weapon});
       ref.read(sessionProvider.notifier).update(r);
       setState(() => _last = r);
+      if (r['rankedUp'] == true && mounted) toast(context, 'Promoted to ${r['mRank']}! Reward: Tala + a 5-star food.');
       ref.invalidate(battleProvider(widget.id));
     } on ApiException catch (e) {
       if (mounted) toast(context, e.message, error: true);
@@ -109,7 +110,7 @@ class _BattleState extends ConsumerState<BattleScreen> {
             final occupied = (d['occupiedUntil'] as int) > DateTime.now().millisecondsSinceEpoch ~/ 1000;
             return Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [_battleTable(b), const SizedBox(height: 4), _arena(b, side, canFight && !occupied, weapons, heroes, wellness, (d['myForce'] as num)), const SizedBox(height: 8), _log(log)],
+              children: [_battleTable(b), const SizedBox(height: 4), _arena(b, side, canFight && !occupied, weapons, heroes, wellness, (d['myForce'] as num), (d['hit'] as num? ?? 0), (d['fightCost'] as num? ?? 10)), const SizedBox(height: 8), _log(log)],
             );
           },
         ),
@@ -219,7 +220,7 @@ class _BattleState extends ConsumerState<BattleScreen> {
   }
 
   /// `.fight-arena` — heroes columns around the fight area on the burning-city background.
-  Widget _arena(Battle b, String? side, bool canFight, List<Map<String, dynamic>> weapons, Map<String, dynamic> heroes, double wellness, num myForce) {
+  Widget _arena(Battle b, String? side, bool canFight, List<Map<String, dynamic>> weapons, Map<String, dynamic> heroes, double wellness, num myForce, num hit, num fightCost) {
     return Container(
       constraints: const BoxConstraints(minHeight: 320),
       decoration: BoxDecoration(
@@ -239,7 +240,7 @@ class _BattleState extends ConsumerState<BattleScreen> {
                   image: DecorationImage(image: AssetImage('assets/legacy/shoot.png'), alignment: Alignment.bottomLeft, fit: BoxFit.none),
                 ),
                 padding: const EdgeInsets.fromLTRB(6, 40, 6, 6),
-                child: b.ended ? _ended(b) : _fightArea(side, canFight, weapons, wellness, myForce),
+                child: b.ended ? _ended(b) : _fightArea(side, canFight, weapons, wellness, myForce, hit, fightCost),
               ),
             ),
             _heroes('HEROES', const Color(0xFF00C000), (heroes['defender'] as List).cast<Map<String, dynamic>>()),
@@ -267,6 +268,7 @@ class _BattleState extends ConsumerState<BattleScreen> {
         for (var i = 0; i < list.length && i < 3; i++) ...[
           SizedBox(height: i == 0 ? 6 : 10),
           Avatar(list[i]['avatar'] as String, size: 58.0 - i * 8),
+          if (list[i]['rankIcon'] != null) netImg(list[i]['rankIcon'] as String, width: 40, height: 10, fit: BoxFit.contain),
           Text(
             list[i]['name'] as String,
             maxLines: 1,
@@ -326,7 +328,7 @@ class _BattleState extends ConsumerState<BattleScreen> {
   }
 
   /// fight-area: weapon select, wellness meter, "My advance", the Fight button and the last hit.
-  Widget _fightArea(String? side, bool canFight, List<Map<String, dynamic>> weapons, double wellness, num myForce) {
+  Widget _fightArea(String? side, bool canFight, List<Map<String, dynamic>> weapons, double wellness, num myForce, num hit, num fightCost) {
     final dot = BoxDecoration(
       image: const DecorationImage(image: AssetImage('assets/legacy/bg-dot.png'), repeat: ImageRepeat.repeat),
       color: Colors.black38,
@@ -371,7 +373,7 @@ class _BattleState extends ConsumerState<BattleScreen> {
         Container(
           padding: const EdgeInsets.all(5),
           decoration: dot,
-          child: Text('My advance: ${fmt(myForce)}m', style: white),
+          child: Text('My advance: ${fmt(myForce)}m · hit ${fmt(hit)} · ${fmt(fightCost)} wellness per fight', style: white),
         ),
         const SizedBox(height: 8),
         if (side == null)

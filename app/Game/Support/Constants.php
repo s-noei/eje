@@ -12,6 +12,46 @@ final class Constants
 
     public const RANK_DAMAGES = [0, 200, 500, 1000, 2500, 7500, 15000, 35000, 80000, 200000, 3000000, 20000000];
 
+    /* ---- Body shape training (weights / cardio) ---------------------------------------------
+     * Strength and stamina go from 0 to SHAPE_MAX: +1 per training session, -1 per missed day.
+     * Strength sets the damage per hit (SHAPE_BASE_DAMAGE + SHAPE_DAMAGE_PER_STAGE * strength);
+     * stamina lowers the wellness cost of a fight. Military rank no longer changes damage. */
+    public const SHAPE_MAX = 7;
+    public const SHAPE_NAMES = ['Out of shape', 'Warming up', 'Getting fit', 'Fit', 'Athletic', 'Strong', 'Powerful', 'Full shape'];
+    public const TRAIN_WEIGHTS = 1;
+    public const TRAIN_CARDIO = 2;
+    public const TRAIN_TYPES = [self::TRAIN_WEIGHTS => 'Weights', self::TRAIN_CARDIO => 'Cardio'];
+    public const TRAIN_WELLNESS = [self::TRAIN_WEIGHTS => 3, self::TRAIN_CARDIO => 2];
+    public const SHAPE_BASE_DAMAGE = 10;
+    public const SHAPE_DAMAGE_PER_STAGE = 10;
+    public const FIGHT_WELLNESS_MAX = 10; // stamina 0
+    public const FIGHT_WELLNESS_MIN = 4; // stamina SHAPE_MAX
+
+    /* ---- Military rank = prestige, leadership and access (never damage) ---- */
+    public const RANK_MIN_CAPTAIN = 4; // Satapatish
+    public const RANK_MIN_UNIT_OWNER = 7; // Hazarapatish
+    public const UNIT_BONUS_BASE = 0.05; // fighting in your unit's ordered battle...
+    public const UNIT_BONUS_PER_COMMANDER_RANK = 0.01; // ...scaled by the commander's rank
+    public const UNIT_BONUS_MAX = 0.15;
+    public const RANK_UP_TALA = 5; // × new rank, plus a 5-star food
+
+    public static function shapeDamage(int $strength): int
+    {
+        return self::SHAPE_BASE_DAMAGE + self::SHAPE_DAMAGE_PER_STAGE * max(0, min(self::SHAPE_MAX, $strength));
+    }
+
+    public static function fightWellnessCost(int $stamina): float
+    {
+        $s = max(0, min(self::SHAPE_MAX, $stamina));
+
+        return round(self::FIGHT_WELLNESS_MAX - ($s * (self::FIGHT_WELLNESS_MAX - self::FIGHT_WELLNESS_MIN) / self::SHAPE_MAX), 1);
+    }
+
+    public static function unitBonus(int $commanderRank): float
+    {
+        return min(self::UNIT_BONUS_MAX, self::UNIT_BONUS_BASE + self::UNIT_BONUS_PER_COMMANDER_RANK * max(0, $commanderRank));
+    }
+
     public const PUB_RANKS = ['Child', 'Social Level 1', 'Martial Level 1', 'Political Level 1', 'Economical Level 1', 'Social Level 2',
         'Political Level 2', 'Martial Level 2', 'Social Level 3', 'Social Level 4', 'Social Level 5', 'Social Level 6',
         'Social Level 7', 'Social Level 8', 'Social Level 9', 'Social Level 10', 'Social Level 11', 'Social Level 12'];

@@ -9,6 +9,7 @@ import '../core/theme.dart';
 import '../models/models.dart';
 import '../state/session.dart';
 import '../widgets/ui.dart';
+import 'army.dart';
 import 'article.dart';
 import 'battle.dart';
 import 'shell.dart';
@@ -118,7 +119,7 @@ class _HomeState extends ConsumerState<HomeScreen> {
     final q = d.quests;
     final isCA = c.isCA;
     final missions = <_Mission>[
-      if (!isCA) _Mission('Train', 'train', '+1 EP, skill points', done: c.trainedToday, onGo: () => _tab(1)),
+      if (!isCA) _Mission('Train', 'train', c.trainedToday ? 'day ${c.trainStreak} in a row' : 'weights or cardio · day ${c.trainStreak + 1}', done: c.trainedToday, onGo: () => _tab(1)),
       if (!isCA) _Mission('Work', 'work', 'salary & products', done: c.workedToday, available: q['work'] == true || c.workedToday, onGo: () => _tab(2), hint: 'Find a job first', onHint: () => openWeb(ref, 'jobs-en.html')),
       if (!isCA && (q['explore'] == true || c.exploredToday)) _Mission('Explore the mines', 'explore', 'find resources', done: c.exploredToday, onGo: () => openWeb(ref, 'mines-en.html')),
       if (!isCA) _Mission('Eat', 'food', 'restore wellness', done: c.wellness >= 100, onGo: () => _tab(1)),
@@ -225,9 +226,6 @@ class _HomeState extends ConsumerState<HomeScreen> {
   // ---- Citizen sheet ----------------------------------------------------------------------
 
   Widget _citizen(Citizen c) {
-    final army = ref.watch(armyProvider).asData?.value;
-    final stats = army?['stats'] as Map<String, dynamic>?;
-    double frac(num v, num from, num to) => to > from ? ((v - from) / (to - from)).clamp(0, 1).toDouble() : 1;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -256,31 +254,16 @@ class _HomeState extends ConsumerState<HomeScreen> {
                   const SizedBox(height: 4),
                   _statRow('Level ${c.level}', LegacyBar(value: c.xpProgress, color: EjColors.lime, height: 11, label: '${fmt(c.ep)} / ${fmt(c.epNextLevel)} EP')),
                   _statRow('Wellness', LegacyBar(value: c.wellness / 100, color: c.wellness < 40 ? EjColors.red : EjColors.lime, height: 11, label: '${fmt(c.wellness)} / 100')),
-                  if (stats != null) ...[
-                    _statRow(
-                      'Military',
-                      Row(
-                        children: [
-                          Container(
-                            width: 20,
-                            height: 16,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(color: const Color(0xFF4169E1), borderRadius: BorderRadius.circular(3)),
-                            child: Text('${stats['skill']}', style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold)),
-                          ),
-                          const SizedBox(width: 4),
-                          Expanded(child: LegacyBar(value: frac(stats['sp'] as num, stats['spFrom'] as num, stats['spTo'] as num), color: const Color(0xFF4169E1), height: 8)),
-                          const SizedBox(width: 4),
-                          netImg(stats['rankIcon'] as String, width: 40, height: 10, fit: BoxFit.contain),
-                        ],
-                      ),
-                    ),
+                  if (!c.isCA) ...[
+                    _statRow('Strength', Row(children: [Expanded(child: ShapeMeter(value: c.strength, color: const Color(0xFFCC3333), height: 10)), Text(' ${c.strength}/$kShapeMax · hit ${fmt(c.hit)}', style: const TextStyle(fontSize: 10))])),
+                    _statRow('Stamina', Row(children: [Expanded(child: ShapeMeter(value: c.stamina, color: const Color(0xFF3366CC), height: 10)), Text(' ${c.stamina}/$kShapeMax · fight ${fmt(c.fightCost)}', style: const TextStyle(fontSize: 10))])),
                   ],
                   Wrap(
                     spacing: 8,
                     children: [
+                      if (!c.isCA) Text('${c.shapeName} · ${c.trainStreak} day${c.trainStreak == 1 ? '' : 's'} training streak', style: const TextStyle(fontSize: 11)),
                       Text('Work skill ${fmt(c.wSkill)}', style: const TextStyle(fontSize: 11)),
-                      Text('Military skill ${fmt(c.mSkill)}', style: const TextStyle(fontSize: 11)),
+                      if (c.mRankIcon.isNotEmpty) Row(mainAxisSize: MainAxisSize.min, children: [netImg(c.mRankIcon, width: 36, height: 9, fit: BoxFit.contain), Text(' ${c.mRankName}', style: const TextStyle(fontSize: 11))]),
                       if (c.worldRank != null) Text('World rank #${c.worldRank}', style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: EjColors.black)),
                     ],
                   ),

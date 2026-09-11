@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Game\Support\Constants;
+use App\Http\Controllers\WarController;
 use Illuminate\Http\Request;
 
 /** Training (army.php) and the mines. */
@@ -14,34 +15,31 @@ class ArmyController extends ApiController
         $today = $this->database->today;
         $gds = min((int) ($c['gd_life'] ?? 0), 9);
         $gdpercs = [0, 0.1, 0.14, 0.17, 0.2, 0.21, 0.22, 0.23, 0.24, 0.25];
-        $wChange = function (int $type) use ($gdpercs, $gds) {
-            $x = pow(3, $type - 1);
-
-            return -($x - abs(round($x * $gdpercs[$gds])));
-        };
+        $wChange = fn (int $type) => -(Constants::TRAIN_WELLNESS[$type] - abs(round(Constants::TRAIN_WELLNESS[$type] * $gdpercs[$gds])));
         $rep = $this->database->row('SELECT * FROM log_training WHERE CitizenID = ? AND Day = ?', [$citID, $today]);
         $report = null;
         if ($rep) {
             $w = explode('|', (string) $rep['wellness']) + [0, 0, 0];
             $s = explode('|', (string) $rep['skill']) + [0, 0, 0];
+            if ((int) $s[1] > Constants::SHAPE_MAX) { // row written by the old skill-point training
+                $s = [$c['strength'], $c['stamina'], $c['train_streak']];
+            }
             $report = ['type' => (int) $rep['type'], 'wellnessBefore' => (float) $w[0], 'wellnessLoss' => (float) $w[1], 'wellnessRecovered' => (float) $w[2],
-                'skill' => (float) $s[0], 'sp' => (float) $s[1], 'spGained' => (float) $s[2], 'received' => round((float) $rep['received'], 3), 'ep' => 1];
+                'strength' => (int) $s[0], 'stamina' => (int) $s[1], 'streak' => (int) $s[2], 'ep' => 1];
         }
-        $options = [];
-        foreach ([1 => 'Normal', 2 => 'Hard', 3 => 'Max'] as $t => $label) {
-            $unlocked = $t === 1 || ($t === 2 && $c['puberty'] > 0) || ($t === 3 && $c['puberty'] > 1);
-            $options[] = ['type' => $t, 'label' => $label, 'unlocked' => $unlocked, 'wellness' => $wChange($t), 'skillGain' => (float) $this->database->getChangedSkill($c, $t, 1)];
-        }
-
-        $mSkill = (int) $c['mSkill'];
+        $options = [
+            ['type' => Constants::TRAIN_WEIGHTS, 'label' => 'Weights', 'stat' => 'strength', 'effect' => '+1 Strength', 'desc' => 'Hit harder', 'wellness' => $wChange(Constants::TRAIN_WEIGHTS)],
+            ['type' => Constants::TRAIN_CARDIO, 'label' => 'Cardio', 'stat' => 'stamina', 'effect' => '+1 Stamina', 'desc' => 'Fights cost less wellness', 'wellness' => $wChange(Constants::TRAIN_CARDIO)],
+        ];
         $mRank = (int) $c['mRank'];
         $stats = [
-            'skill' => $mSkill, 'sp' => (float) $c['mSP'], 'spFrom' => Constants::SP_CPS[$mSkill] ?? 0, 'spTo' => Constants::SP_CPS[$mSkill + 1] ?? 0,
             'rank' => $mRank, 'rankName' => Constants::MILI_RANKS[$mRank] ?? '', 'rankIcon' => url('/images/game/war/mrank/'.$mRank.'.gif'),
             'damage' => (float) $c['total_damage'], 'damageFrom' => Constants::RANK_DAMAGES[$mRank] ?? 0, 'damageTo' => Constants::RANK_DAMAGES[$mRank + 1] ?? 0,
+            'nextRankName' => Constants::MILI_RANKS[$mRank + 1] ?? null, 'nextRankReward' => Constants::RANK_UP_TALA * ($mRank + 1),
         ];
 
-        return ['trainedToday' => $c['LastTrained'] == $today, 'occupiedUntil' => (int) $c['occDue'], 'options' => $options, 'foods' => $this->foods($citID), 'report' => $report, 'stats' => $stats];
+        return ['trainedToday' => $c['LastTrained'] == $today, 'occupiedUntil' => (int) $c['occDue'], 'options' => $options, 'foods' => $this->foods($citID),
+            'report' => $report, 'shape' => WarController::shape($c), 'stats' => $stats];
     }
 
     /** GET /api/v1/army */
@@ -50,14 +48,13 @@ class ArmyController extends ApiController
         return $this->ok($this->trainState($this->cit(true)));
     }
 
-    /** POST /api/v1/army/train {type: 1|2|3, foods: {stars: amount}} */
+    /** POST /api/v1/army/train {type: 1 weights | 2 cardio, foods: {stars: amount}} */
     public function train(Request $request)
     {
         $c = $this->cit(true);
         $today = $this->database->today;
-        $t = (int) $request->input('type');
-        $ttype = ($t === 1 || ($t === 2 && $c['puberty'] > 0) || ($t === 3 && $c['puberty'] > 1)) ? $t : 0;
-        if (!$ttype) {
+        $ttype = (int) $request->input('type');
+        if (!in_array($ttype, [Constants::TRAIN_WEIGHTS, Constants::TRAIN_CARDIO], true)) {
             return $this->fail('Invalid training type.');
         }
         if ($c['accType'] !== 'citizen') {
@@ -66,7 +63,7 @@ class ArmyController extends ApiController
         if ($c['LastTrained'] == $today) {
             return $this->fail($this->msg('error_trained_today'));
         }
-        if ($c['wellness'] <= pow(3, $ttype - 1)) {
+        if ($c['wellness'] <= Constants::TRAIN_WELLNESS[$ttype]) {
             return $this->fail($this->msg('error_low_wellness'));
         }
         if ($c['occDue'] >= time()) {

@@ -316,8 +316,9 @@ class Military
         $inDef = in_array($cit['CountryID'], $allyDef) || (int) $cit['CountryID'] === (int) $battle['Defender'];
         $inAtt = in_array($cit['CountryID'], $allyAtt) || (int) $cit['CountryID'] === (int) $battle['Attacker'];
 
-        $A = (float) $cit['mSkill'];
-        $B = 2;
+        // damage = body shape × weapon × boosters — military rank is prestige only
+        $A = Constants::shapeDamage((int) ($cit['strength'] ?? 0));
+        $B = 1;
         $Q = 0;
         $C = 1;
         $weapon = (int) $weapon;
@@ -332,16 +333,21 @@ class Military
                 $this->database->exec("UPDATE inventory SET Usable = '0' WHERE pID = ?", [$row['pID']]);
             }
         }
-        $D = 1 + ($cit['mRank'] * 0.25);
+        $D = 1;
         $gds = min((int) ($cit['gd_war'] ?? 0), 7);
         $gdpercs = [0, 0.05, 0.07, 0.08, 0.085, 0.09, 0.095, 0.1];
         $E = 1 + (($battle['Type'] === 'revolt' && $for === 'att') ? 0 : $gdpercs[$gds]);
         $F = ($battle['hasRoute'] || $inAtt || ($battle['Type'] === 'revolt' && $for === 'att')) ? 1 : 0.8;
         $damage = round($A * $B * $C * $D * $E * $F);
 
+        $unitBonus = 0.0;
         if ((int) $cit['military_unit'] !== 0) {
-            if ($this->database->count('SELECT mID FROM military_unit WHERE mID = ? AND mBattleID = ?', [$cit['military_unit'], $battleID]) >= 1) {
-                $damage = round($damage * 1.10);
+            $unit = $this->database->row('SELECT military_unit.mID, commander.mRank AS cmdRank FROM military_unit
+                LEFT JOIN citizens AS commander ON commander.CitizenID = military_unit.mCommander WHERE mID = ? AND mBattleID = ?', [$cit['military_unit'], $battleID]);
+            if ($unit) {
+                // the unit's order, led by a ranked commander
+                $unitBonus = Constants::unitBonus((int) ($unit['cmdRank'] ?? 0));
+                $damage = round($damage * (1 + $unitBonus));
             }
         }
         $time = time();
@@ -371,13 +377,15 @@ class Military
         if ($battleID > 1) {
             $this->database->addEP($citID, $epA, "Fighting in battle {$battleID}");
         }
-        $well = $cit['wellness'] - 10;
+        $well = round($cit['wellness'] - Constants::fightWellnessCost((int) ($cit['stamina'] ?? 0)), 1);
         $totDamage = $cit['total_damage'] + abs($damage);
         $mRank = (int) $cit['mRank'];
         $sql = 'UPDATE citizens SET wellness = ?, fight_count = fight_count + 1, total_damage = ?';
         $b = [$well, $totDamage];
+        $rankedUp = false;
         if (isset(Constants::RANK_DAMAGES[$mRank + 1]) && Constants::RANK_DAMAGES[$mRank + 1] < $totDamage) {
             $mRank++;
+            $rankedUp = true;
             $sql .= ', mRank = ?';
             $b[] = $mRank;
         }
@@ -389,12 +397,18 @@ class Military
         $b[] = $citID;
         $this->database->exec($sql, $b);
         $this->ctx()->updateInfo(['wellness' => $well, 'total_damage' => $totDamage, 'mRank' => $mRank, 'fight_count' => $cit['fight_count'] + 1]);
+        if ($rankedUp) {
+            // rank-up reward: tala + a 5-star food, and the new insignia
+            $this->database->addMoney(1, Constants::RANK_UP_TALA * $mRank, $citID);
+            $this->database->createProduct(1, 5, $citID);
+            $this->database->sendNote($citID, 'rank_up', (Constants::MILI_RANKS[$mRank] ?? '').'|'.(Constants::RANK_UP_TALA * $mRank));
+        }
 
-        $report = ['Base' => round($A * $B), 'Weapon' => (($C - 1) * 100).'%', 'Rank' => (($D - 1) * 100).'%', 'Goddess' => (($E - 1) * 100).'%'];
+        $report = ['Base' => round($A * $B), 'Weapon' => (($C - 1) * 100).'%', 'Unit' => ($unitBonus * 100).'%', 'Goddess' => (($E - 1) * 100).'%'];
         $maxQ = (int) $this->database->value("SELECT Stars FROM inventory WHERE Type = '4' AND Owner = ? AND Usable = '1' ORDER BY Stars DESC", [$citID], 0);
 
         return [
-            'Damage' => abs($damage), 'Report' => $report, 'Skill' => "$A",
+            'Damage' => abs($damage), 'Report' => $report, 'Skill' => "$A", 'Strength' => (int) ($cit['strength'] ?? 0), 'Stamina' => (int) ($cit['stamina'] ?? 0), 'RankedUp' => $rankedUp,
             'mRank' => Constants::MILI_RANKS[$mRank] ?? '', 'mRankNum' => $mRank,
             'totForce' => "$totDamage \\ ".(Constants::RANK_DAMAGES[$mRank + 1] ?? ''),
             'Well' => "$well", 'Well-inf' => "$well", 'WeapType' => "$weapon", 'Weapon' => "$Q", 'MaxQ' => "$maxQ", 'EP' => "$ep",
@@ -430,9 +444,9 @@ class Military
     /** @return array{attacker:array,defender:array} */
     public function getHeroes(int|string $battleID): array
     {
-        $att = $this->database->rows("SELECT citizens.CitizenID, citizens.Avatar, citizens.name, SUM(fights.damage) AS advance FROM fights
+        $att = $this->database->rows("SELECT citizens.CitizenID, citizens.Avatar, citizens.name, citizens.mRank, SUM(fights.damage) AS advance FROM fights
             JOIN citizens ON fights.fighterID = citizens.CitizenID WHERE fights.battleID = ? AND damage > '0' GROUP BY fighterID ORDER BY advance DESC LIMIT 3", [$battleID]);
-        $def = $this->database->rows("SELECT citizens.CitizenID, citizens.Avatar, citizens.name, SUM(fights.damage) AS advance FROM fights
+        $def = $this->database->rows("SELECT citizens.CitizenID, citizens.Avatar, citizens.name, citizens.mRank, SUM(fights.damage) AS advance FROM fights
             JOIN citizens ON fights.fighterID = citizens.CitizenID WHERE fights.battleID = ? AND damage < '0' GROUP BY fighterID ORDER BY advance LIMIT 3", [$battleID]);
 
         return ['attacker' => $att, 'defender' => $def];
@@ -470,7 +484,8 @@ class Military
     public function getWall(array $reg): array
     {
         $regPop = (int) $reg['stat_pop'];
-        $avest = (float) $this->database->value("SELECT ROUND(SUM(citizens.mSkill), 2) * 16 AS Flag FROM region JOIN citizens ON citizens.regionID = region.RegionID
+        // each resident defends with ~8 bare-hand hits of their current strength
+        $avest = (float) $this->database->value("SELECT SUM(".Constants::SHAPE_BASE_DAMAGE." + ".Constants::SHAPE_DAMAGE_PER_STAGE." * citizens.strength) * 8 AS Flag FROM region JOIN citizens ON citizens.regionID = region.RegionID
             WHERE region.RegionID = ? AND citizens.wellness > '0' AND citizens.ban_due != 'PERMANENTLY' GROUP BY region.RegionID", [$reg['RegionID']], 0);
         $avest2 = min(100, $this->database->count('SELECT RegionID FROM region WHERE CountryID = ?', [$reg['CountryID']]));
         $avest2 = 1 - ($avest2 * 0.004);

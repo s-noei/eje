@@ -136,6 +136,8 @@ class MilitaryUnitController extends GameController
                     $citMU = $this->database->getUserInfoFromID($memberID);
                     if (!$citMU || $citMU['military_unit'] != $mID) {
                         $errors[] = 'Something is wrong.';
+                    } elseif ((int) $citMU['mRank'] < \App\Game\Support\Constants::RANK_MIN_CAPTAIN) {
+                        $errors[] = 'A captain needs the military rank '.\App\Game\Support\Constants::MILI_RANKS[\App\Game\Support\Constants::RANK_MIN_CAPTAIN].' or higher.';
                     } else {
                         $this->database->updateMilitaryUnitField($mID, 'mCaptain', $memberID);
 

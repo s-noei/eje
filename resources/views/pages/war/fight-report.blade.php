@@ -7,7 +7,7 @@
 	<hr size="1">
 	<div class="hummy">&nbsp;</div>
 	<div class="fightinfo">
-		<div class="title">Skill</div>
+		<div class="title">Hit</div>
 		<div class="detail" id="skillinfo">{{ $citInfo['mSkill'] ?? '' }}</div>
 		<div style="clear: both"></div>
 		<div class="title">Rank</div>

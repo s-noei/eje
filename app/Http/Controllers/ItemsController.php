@@ -230,6 +230,8 @@ class ItemsController extends GameController
                         $msg = '<h3 class=errHandle>You can not create a military unit, because you have not enough Tala.</h3>';
                     } elseif ($cit['gold_pack'] < time()) {
                         $msg = '<h3 class=errHandle>Requirements: Gold Account</h3>';
+                    } elseif ((int) $cit['mRank'] < \App\Game\Support\Constants::RANK_MIN_UNIT_OWNER) {
+                        $msg = '<h3 class=errHandle>Requirements: military rank '.\App\Game\Support\Constants::MILI_RANKS[\App\Game\Support\Constants::RANK_MIN_UNIT_OWNER].' or higher</h3>';
                     } else {
                         $mID = $this->database->createMilitaryUnit($mName, $citID, $cit['nationality']);
                         if ($mID) {

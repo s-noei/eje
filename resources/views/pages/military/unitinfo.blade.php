@@ -28,7 +28,8 @@
 			<span style="font-family: Arial,Helvetica,sans-serif;font-size: 16px;font-weight: normal;line-height: 18px;color: rgb(144, 146, 115);padding-left: 6px;margin-left: 10px;text-shadow: 0px 1px 0px rgb(255, 255, 255);border-left: 1px solid rgba(255, 255, 255, 0.9);box-shadow: -1px 0px 0px rgba(0, 0, 0, 0.1);"> {{ $unit['mMembers'] }} Members </span>
 		</div>
 		&nbsp;Location: <img src="{{ $vars->getImgLoc('CountryFlag') . $unit['Flag'] . '.gif' }}" class="Flag-xs" align="absmiddle"> <b>{{ $unit['cName'] }}</b>
-		| Commander: <b><a href="{{ $vars->getURL('profile', $unit['mCommander']) }}">{{ $commander['name'] ?? '' }}</a></b>
+		| Commander: <img src="/images/game/war/mrank/{{ $commander['mRank'] ?? 0 }}.gif" width="40" align="absmiddle" title="{{ \App\Game\Support\Constants::MILI_RANKS[$commander['mRank'] ?? 0] ?? '' }}"> <b><a href="{{ $vars->getURL('profile', $unit['mCommander']) }}">{{ $commander['name'] ?? '' }}</a></b>
+		| Unit bonus in ordered battles: <b>+{{ round(\App\Game\Support\Constants::unitBonus((int) ($commander['mRank'] ?? 0)) * 100) }}%</b>
 <span style="clear: both">
 @if ($citInfo['military_unit'] == $muID && $me != $unit['mCommander'])
 | <b><a href="javascript:void(0)" onclick='if (confirm("Are you sure?")) document.doUnit.submit()'>Resign </a></b>

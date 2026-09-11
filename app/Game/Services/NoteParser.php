@@ -55,6 +55,8 @@ class NoteParser
                     '<a href="'.$this->url->getURL('region', $holders[0] ?? '').'">'.$this->lang->getstr('region_'.($holders[0] ?? ''), 'regions').'</a>',
                     '<a href="'.$this->url->getURL('party', $holders[1] ?? '').'">'.($holders[2] ?? '').'</a>',
                 ]);
+            case 'rank_up':
+                return 'Congratulations! You reached the military rank of <b>'.($holders[0] ?? '').'</b>. You received '.($holders[1] ?? '').' Tala and a 5-star food.';
             default:
                 return $this->fmt('note_'.$type, $holders);
         }

@@ -196,10 +196,18 @@
 			<center><b>{!! $p('profile_skills') !!}</b></center>
 			<hr>
 			<div class="holder-indicator">
-				<div class="title">{!! $p('profile_military') !!}</div>
-				<div class="desc">{{ $row['mSkill'] }}</div>
+				<div class="title">Strength</div>
+				<div class="desc">{{ $row['strength'] ?? 0 }}</div>
 				<div class="ind">
-					{!! $vars->viewIndicator(Constants::SP_CPS[$row['mSkill']] ?? 0, Constants::SP_CPS[$row['mSkill'] + 1] ?? 0, $row['mSP'], 400, "RoyalBlue", "Skill points", "%s<br>Total skill points: {$row['mSP']}") !!}
+					{!! $vars->viewIndicator(0, Constants::SHAPE_MAX, $row['strength'] ?? 0, 400, "#CC3333", "Body shape", "%s of ".Constants::SHAPE_MAX." — ".(Constants::SHAPE_NAMES[(int) floor((($row['strength'] ?? 0) + ($row['stamina'] ?? 0)) / 2)] ?? '')) !!}
+					<div style="clear: both"></div>
+				</div>
+			</div>
+			<div class="holder-indicator">
+				<div class="title">Stamina</div>
+				<div class="desc">{{ $row['stamina'] ?? 0 }}</div>
+				<div class="ind">
+					{!! $vars->viewIndicator(0, Constants::SHAPE_MAX, $row['stamina'] ?? 0, 400, "RoyalBlue", "Body shape", "%s of ".Constants::SHAPE_MAX) !!}
 					<div style="clear: both"></div>
 				</div>
 			</div>

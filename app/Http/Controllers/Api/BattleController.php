@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Game\Support\Constants;
 use Illuminate\Http\Request;
 
 class BattleController extends ApiController
@@ -33,7 +34,8 @@ class BattleController extends ApiController
         $heroes = $this->war()->getHeroes($id);
         $my = (float) $this->database->value('SELECT SUM(ABS(damage)) dmg FROM fights WHERE battleID = ? AND fighterID = ?', [$id, $c['CitizenID']], 0);
         $weapons = $this->database->rows("SELECT Stars, COUNT(pID) Amount FROM inventory WHERE Owner = ? AND Usable = 1 AND Type = 4 GROUP BY Stars ORDER BY Stars", [$c['CitizenID']]);
-        $hero = fn ($h) => ['id' => (int) $h['CitizenID'], 'name' => $h['name'], 'avatar' => url('/uploads/avatars/citizen/'.$h['Avatar']), 'damage' => abs((float) $h['advance'])];
+        $hero = fn ($h) => ['id' => (int) $h['CitizenID'], 'name' => $h['name'], 'avatar' => url('/uploads/avatars/citizen/'.$h['Avatar']), 'damage' => abs((float) $h['advance']),
+            'rank' => (int) ($h['mRank'] ?? 0), 'rankIcon' => url('/images/game/war/mrank/'.(int) ($h['mRank'] ?? 0).'.gif')];
 
         return $this->ok([
             'battle' => $this->battlePayload($bat + ['battle_type' => $bat['Type'] === 'revolt' ? 'revolt' : 'battle', 'regionName' => $bat['rName']]) + [
@@ -42,6 +44,7 @@ class BattleController extends ApiController
             ],
             'side' => $side, 'canFight' => $side !== null && $c['accType'] === 'citizen' && $bat['End'] > time() && !$bat['Result'],
             'myForce' => $my, 'wellness' => (float) $c['wellness'], 'occupiedUntil' => (int) $c['occDue'],
+            'hit' => Constants::shapeDamage((int) ($c['strength'] ?? 0)), 'fightCost' => Constants::fightWellnessCost((int) ($c['stamina'] ?? 0)),
             // Attackers lower the wall (negative damage), as on the legacy battle page (ajax heroes-{id}).
             'heroes' => ['attacker' => array_map($hero, $heroes['defender']), 'defender' => array_map($hero, $heroes['attacker'])],
             'weapons' => array_map(fn ($w) => ['stars' => (int) $w['Stars'], 'amount' => (int) $w['Amount']], $weapons),
@@ -51,8 +54,9 @@ class BattleController extends ApiController
 
     private function log(int $id): array
     {
-        return array_map(fn ($f) => ['name' => $f['name'], 'avatar' => url('/uploads/avatars/citizen/'.$f['Avatar']), 'damage' => (float) $f['damage'], 'time' => (int) $f['timestamp']],
-            $this->database->rows('SELECT fights.damage, fights.timestamp, citizens.name, citizens.Avatar FROM fights JOIN citizens ON citizens.CitizenID = fights.fighterID WHERE battleID = ? ORDER BY fights.timestamp DESC LIMIT 15', [$id]));
+        return array_map(fn ($f) => ['name' => $f['name'], 'avatar' => url('/uploads/avatars/citizen/'.$f['Avatar']), 'damage' => (float) $f['damage'], 'time' => (int) $f['timestamp'],
+            'rankIcon' => url('/images/game/war/mrank/'.(int) $f['mRank'].'.gif')],
+            $this->database->rows('SELECT fights.damage, fights.timestamp, citizens.name, citizens.Avatar, citizens.mRank FROM fights JOIN citizens ON citizens.CitizenID = fights.fighterID WHERE battleID = ? ORDER BY fights.timestamp DESC LIMIT 15', [$id]));
     }
 
     private function side(array $c, array $bat): ?string
@@ -96,12 +100,12 @@ class BattleController extends ApiController
         $for = $bat['Type'] === 'revolt' ? ($side === 'att' ? 'att' : 'def') : 'std';
         $msg = $this->war()->fight($c, $bat, (int) $request->input('weapon', 0), $for);
         $d = (float) $msg['Damage'];
-        $tier = $d < 50 ? 'Good' : ($d < 100 ? 'Charming' : ($d < 200 ? 'Elegant' : ($d < 350 ? 'Terrific' : ($d < 500 ? 'Excellent' : 'Epic'))));
+        $tier = $d < 60 ? 'Good' : ($d < 120 ? 'Charming' : ($d < 200 ? 'Elegant' : ($d < 300 ? 'Terrific' : ($d < 400 ? 'Excellent' : 'Epic'))));
         $c = $this->cit(true);
 
         return $this->ok([
             'damage' => $d, 'tier' => $tier, 'wellness' => (float) $msg['Well'], 'skill' => $msg['Skill'], 'mRank' => $msg['mRank'], 'ep' => $msg['EP'],
-            'weaponUsed' => $msg['Weapon'], 'totalForce' => $msg['totForce'], 'canFightAgain' => $msg['Well'] >= 20,
+            'weaponUsed' => $msg['Weapon'], 'totalForce' => $msg['totForce'], 'canFightAgain' => $msg['Well'] >= 20, 'rankedUp' => $msg['RankedUp'] ?? false, 'report' => $msg['Report'],
             'myForce' => (float) $this->database->value('SELECT SUM(ABS(damage)) dmg FROM fights WHERE battleID = ? AND fighterID = ?', [$id, $c['CitizenID']], 0),
             'citizen' => $this->citizenPayload($c, true), 'log' => $this->log($id),
         ]);

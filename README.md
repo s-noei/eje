@@ -64,3 +64,14 @@ Static assets (`images/`, `include/css`, `include/js`, `uploads/`, map gifs, `le
 * `include/mapout.php` / `include/self/region.php` GD map generators: their source layers (`map-bg.gif`, `regions/*.gif`) are not in the snapshot,
   so the pre-rendered `include/map/*.gif` files are served instead and `region-{id}.gif` returns 404.
 * `trans.php` was an empty file in the snapshot; the translation-center dispatcher was reconstructed from `include/trans/*`.
+
+## Game rules changed from the legacy game
+
+**Training / strength (2026-09-11).** Skill-point training (Normal/Hard/Max) was replaced by *body shape*:
+one session per day, **Weights** (+1 strength) or **Cardio** (+1 stamina), each 0–7. A missed day costs one
+stage of both (daily cron). Damage per hit = `10 + 10 × strength`, times the weapon and boosters; a fight
+costs `10 → 4` wellness depending on stamina. Military rank no longer multiplies damage: it is prestige
+(insignia everywhere), leadership (Hazarapatish+ to found a unit, Satapatish+ to be captain, the unit's
+ordered-battle bonus = 5% + 1% × commander rank, max 15%) and a one-off reward per rank (Tala + 5★ food).
+Existing citizens were migrated with strength = stamina = min(7, old military skill); legacy skill points
+still accumulate in the background for rankings and the IS trophy. Constants: `App\Game\Support\Constants`.

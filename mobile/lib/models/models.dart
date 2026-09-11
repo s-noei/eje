@@ -1,4 +1,5 @@
 /// Plain data classes mirroring the API payloads.
+const kShapeMax = 7;
 class Money {
   Money(this.curID, this.name, this.amount, this.icon);
   final int curID;
@@ -33,6 +34,14 @@ class Citizen {
       wSkill = (j['wSkill'] as num).toDouble(),
       mSkill = (j['mSkill'] as num).toDouble(),
       mRank = j['mRank']?.toString(),
+      mRankName = j['mRankName'] as String? ?? '',
+      mRankIcon = j['mRankIcon'] as String? ?? '',
+      strength = j['strength'] as int? ?? 0,
+      stamina = j['stamina'] as int? ?? 0,
+      trainStreak = j['trainStreak'] as int? ?? 0,
+      shapeName = j['shapeName'] as String? ?? '',
+      hit = (j['hit'] as num?)?.toDouble() ?? 0,
+      fightCost = (j['fightCost'] as num?)?.toDouble() ?? 10,
       worldRank = j['worldRank']?.toString(),
       countryId = (j['country']?['id'] ?? 0) as int,
       countryName = j['country']?['name'] as String? ?? '',
@@ -52,6 +61,9 @@ class Citizen {
   final int level;
   final double ep, epLevelStart, epNextLevel, wellness, wSkill, mSkill;
   final String? mRank, worldRank;
+  final String mRankName, mRankIcon, shapeName;
+  final int strength, stamina, trainStreak;
+  final double hit, fightCost;
   final int countryId;
   final String countryName, countryFlag, currency, regionName;
   final bool trainedToday, workedToday, exploredToday, dailyClaimed;

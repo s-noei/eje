@@ -26,7 +26,7 @@ class WarController extends GameController
         $gdpercs = [0, 0.1, 0.14, 0.17, 0.2, 0.21, 0.22, 0.23, 0.24, 0.25];
         $wMul = $gdpercs[$gl];
         $wChange = function (int $type) use ($wMul) {
-            $c = pow(4, $type - 1);
+            $c = Constants::TRAIN_WELLNESS[$type];
             $c -= abs(round($c * $wMul));
 
             return -$c;
@@ -40,16 +40,11 @@ class WarController extends GameController
 
             return redirect($request->getRequestUri());
         }
-        if ($request->isMethod('post') && in_array((int) $request->input('train'), [1, 2, 3], true)) {
-            $t = (int) $request->input('train');
-            $ttype = ($t === 1 || ($t === 2 && $cit['puberty'] > 0) || ($t === 3 && $cit['puberty'] > 1)) ? $t : 0;
-            if (! $ttype) {
-                return redirect($request->getRequestUri());
-            }
-            $nwell = pow(3, $ttype - 1);
+        if ($request->isMethod('post') && in_array((int) $request->input('train'), [Constants::TRAIN_WEIGHTS, Constants::TRAIN_CARDIO], true)) {
+            $ttype = (int) $request->input('train');
             if ($cit['LastTrained'] == $today) {
                 $msg = '<h3 class=errHandle>'.$this->lang->getstr('error_trained_today', 'msgs').'</h3>';
-            } elseif ($cit['wellness'] <= $nwell) {
+            } elseif ($cit['wellness'] <= Constants::TRAIN_WELLNESS[$ttype]) {
                 $msg = '<h3 class=errHandle>'.$this->lang->getstr('error_low_wellness', 'msgs').'</h3>';
             } else {
                 $this->database->doTrain($cit, $ttype, array_map('intval', (array) $request->input('am', [])));
@@ -73,8 +68,8 @@ class WarController extends GameController
 
         return $this->page('pages.war.army', [
             'msg' => $msg, 'trained' => $trained, 'trainednow' => $trainednow, 'report' => $report, 'foods' => $foods, 'battles' => $battles,
-            'wChange' => [1 => $wChange(1), 2 => $wChange(2), 3 => $wChange(3)],
-            'skills' => [1 => $this->database->getChangedSkill($cit, 1, 1), 2 => $this->database->getChangedSkill($cit, 2, 1), 3 => $this->database->getChangedSkill($cit, 3, 1)],
+            'wChange' => [Constants::TRAIN_WEIGHTS => $wChange(Constants::TRAIN_WEIGHTS), Constants::TRAIN_CARDIO => $wChange(Constants::TRAIN_CARDIO)],
+            'shape' => $this->shape($cit),
             'cit' => $cit,
         ], $layout);
     }
@@ -89,10 +84,28 @@ class WarController extends GameController
         $ex = explode('|', (string) $rep['wellness']) + [0, 0, 0];
         [$rep['wellness'], $rep['wellness2'], $rep['wellness3']] = $ex;
         $ex = explode('|', (string) $rep['skill']) + [0, 0, 0];
-        [$rep['skill'], $rep['sp'], $rep['sp2']] = $ex;
-        $rep['received'] = round((float) $rep['received'], 3);
+        [$rep['strength'], $rep['stamina'], $rep['streak']] = array_map('intval', $ex);
+        if ($rep['stamina'] > Constants::SHAPE_MAX) { // row written by the old skill-point training
+            [$rep['strength'], $rep['stamina'], $rep['streak']] = [(int) $this->citInfo['strength'], (int) $this->citInfo['stamina'], (int) $this->citInfo['train_streak']];
+        }
+        $rep['type'] = min((int) $rep['type'], Constants::TRAIN_CARDIO);
 
         return $rep;
+    }
+
+    /** Body shape summary for the army page / API. */
+    public static function shape(array $cit): array
+    {
+        $strength = (int) ($cit['strength'] ?? 0);
+        $stamina = (int) ($cit['stamina'] ?? 0);
+        $stage = (int) floor(($strength + $stamina) / 2);
+
+        return [
+            'strength' => $strength, 'stamina' => $stamina, 'streak' => (int) ($cit['train_streak'] ?? 0), 'max' => Constants::SHAPE_MAX,
+            'stage' => $stage, 'name' => Constants::SHAPE_NAMES[$stage] ?? '', 'names' => Constants::SHAPE_NAMES,
+            'damage' => Constants::shapeDamage($strength), 'fightCost' => Constants::fightWellnessCost($stamina),
+            'trainedToday' => ($cit['LastTrained'] ?? 0) == app(\App\Game\Services\GameDatabase::class)->today,
+        ];
     }
 
     /* ------------------------------------------------------------ battlefield */
